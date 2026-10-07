@@ -1,25 +1,88 @@
 {
   "expo": {
-    "name": "medicoo-doctors",
+    "name": "Medicoo Doctors",
     "slug": "medicoo-doctors",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./src/assets/images/icon.png",
+    "scheme": "MedicooDoctors",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#0FBBA1",
+        "foregroundImage": "./src/assets/images/android-icon-foreground.png",
+        "backgroundImage": "./src/assets/images/android-icon-background.png",
+        "monochromeImage": "./src/assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.medicootech.medicoodoctor",
+      "versionCode": 1,
+      "permissions": [
+        "RECORD_AUDIO",
+        "CAMERA",
+        "MODIFY_AUDIO_SETTINGS",
+        "ACCESS_NETWORK_STATE",
+        "ACCESS_WIFI_STATE",
+        "POST_NOTIFICATIONS"
+      ],
+      "googleServicesFile": "./firebase/google-services.json"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/images/logo.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#0FBBA1",
+          "dark": {
+            "backgroundColor": "#0FBBA1"
+          }
+        }
+      ],
+      "@react-native-firebase/app",
+      "@react-native-firebase/messaging",
+      "@react-native-firebase/crashlytics",
+      "@react-native-community/datetimepicker",
+      "expo-secure-store",
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Medicoo Doctors needs access to your photos to let you upload credentials, documents, and your profile picture.",
+          "cameraPermission": "Medicoo Doctors needs access to your camera to let you scan and upload documents.",
+          "microphonePermission": "Medicoo Doctors needs access to your microphone for audio and video consultations with patients."
+        }
+      ],
+      "expo-notifications",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 36,
+            "targetSdkVersion": 36,
+            "minSdkVersion": 26
+          }
+        }
+      ],
+      "./plugins/withLowMemoryGradleTuning.js",
+      "./plugins/withAgoraScreenShareExclusion.js",
+      [
+        "expo-navigation-bar",
+        {
+          "backgroundColor": "#00000000"
+        }
+      ],
+      "./plugins/withTransparentNavigationBar.js",
+      "./plugins/withPictureInPicture.js"
+    ],
+    "experiments": {
+      "reactCompiler": true
     }
   }
 }

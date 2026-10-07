@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "808852166610",
+    "project_id": "medicoo-19ffb",
+    "storage_bucket": "medicoo-19ffb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808852166610:android:dbb08e21cee142157d5a0b",
+        "android_client_info": {
+          "package_name": "com.medicootech.medicoo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2uNmGPEOURKQ9GxXaixJOQ_LXljFiqok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808852166610:android:02141fc3d220e5cf7d5a0b",
+        "android_client_info": {
+          "package_name": "com.medicootech.medicoodoctor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2uNmGPEOURKQ9GxXaixJOQ_LXljFiqok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
