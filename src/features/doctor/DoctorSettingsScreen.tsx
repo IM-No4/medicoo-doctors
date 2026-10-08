@@ -1,6 +1,7 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import {
+    AlertTriangle,
     ArrowUpCircle,
     CalendarCheck,
     ChevronLeft,
@@ -17,6 +18,7 @@ import {
 import React, { useCallback, useState } from 'react';
 import {
     ActivityIndicator,
+    Alert,
     KeyboardAvoidingView,
     Linking,
     Platform,
@@ -35,10 +37,23 @@ import LanguagePickerModal from '../../components/modals/LanguagePickerModal';
 import StatusModal, { StatusType } from '../../components/modals/StatusModal';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { RootState } from '../../redux/store';
-import { getDoctorProfile, updateDoctorSettings } from '../../services/api/user.api';
+import {
+    cancelAccountDeletion,
+    DoctorNotificationSettings,
+    getAccountDeletionStatus,
+    getDoctorProfile,
+    requestAccountDeletion,
+    updateDoctorSettings,
+} from '../../services/api/user.api';
 import { ThemeMode } from '../../theme/colors';
 import { useTheme } from '../../theme/ThemeContext';
 import { useLogout } from '../auth/useLogout';
+
+const DEFAULT_NOTIFICATION_SETTINGS: DoctorNotificationSettings = {
+    newAppointmentRequests: true,
+    chatMessages: true,
+    paymentConfirmations: true,
+};
 
 export default function DoctorSettingsScreen() {
     const insets = useSafeAreaInsets();
@@ -60,6 +75,16 @@ export default function DoctorSettingsScreen() {
         video: { fee: 0, isEnabled: false },
     });
     const [currency, setCurrency] = useState('INR');
+    const [notificationSettings, setNotificationSettings] = useState<DoctorNotificationSettings>(
+        DEFAULT_NOTIFICATION_SETTINGS
+    );
+
+    // Account deletion
+    const [deletionStatus, setDeletionStatus] = useState<{
+        pending: boolean;
+        deletionScheduledFor: string | null;
+    }>({ pending: false, deletionScheduledFor: null });
+    const [deletionActionLoading, setDeletionActionLoading] = useState(false);
     const [initialSettings, setInitialSettings] = useState<any>(null);
 
     // Status Modal State
@@ -84,21 +109,32 @@ export default function DoctorSettingsScreen() {
     useFocusEffect(
         useCallback(() => {
             fetchSettings();
+            fetchDeletionStatus();
         }, [])
     );
 
     const hasChanges = useCallback(() => {
         if (!initialSettings) return false;
 
-        const currentData = { isOnline, fees, currency };
+        const currentData = { isOnline, fees, currency, notificationSettings };
         const initialData = {
             isOnline: initialSettings.isOnline,
             fees: initialSettings.fees,
-            currency: initialSettings.currency
+            currency: initialSettings.currency,
+            notificationSettings: initialSettings.notificationSettings
         };
 
         return JSON.stringify(currentData) !== JSON.stringify(initialData);
-    }, [isOnline, fees, currency, initialSettings]);
+    }, [isOnline, fees, currency, notificationSettings, initialSettings]);
+
+    const fetchDeletionStatus = async () => {
+        try {
+            const res = await getAccountDeletionStatus();
+            setDeletionStatus({ pending: !!res.pending, deletionScheduledFor: res.deletionScheduledFor || null });
+        } catch {
+            // Non-blocking - the rest of the settings screen still works.
+        }
+    };
 
     const fetchSettings = async () => {
         try {
@@ -129,10 +165,17 @@ export default function DoctorSettingsScreen() {
                 const loadedCurrency = profileFees.currency || 'INR';
                 setCurrency(loadedCurrency);
 
+                const loadedNotificationSettings: DoctorNotificationSettings = {
+                    ...DEFAULT_NOTIFICATION_SETTINGS,
+                    ...(profile.notificationSettings || data.notificationSettings || {}),
+                };
+                setNotificationSettings(loadedNotificationSettings);
+
                 setInitialSettings({
                     isOnline: onlineStatus,
                     fees: loadedFees,
-                    currency: loadedCurrency
+                    currency: loadedCurrency,
+                    notificationSettings: loadedNotificationSettings
                 });
             }
         } catch (error) {
@@ -150,16 +193,60 @@ export default function DoctorSettingsScreen() {
                 consultationFees: {
                     currency,
                     ...fees
-                }
+                },
+                notificationSettings
             };
 
             await updateDoctorSettings(payload);
             showStatus('success', 'Settings Saved', 'Your practice availability and consultation fees have been updated successfully.');
-            setInitialSettings({ isOnline, fees, currency });
+            setInitialSettings({ isOnline, fees, currency, notificationSettings });
         } catch {
             showStatus('error', 'Update Failed', 'We couldn\'t save your settings. Please check your internet connection and try again.');
         } finally {
             setSaving(false);
+        }
+    };
+
+    const toggleNotificationSetting = (key: keyof DoctorNotificationSettings) => {
+        setNotificationSettings((prev) => ({ ...prev, [key]: !prev[key] }));
+    };
+
+    const handleRequestAccountDeletion = () => {
+        Alert.alert(
+            'Delete Account',
+            'Your account will be scheduled for deletion in 30 days. Logging back in before then automatically cancels it. Your past consultation and prescription records are retained as required by healthcare record-keeping rules even after deletion.',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Delete My Account',
+                    style: 'destructive',
+                    onPress: async () => {
+                        setDeletionActionLoading(true);
+                        try {
+                            const res = await requestAccountDeletion();
+                            setDeletionStatus({ pending: true, deletionScheduledFor: res.deletionScheduledFor || null });
+                            showStatus('success', 'Deletion Scheduled', res.message || 'Your account is scheduled for deletion.');
+                        } catch {
+                            showStatus('error', 'Request Failed', 'Could not schedule account deletion. Please try again.');
+                        } finally {
+                            setDeletionActionLoading(false);
+                        }
+                    }
+                }
+            ]
+        );
+    };
+
+    const handleCancelAccountDeletion = async () => {
+        setDeletionActionLoading(true);
+        try {
+            await cancelAccountDeletion();
+            setDeletionStatus({ pending: false, deletionScheduledFor: null });
+            showStatus('success', 'Deletion Cancelled', 'Your account stays active.');
+        } catch {
+            showStatus('error', 'Request Failed', 'Could not cancel account deletion. Please try again.');
+        } finally {
+            setDeletionActionLoading(false);
         }
     };
 
@@ -394,6 +481,35 @@ export default function DoctorSettingsScreen() {
                             })}
                         </View>
 
+                        {/* Notification Preferences */}
+                        <Text style={[styles.sectionTitle, { color: theme.textMuted }]}>Notification Preferences</Text>
+                        <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border, borderWidth: 1 }]}>
+                            {([
+                                { key: 'newAppointmentRequests' as const, label: 'New Appointment Requests', sub: 'When a patient requests a consultation' },
+                                { key: 'chatMessages' as const, label: 'Chat Messages', sub: 'New messages during consultations' },
+                                { key: 'paymentConfirmations' as const, label: 'Payment Confirmations', sub: 'Payout and earnings updates' },
+                            ]).map((item, idx) => (
+                                <View
+                                    key={item.key}
+                                    style={[
+                                        styles.feeRow,
+                                        { borderBottomColor: theme.border, borderBottomWidth: idx === 2 ? 0 : 1 },
+                                    ]}
+                                >
+                                    <View style={styles.feeInfo}>
+                                        <Text style={[styles.feeLabel, { color: theme.text }]}>{item.label}</Text>
+                                        <Text style={[styles.feeSub, { color: theme.textSecondary }]}>{item.sub}</Text>
+                                    </View>
+                                    <Switch
+                                        value={notificationSettings[item.key]}
+                                        onValueChange={() => toggleNotificationSetting(item.key)}
+                                        trackColor={{ false: theme.inputBorder, true: '#BBF7D0' }}
+                                        thumbColor={notificationSettings[item.key] ? '#0FBBA1' : '#fff'}
+                                    />
+                                </View>
+                            ))}
+                        </View>
+
                         {/* Managing Profile */}
                         <Text style={[styles.sectionTitle, { color: theme.textMuted }]}>Profile & Practice Management</Text>
                         <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border, borderWidth: 1 }]}>
@@ -496,6 +612,58 @@ export default function DoctorSettingsScreen() {
                         <TouchableOpacity style={[styles.logoutRow, { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.12)' : '#FEE2E2' }]} onPress={handleLogout}>
                             <Text style={styles.logoutText}>Log Out</Text>
                         </TouchableOpacity>
+
+                        {/* Danger Zone */}
+                        <Text style={[styles.sectionTitle, { color: theme.textMuted, marginTop: 24 }]}>Danger Zone</Text>
+                        <View style={[styles.card, { backgroundColor: theme.card, borderColor: '#FCA5A5', borderWidth: 1 }]}>
+                            {deletionStatus.pending ? (
+                                <View style={styles.dangerZoneBody}>
+                                    <View style={styles.dangerZoneHeader}>
+                                        <AlertTriangle size={18} color="#DC2626" />
+                                        <Text style={[styles.dangerZoneTitle, { color: '#DC2626' }]}>Deletion Scheduled</Text>
+                                    </View>
+                                    <Text style={[styles.feeSub, { color: theme.textSecondary, marginBottom: 12 }]}>
+                                        Your account will be deleted on{' '}
+                                        {deletionStatus.deletionScheduledFor
+                                            ? new Date(deletionStatus.deletionScheduledFor).toLocaleDateString()
+                                            : 'the scheduled date'}
+                                        . Log back in before then to keep your account.
+                                    </Text>
+                                    <TouchableOpacity
+                                        style={[styles.saveButton, { backgroundColor: '#0FBBA1', height: 44 }, deletionActionLoading && { opacity: 0.7 }]}
+                                        onPress={handleCancelAccountDeletion}
+                                        disabled={deletionActionLoading}
+                                    >
+                                        {deletionActionLoading ? (
+                                            <ActivityIndicator color="#fff" />
+                                        ) : (
+                                            <Text style={styles.saveButtonText}>Cancel Deletion</Text>
+                                        )}
+                                    </TouchableOpacity>
+                                </View>
+                            ) : (
+                                <View style={styles.dangerZoneBody}>
+                                    <View style={styles.dangerZoneHeader}>
+                                        <AlertTriangle size={18} color="#DC2626" />
+                                        <Text style={[styles.dangerZoneTitle, { color: '#DC2626' }]}>Delete Account</Text>
+                                    </View>
+                                    <Text style={[styles.feeSub, { color: theme.textSecondary, marginBottom: 12 }]}>
+                                        Permanently delete your doctor account and profile after a 30-day grace period. Past consultation and prescription records are retained as required by healthcare record-keeping rules.
+                                    </Text>
+                                    <TouchableOpacity
+                                        style={[styles.saveButton, { backgroundColor: '#DC2626', height: 44 }, deletionActionLoading && { opacity: 0.7 }]}
+                                        onPress={handleRequestAccountDeletion}
+                                        disabled={deletionActionLoading}
+                                    >
+                                        {deletionActionLoading ? (
+                                            <ActivityIndicator color="#fff" />
+                                        ) : (
+                                            <Text style={styles.saveButtonText}>Delete My Account</Text>
+                                        )}
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                        </View>
                     </View>
 
                 </ScrollView>
@@ -682,6 +850,20 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '700',
         color: '#DC2626',
+    },
+
+    dangerZoneBody: {
+        padding: 16,
+    },
+    dangerZoneHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        marginBottom: 6,
+    },
+    dangerZoneTitle: {
+        fontSize: 15,
+        fontWeight: '700',
     },
 
     updateCard: {

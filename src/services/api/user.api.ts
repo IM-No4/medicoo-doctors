@@ -24,15 +24,18 @@ export const verifyEmailOtp = async (otp: string) => {
 
 // Account deletion - starts a 30-day grace period; logging back in with
 // this same account before deletionScheduledFor cancels it automatically
-// (see backend customerLoginController.js), so cancelAccountDeletion below
-// is only needed for a user who stays logged in and changes their mind.
+// (see backend doctorLoginController.js's verifyOtp), so
+// cancelAccountDeletion below is only needed for a doctor who stays logged
+// in and changes their mind. Uses /api/doctor-auth/, not /api/user/ -
+// the doctor app's own standalone login system (DoctorAppLoginDetails),
+// not the shared customer one that /api/user/account/* actually serves.
 export const requestAccountDeletion = async () => {
-    const res = await apiClient.post('/api/user/account/delete-request');
+    const res = await apiClient.post('/api/doctor-auth/account/delete-request');
     return res.data;
 };
 
 export const cancelAccountDeletion = async () => {
-    const res = await apiClient.post('/api/user/account/delete-cancel');
+    const res = await apiClient.post('/api/doctor-auth/account/delete-cancel');
     return res.data;
 };
 
@@ -43,7 +46,7 @@ export interface AccountDeletionStatus {
 }
 
 export const getAccountDeletionStatus = async (): Promise<AccountDeletionStatus> => {
-    const res = await apiClient.get('/api/user/account/deletion-status');
+    const res = await apiClient.get('/api/doctor-auth/account/deletion-status');
     return res.data;
 };
 
@@ -67,12 +70,18 @@ export const applyAsDoctor = async (formData: FormData) => {
     return res.data;
 };
 
+export interface DoctorNotificationSettings {
+    newAppointmentRequests: boolean;
+    chatMessages: boolean;
+    paymentConfirmations: boolean;
+}
+
 // Update specific doctor settings (status, fees, availability, urgent
 // surcharge) without full application flow
 export const updateDoctorSettings = async (data: {
     isOnline?: boolean;
     consultationFees?: any;
-    notificationSettings?: any;
+    notificationSettings?: DoctorNotificationSettings;
     availability?: Record<string, { enabled: boolean; start: string; end: string }>;
     urgentSurchargePercent?: number;
 }) => {

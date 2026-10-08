@@ -33,6 +33,12 @@ import {
 
 import StatusModal, { StatusType } from '../../components/modals/StatusModal';
 import { useTheme } from '../../theme/ThemeContext';
+import {
+  createSupportRequest,
+  getSupportRequests,
+  SupportTicket,
+  SupportTicketCategory,
+} from '../../services/api/support.api';
 
 interface FAQItem {
   id: string;
@@ -88,25 +94,55 @@ interface Ticket {
   replyPreview: string;
 }
 
-const INITIAL_TICKETS: Ticket[] = [
-  {
-    id: 'TK-8924',
-    subject: 'Payout reconciliation for weekend teleconsultations',
-    category: 'Earnings',
-    date: 'Yesterday, 4:30 PM',
-    status: 'Resolved',
-    replyPreview: 'Settlement confirmed. Ref: #TX-98402 credited to primary bank account.',
-  },
+const TICKET_CATEGORIES: { label: string; value: SupportTicketCategory }[] = [
+  { label: 'Payouts & Earnings', value: 'payouts_earnings' },
+  { label: 'Schedule & Availability', value: 'schedule_availability' },
+  { label: 'Patient Consultation', value: 'patient_consultation' },
+  { label: 'E-Prescriptions', value: 'e_prescriptions' },
+  { label: 'Account & Verification', value: 'account_verification' },
+  { label: 'Technical Glitch', value: 'technical_glitch' },
 ];
 
-const TICKET_CATEGORIES = [
-  'Payouts & Earnings',
-  'Schedule & Availability',
-  'Patient Consultation',
-  'E-Prescriptions',
-  'Account & Verification',
-  'Technical Glitch',
-];
+const formatTicketDate = (iso?: string) => {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  const now = new Date();
+  const isToday = d.toDateString() === now.toDateString();
+  const yesterday = new Date(now);
+  yesterday.setDate(now.getDate() - 1);
+  const isYesterday = d.toDateString() === yesterday.toDateString();
+  const time = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  if (isToday) return `Today, ${time}`;
+  if (isYesterday) return `Yesterday, ${time}`;
+  return `${d.toLocaleDateString([], { day: 'numeric', month: 'short' })}, ${time}`;
+};
+
+const mapApiTicketToUi = (ticket: SupportTicket): Ticket => {
+  const categoryLabel =
+    TICKET_CATEGORIES.find((c) => c.value === ticket.category)?.label || ticket.category;
+  const isResolved = ticket.status === 'resolved' || ticket.status === 'closed';
+  const status: Ticket['status'] = isResolved
+    ? 'Resolved'
+    : ticket.priority === 'urgent'
+    ? 'Escalated'
+    : 'In Review';
+  const replyPreview =
+    ticket.resolution ||
+    ticket.feedback ||
+    (status === 'Escalated'
+      ? 'Emergency ticket escalated to medical operations lead.'
+      : 'Request received. Our team will respond shortly.');
+
+  return {
+    id: ticket.requestId,
+    subject: ticket.subject,
+    category: categoryLabel,
+    date: formatTicketDate(ticket.createdOn),
+    status,
+    replyPreview,
+  };
+};
 
 export default function DoctorSupportScreen() {
   const insets = useSafeAreaInsets();
@@ -125,7 +161,24 @@ export default function DoctorSupportScreen() {
   const [showTicketForm, setShowTicketForm] = useState(false);
 
   // Tickets
-  const [tickets, setTickets] = useState<Ticket[]>(INITIAL_TICKETS);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [loadingTickets, setLoadingTickets] = useState(true);
+
+  const loadTickets = async () => {
+    try {
+      const res = await getSupportRequests({ limit: 20 });
+      setTickets((res.data?.requests || []).map(mapApiTicketToUi));
+    } catch {
+      // Non-blocking - the form above still works even if the history
+      // list fails to load.
+    } finally {
+      setLoadingTickets(false);
+    }
+  };
+
+  useEffect(() => {
+    loadTickets();
+  }, []);
 
   // Status Modal
   const [statusModal, setStatusModal] = useState<{
@@ -191,7 +244,7 @@ export default function DoctorSupportScreen() {
     navigation.navigate('DoctorLiveChat');
   };
 
-  const handleSubmitTicket = () => {
+  const handleSubmitTicket = async () => {
     if (!ticketSubject.trim()) {
       showStatus('warning', 'Subject Required', 'Please enter a brief subject for your request.');
       return;
@@ -202,32 +255,41 @@ export default function DoctorSupportScreen() {
     }
 
     setSubmitting(true);
-    setTimeout(() => {
-      const newTicketId = `TK-${Math.floor(1000 + Math.random() * 9000)}`;
-      const newTicket: Ticket = {
-        id: newTicketId,
+    try {
+      const res = await createSupportRequest({
+        category: selectedCategory.value,
+        priority: isUrgent ? 'urgent' : 'medium',
         subject: ticketSubject.trim(),
-        category: selectedCategory,
-        date: 'Just now',
+        description: ticketMessage.trim(),
+      });
+
+      const newTicket: Ticket = {
+        id: res.data.requestId,
+        subject: ticketSubject.trim(),
+        category: selectedCategory.label,
+        date: formatTicketDate(res.data.createdOn) || 'Just now',
         status: isUrgent ? 'Escalated' : 'In Review',
         replyPreview: isUrgent
           ? 'Emergency ticket escalated to medical operations lead.'
-          : 'Request received. Expected resolution within 2 hours.',
+          : 'Request received. Our team will respond shortly.',
       };
 
       setTickets((prev) => [newTicket, ...prev]);
       setTicketSubject('');
       setTicketMessage('');
       setIsUrgent(false);
-      setSubmitting(false);
       setShowTicketForm(false);
 
       showStatus(
         'success',
         'Ticket Created',
-        `Ticket #${newTicketId} has been lodged. Our team will get back to you shortly.`
+        `Ticket #${res.data.requestId} has been lodged. Our team will get back to you shortly.`
       );
-    }, 800);
+    } catch {
+      showStatus('error', 'Submission Failed', 'Could not submit your request. Please check your connection and try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -403,10 +465,10 @@ export default function DoctorSupportScreen() {
                   contentContainerStyle={styles.categoryPillsRow}
                 >
                   {TICKET_CATEGORIES.map((cat) => {
-                    const isSelected = selectedCategory === cat;
+                    const isSelected = selectedCategory.value === cat.value;
                     return (
                       <TouchableOpacity
-                        key={cat}
+                        key={cat.value}
                         style={[
                           styles.catPill,
                           {
@@ -434,7 +496,7 @@ export default function DoctorSupportScreen() {
                             },
                           ]}
                         >
-                          {cat}
+                          {cat.label}
                         </Text>
                       </TouchableOpacity>
                     );
@@ -546,6 +608,14 @@ export default function DoctorSupportScreen() {
                   </TouchableOpacity>
                 </View>
               </View>
+            ) : loadingTickets ? (
+              <View style={styles.ticketsLoadingRow}>
+                <ActivityIndicator size="small" color={subTextColor} />
+              </View>
+            ) : tickets.length === 0 ? (
+              <Text style={[styles.ticketsEmptyText, { color: subTextColor }]}>
+                No support requests yet. Tap &quot;+ New Request&quot; above to raise one.
+              </Text>
             ) : (
               /* Recent / Active Tickets List inside the same card */
               <View style={styles.ticketsSummaryCol}>
@@ -921,6 +991,16 @@ const styles = StyleSheet.create({
   },
 
   // ═══ Tickets Summary ═══
+  ticketsLoadingRow: {
+    paddingVertical: 20,
+    alignItems: 'center',
+  },
+  ticketsEmptyText: {
+    fontSize: 12.5,
+    fontWeight: '500',
+    textAlign: 'center',
+    paddingVertical: 20,
+  },
   ticketsSummaryCol: {
     gap: 2,
   },
