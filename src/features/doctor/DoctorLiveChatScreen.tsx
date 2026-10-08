@@ -3,7 +3,6 @@ import * as NavigationBar from 'expo-navigation-bar';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
-  Animated,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
@@ -18,12 +17,11 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
-  AlertCircle,
   ArrowLeft,
   Check,
   CheckCheck,
+  ChevronRight,
   Headphones,
-  Paperclip,
   PhoneCall,
   Send,
   ShieldCheck,
@@ -32,32 +30,22 @@ import {
 
 import StatusModal, { StatusType } from '../../components/modals/StatusModal';
 import { useTheme } from '../../theme/ThemeContext';
+import {
+  LiveChat,
+  LiveChatMessage,
+  closeLiveChat,
+  getActiveLiveChat,
+  sendLiveChatMessage,
+  startLiveChat,
+} from '../../services/api/liveChat.api';
+import { emitLiveChatMessage, onLiveChatAgentJoined, onLiveChatClosed, onLiveChatMessage } from '../../services/socketService';
 
-interface ChatMessage {
-  id: string;
-  sender: 'user' | 'agent';
-  text: string;
-  time: string;
-  agentName?: string;
-  isQuickAction?: boolean;
-}
-
-const INITIAL_MESSAGES: ChatMessage[] = [
-  {
-    id: 'msg-welcome',
-    sender: 'agent',
-    agentName: 'Medicoo Partner Concierge',
-    text: 'Hello Doctor! 👋 You are connected to the Medicoo Priority Partner Desk. How can our medical operations team assist you with appointments, payouts, or clinical tools today?',
-    time: 'Just now',
-  },
-];
-
-const QUICK_PROMPTS = [
-  '💳 Check payout settlement status',
-  '📅 Reschedule consultation slot',
-  '💊 Digital prescription query',
-  '⚠️ Patient emergency guidance',
-  '📑 Update medical registration',
+const CATEGORIES = [
+  { value: 'payout', label: 'Payout & Earnings' },
+  { value: 'scheduling', label: 'Appointments & Scheduling' },
+  { value: 'clinical', label: 'Clinical Tools & Prescriptions' },
+  { value: 'emergency', label: 'Patient Emergency Guidance' },
+  { value: 'general', label: 'Something else' },
 ];
 
 export default function DoctorLiveChatScreen() {
@@ -66,12 +54,18 @@ export default function DoctorLiveChatScreen() {
   const { isDark } = useTheme();
   const flatListRef = useRef<FlatList>(null);
 
-  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  const [loading, setLoading] = useState(true);
+  const [chat, setChat] = useState<LiveChat | null>(null);
+  const [starting, setStarting] = useState(false);
   const [inputText, setInputText] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const chatRef = useRef<LiveChat | null>(null);
+  chatRef.current = chat;
 
-  // Status Modal
+  // The category picker stays visible as the first thing in the chat
+  // history and becomes non-interactive (not hidden) once a chat is active,
+  // same convention as the patient app's LiveChatScreen.tsx.
+  const pickerLocked = !!chat && chat.status !== 'closed';
+
   const [statusModal, setStatusModal] = useState<{
     visible: boolean;
     status: StatusType;
@@ -115,15 +109,50 @@ export default function DoctorLiveChatScreen() {
 
   useEffect(() => {
     const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
-    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
     const showSub = Keyboard.addListener(showEvent, () => {
-      setKeyboardVisible(true);
       setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
     });
-    const hideSub = Keyboard.addListener(hideEvent, () => setKeyboardVisible(false));
     return () => {
       showSub.remove();
-      hideSub.remove();
+    };
+  }, []);
+
+  const loadActiveChat = async () => {
+    try {
+      const active = await getActiveLiveChat();
+      setChat(active);
+    } catch (err) {
+      console.error('[DoctorLiveChat] Error loading active chat:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadActiveChat();
+  }, []);
+
+  useEffect(() => {
+    const unsubMessage = onLiveChatMessage(({ chatId, message }) => {
+      if (chatRef.current && chatRef.current._id === chatId) {
+        setChat((prev) => (prev ? { ...prev, messages: [...prev.messages, message] } : prev));
+        setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
+      }
+    });
+    const unsubAgentJoined = onLiveChatAgentJoined(({ chatId }) => {
+      if (chatRef.current && chatRef.current._id === chatId) {
+        setChat((prev) => (prev ? { ...prev, status: 'open' } : prev));
+      }
+    });
+    const unsubClosed = onLiveChatClosed(({ chatId }) => {
+      if (chatRef.current && chatRef.current._id === chatId) {
+        setChat((prev) => (prev ? { ...prev, status: 'closed' } : prev));
+      }
+    });
+    return () => {
+      unsubMessage();
+      unsubAgentJoined();
+      unsubClosed();
     };
   }, []);
 
@@ -140,70 +169,71 @@ export default function DoctorLiveChatScreen() {
     });
   };
 
-  const getAutoReply = (query: string): string => {
-    const q = query.toLowerCase();
-    if (q.includes('payout') || q.includes('earning') || q.includes('money') || q.includes('settlement') || q.includes('bank')) {
-      return 'Doctor payouts are processed automatically every Tuesday. For immediate bank account verification or manual transfer escalation, our finance operations specialist has been notified with your profile ID.';
+  const handleSelectCategory = async (cat: { value: string; label: string }) => {
+    if (starting) return;
+    setStarting(true);
+    try {
+      const newChat = await startLiveChat(cat.label, cat.value);
+      setChat(newChat);
+    } catch (err) {
+      console.error('[DoctorLiveChat] Error starting chat:', err);
+      showStatus('error', 'Could not start chat', 'Please check your connection and try again.');
+    } finally {
+      setStarting(false);
     }
-    if (q.includes('reschedule') || q.includes('slot') || q.includes('schedule') || q.includes('availability')) {
-      return 'You can adjust your weekly availability or block dates anytime in "Weekly Schedule". For urgent patient appointment shifts within 2 hours, we will notify the patient and adjust without cancellation penalty.';
-    }
-    if (q.includes('prescription') || q.includes('medicine') || q.includes('rx') || q.includes('lab')) {
-      return 'All digital prescriptions generated inside the app are cryptographically signed with your medical registration license and pushed directly to partner pharmacies. Let us know if you need to reissue a document.';
-    }
-    if (q.includes('emergency') || q.includes('urgent') || q.includes('critical') || q.includes('hospital')) {
-      return '⚠️ In case of life-threatening emergencies during a consultation, please activate the in-app "Emergency Protocol" immediately or call 112/911. Our clinical desk is tracking this session.';
-    }
-    return 'Thank you for reaching out, Doctor. A Medicoo clinical operations specialist is reviewing your inquiry and will reply shortly. (Average response time: < 2 mins)';
   };
 
-  const handleSendMessage = (textToSend?: string) => {
-    const content = (textToSend || inputText).trim();
-    if (!content) return;
+  const handleSendMessage = async () => {
+    const content = inputText.trim();
+    if (!content || !chat || chat.status === 'closed') return;
 
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    const userMsg: ChatMessage = {
-      id: `msg-${Date.now()}`,
+    const optimistic: LiveChatMessage = {
+      _id: `local-${Date.now()}`,
       sender: 'user',
       text: content,
-      time: timeStr,
+      timestamp: new Date().toISOString(),
     };
+    setChat((prev) => (prev ? { ...prev, messages: [...prev.messages, optimistic] } : prev));
+    setInputText('');
+    setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
 
-    setMessages((prev) => [...prev, userMsg]);
-    if (!textToSend) setInputText('');
-
-    setTimeout(() => {
-      flatListRef.current?.scrollToEnd({ animated: true });
-    }, 100);
-
-    // Simulate Agent typing response
-    setIsTyping(true);
-    setTimeout(() => {
-      const replyText = getAutoReply(content);
-      const agentMsg: ChatMessage = {
-        id: `msg-agent-${Date.now()}`,
-        sender: 'agent',
-        agentName: 'Dr. Operations Desk',
-        text: replyText,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      };
-      setIsTyping(false);
-      setMessages((prev) => [...prev, agentMsg]);
-      setTimeout(() => {
-        flatListRef.current?.scrollToEnd({ animated: true });
-      }, 100);
-    }, 1200);
+    const sentOverSocket = emitLiveChatMessage(chat._id, content);
+    if (!sentOverSocket) {
+      try {
+        await sendLiveChatMessage(chat._id, content);
+      } catch (err) {
+        console.error('[DoctorLiveChat] Error sending message:', err);
+      }
+    }
   };
 
-  const handleAttach = () => {
-    showStatus(
-      'info',
-      'Attach Document / Report',
-      'You can attach prescription drafts, transaction receipts, or clinical query screenshots directly into the priority support log.'
+  const handleEndChat = async () => {
+    if (!chat) return;
+    try {
+      const closed = await closeLiveChat(chat._id);
+      setChat(closed);
+    } catch (err) {
+      console.error('[DoctorLiveChat] Error closing chat:', err);
+    }
+  };
+
+  const headerSubtitle = !pickerLocked
+    ? chat?.status === 'closed'
+      ? 'Start a new conversation'
+      : 'What do you need help with?'
+    : chat!.status === 'bot'
+    ? 'Chatting with Medicoo Assistant'
+    : chat!.status === 'waiting'
+    ? 'Waiting for a support executive...'
+    : 'Connected to support';
+
+  if (loading) {
+    return (
+      <View style={[styles.container, styles.centerFill, { backgroundColor: bgColor }]}>
+        <ActivityIndicator size="large" color="#0FBBA1" />
+      </View>
     );
-  };
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: bgColor }]}>
@@ -214,7 +244,7 @@ export default function DoctorLiveChatScreen() {
         animated
       />
 
-      {/* ═══ Header Bar (Consistent Back Button + Agent Status + Call Shortcut) ═══ */}
+      {/* ═══ Header Bar ═══ */}
       <View
         style={[
           styles.headerBar,
@@ -225,13 +255,7 @@ export default function DoctorLiveChatScreen() {
         ]}
       >
         <TouchableOpacity
-          style={[
-            styles.roundBackBtn,
-            {
-              backgroundColor: cardBg,
-              borderColor: cardBorder,
-            },
-          ]}
+          style={[styles.roundBackBtn, { backgroundColor: cardBg, borderColor: cardBorder }]}
           onPress={() => navigation.goBack()}
           activeOpacity={0.7}
         >
@@ -247,23 +271,29 @@ export default function DoctorLiveChatScreen() {
           </View>
           <View style={styles.activeStatusRow}>
             <View style={styles.greenDot} />
-            <Text style={styles.activeStatusText}>Active Now • &lt; 2m SLA</Text>
+            <Text style={styles.activeStatusText} numberOfLines={1}>
+              {headerSubtitle}
+            </Text>
           </View>
         </View>
 
-        <TouchableOpacity
-          style={[
-            styles.roundCallBtn,
-            {
-              backgroundColor: cardBg,
-              borderColor: cardBorder,
-            },
-          ]}
-          onPress={handleCallSupport}
-          activeOpacity={0.7}
-        >
-          <PhoneCall size={18} color="#0FBBA1" />
-        </TouchableOpacity>
+        {pickerLocked ? (
+          <TouchableOpacity
+            style={[styles.roundCallBtn, { backgroundColor: cardBg, borderColor: cardBorder }]}
+            onPress={handleEndChat}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.endChatBtnText}>End</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.roundCallBtn, { backgroundColor: cardBg, borderColor: cardBorder }]}
+            onPress={handleCallSupport}
+            activeOpacity={0.7}
+          >
+            <PhoneCall size={18} color="#0FBBA1" />
+          </TouchableOpacity>
+        )}
       </View>
 
       {/* ═══ Chat Message Stream ═══ */}
@@ -273,21 +303,14 @@ export default function DoctorLiveChatScreen() {
       >
         <FlatList
           ref={flatListRef}
-          data={messages}
-          keyExtractor={(item) => item.id}
+          data={chat ? chat.messages : []}
+          keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={[
-            styles.messagesListContent,
-            { paddingBottom: 16 },
-          ]}
+          contentContainerStyle={[styles.messagesListContent, { paddingBottom: 16 }]}
+          onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
           ListHeaderComponent={
             <View style={styles.quickPromptsSection}>
-              <View
-                style={[
-                  styles.securityNoticeCard,
-                  { backgroundColor: cardBg, borderColor: cardBorder },
-                ]}
-              >
+              <View style={[styles.securityNoticeCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
                 <Sparkles size={16} color="#0FBBA1" />
                 <Text style={[styles.securityNoticeText, { color: subTextColor }]}>
                   Priority channel for verified medical practitioners. End-to-end encrypted.
@@ -295,49 +318,60 @@ export default function DoctorLiveChatScreen() {
               </View>
 
               <Text style={[styles.quickPromptLabel, { color: subTextColor }]}>
-                Frequently Asked Topics:
+                What do you need help with?
               </Text>
-              <View style={styles.promptChipsWrap}>
-                {QUICK_PROMPTS.map((prompt) => (
-                  <TouchableOpacity
-                    key={prompt}
-                    style={[
-                      styles.promptChip,
-                      {
-                        backgroundColor: cardBg,
-                        borderColor: cardBorder,
-                      },
-                    ]}
-                    onPress={() => handleSendMessage(prompt.replace(/^[^\w]+/, ''))}
-                    activeOpacity={0.7}
-                  >
-                    <Text style={[styles.promptChipText, { color: textColor }]}>
-                      {prompt}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+              <View style={styles.categoryList}>
+                {CATEGORIES.map((cat) => {
+                  const isSelected = pickerLocked && chat?.category === cat.value;
+                  return (
+                    <TouchableOpacity
+                      key={cat.value}
+                      style={[
+                        styles.categoryCard,
+                        { backgroundColor: cardBg, borderColor: cardBorder },
+                        pickerLocked && styles.categoryCardLocked,
+                        isSelected && styles.categoryCardSelected,
+                      ]}
+                      onPress={() => handleSelectCategory(cat)}
+                      disabled={pickerLocked || starting}
+                      activeOpacity={0.7}
+                    >
+                      <Text style={[styles.categoryCardText, { color: textColor }, isSelected && styles.categoryCardTextSelected]}>
+                        {cat.label}
+                      </Text>
+                      {isSelected ? (
+                        <Check size={16} color="#0FBBA1" />
+                      ) : (
+                        <ChevronRight size={16} color={pickerLocked ? subTextColor : subTextColor} />
+                      )}
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
+              {starting && <ActivityIndicator color="#0FBBA1" style={{ marginTop: 12 }} />}
+
+              {chat?.status === 'closed' && (
+                <View style={[styles.closedNotice, { backgroundColor: isDark ? '#0F2A20' : '#F0FDF4' }]}>
+                  <Text style={styles.closedNoticeText}>This chat was closed. Start a new one above.</Text>
+                </View>
+              )}
             </View>
           }
           renderItem={({ item }) => {
             const isUser = item.sender === 'user';
+            const isBot = item.sender === 'bot';
             return (
-              <View
-                style={[
-                  styles.messageRow,
-                  isUser ? styles.messageRowUser : styles.messageRowAgent,
-                ]}
-              >
+              <View style={[styles.messageRow, isUser ? styles.messageRowUser : styles.messageRowAgent]}>
                 {!isUser && (
                   <View style={styles.agentAvatarCircle}>
-                    <Headphones size={14} color="#FFFFFF" />
+                    {isBot ? <Sparkles size={14} color="#FFFFFF" /> : <Headphones size={14} color="#FFFFFF" />}
                   </View>
                 )}
 
                 <View style={styles.messageBubbleCol}>
-                  {!isUser && Boolean(item.agentName) && (
+                  {!isUser && (
                     <Text style={[styles.agentNameText, { color: subTextColor }]}>
-                      {item.agentName}
+                      {isBot ? 'Medicoo Assistant' : 'Support Executive'}
                     </Text>
                   )}
 
@@ -346,32 +380,16 @@ export default function DoctorLiveChatScreen() {
                       styles.bubble,
                       isUser
                         ? [styles.userBubble, { backgroundColor: userBubbleBg }]
-                        : [
-                            styles.agentBubble,
-                            {
-                              backgroundColor: agentBubbleBg,
-                              borderColor: cardBorder,
-                            },
-                          ],
+                        : [styles.agentBubble, { backgroundColor: agentBubbleBg, borderColor: cardBorder }],
                     ]}
                   >
-                    <Text
-                      style={[
-                        styles.messageText,
-                        { color: isUser ? '#FFFFFF' : textColor },
-                      ]}
-                    >
+                    <Text style={[styles.messageText, { color: isUser ? '#FFFFFF' : textColor }]}>
                       {item.text}
                     </Text>
 
                     <View style={styles.metaRow}>
-                      <Text
-                        style={[
-                          styles.timeText,
-                          { color: isUser ? 'rgba(255, 255, 255, 0.75)' : subTextColor },
-                        ]}
-                      >
-                        {item.time}
+                      <Text style={[styles.timeText, { color: isUser ? 'rgba(255, 255, 255, 0.75)' : subTextColor }]}>
+                        {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </Text>
                       {isUser && <CheckCheck size={14} color="#FFFFFF" />}
                     </View>
@@ -381,83 +399,48 @@ export default function DoctorLiveChatScreen() {
             );
           }}
           ListFooterComponent={
-            isTyping ? (
-              <View style={[styles.messageRow, styles.messageRowAgent]}>
-                <View style={styles.agentAvatarCircle}>
-                  <Headphones size={14} color="#FFFFFF" />
-                </View>
-                <View
-                  style={[
-                    styles.typingBubble,
-                    {
-                      backgroundColor: agentBubbleBg,
-                      borderColor: cardBorder,
-                    },
-                  ]}
-                >
-                  <ActivityIndicator size="small" color="#0FBBA1" />
-                  <Text style={[styles.typingText, { color: subTextColor }]}>
-                    Support specialist is typing...
-                  </Text>
-                </View>
-              </View>
+            chat?.status === 'waiting' ? (
+              <Text style={[styles.waitingText, { color: subTextColor }]}>
+                A support executive will join shortly.
+              </Text>
             ) : null
           }
         />
 
         {/* ═══ Bottom Input Dock ═══ */}
-        <View
-          style={[
-            styles.inputDockContainer,
-            {
-              backgroundColor: cardBg,
-              borderTopColor: isDark ? '#1A2737' : '#E2E8F0',
-              paddingBottom: Math.max(insets.bottom, 12),
-            },
-          ]}
-        >
-          <TouchableOpacity
+        {pickerLocked && (
+          <View
             style={[
-              styles.attachBtn,
+              styles.inputDockContainer,
               {
-                backgroundColor: isDark ? '#172230' : '#F1F5F9',
+                backgroundColor: cardBg,
+                borderTopColor: isDark ? '#1A2737' : '#E2E8F0',
+                paddingBottom: Math.max(insets.bottom, 12),
               },
             ]}
-            onPress={handleAttach}
-            activeOpacity={0.7}
           >
-            <Paperclip size={18} color={subTextColor} />
-          </TouchableOpacity>
+            <TextInput
+              style={[styles.chatInput, { backgroundColor: inputBg, borderColor: inputBorder, color: textColor }]}
+              placeholder="Type your question or query..."
+              placeholderTextColor={subTextColor}
+              value={inputText}
+              onChangeText={setInputText}
+              onSubmitEditing={handleSendMessage}
+              multiline
+              maxLength={500}
+              editable={chat?.status !== 'closed'}
+            />
 
-          <TextInput
-            style={[
-              styles.chatInput,
-              {
-                backgroundColor: inputBg,
-                borderColor: inputBorder,
-                color: textColor,
-              },
-            ]}
-            placeholder="Type your question or query..."
-            placeholderTextColor={subTextColor}
-            value={inputText}
-            onChangeText={setInputText}
-            multiline
-            maxLength={500}
-          />
-
-          <TouchableOpacity
-            style={[
-              styles.sendBtn,
-              !inputText.trim() && { opacity: 0.5 },
-            ]}
-            onPress={() => handleSendMessage()}
-            disabled={!inputText.trim()}
-            activeOpacity={0.8}
-          >
-            <Send size={16} color="#FFFFFF" />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={[styles.sendBtn, !inputText.trim() && { opacity: 0.5 }]}
+              onPress={handleSendMessage}
+              disabled={!inputText.trim()}
+              activeOpacity={0.8}
+            >
+              <Send size={16} color="#FFFFFF" />
+            </TouchableOpacity>
+          </View>
+        )}
       </KeyboardAvoidingView>
 
       {/* Status Modal */}
@@ -478,6 +461,10 @@ const styles = StyleSheet.create({
   },
   flex1: {
     flex: 1,
+  },
+  centerFill: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   // ═══ Header Bar ═══
@@ -526,6 +513,7 @@ const styles = StyleSheet.create({
     fontSize: 11.5,
     fontWeight: '600',
     color: '#059669',
+    flexShrink: 1,
   },
   roundCallBtn: {
     width: 40,
@@ -534,6 +522,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
+  },
+  endChatBtnText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#DC2626',
   },
 
   // ═══ Messages Stream ═══
@@ -564,20 +557,31 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginTop: 4,
   },
-  promptChipsWrap: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 6,
+  categoryList: {
+    gap: 8,
   },
-  promptChip: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 8,
+  categoryCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 12,
     borderWidth: 1,
   },
-  promptChipText: {
-    fontSize: 11.5,
+  categoryCardLocked: {
+    opacity: 0.5,
+  },
+  categoryCardSelected: {
+    opacity: 1,
+    borderColor: '#0FBBA1',
+  },
+  categoryCardText: {
+    fontSize: 13,
     fontWeight: '600',
+  },
+  categoryCardTextSelected: {
+    color: '#0FBBA1',
   },
 
   messageRow: {
@@ -639,19 +643,19 @@ const styles = StyleSheet.create({
     fontSize: 10.5,
     fontWeight: '500',
   },
-  typingBubble: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 14,
-    borderTopLeftRadius: 4,
-    borderWidth: 1,
-    gap: 8,
+  waitingText: {
+    textAlign: 'center',
+    fontSize: 12,
+    marginTop: 8,
   },
-  typingText: {
-    fontSize: 11.5,
-    fontWeight: '500',
+  closedNotice: {
+    borderRadius: 12,
+    padding: 12,
+  },
+  closedNoticeText: {
+    fontSize: 12,
+    color: '#166534',
+    fontWeight: '600',
   },
 
   // ═══ Input Dock ═══
@@ -662,13 +666,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     borderTopWidth: StyleSheet.hairlineWidth,
     gap: 8,
-  },
-  attachBtn: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   chatInput: {
     flex: 1,
