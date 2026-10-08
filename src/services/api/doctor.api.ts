@@ -15,6 +15,16 @@ export const getCallToken = async (requestId: string) => {
     return res.data.data as { appId: string; channelName: string; token: string; uid: number };
 };
 
+// In-call "Emergency Assistance" action - logs the event on the appointment
+// and emails Medicoo's clinical safety team. Does NOT contact emergency
+// services itself; the app has no real EMS integration, so the Emergency
+// sheet's direct-dial numbers are what actually gets help, this is just
+// "make sure our team knows this happened."
+export const flagConsultationEmergency = async (requestId: string) => {
+    const res = await apiClient.post(`/api/doctor/appointment-requests/${requestId}/emergency-alert`);
+    return res.data;
+};
+
 export const respondToAppointmentRequest = async (data: {
     requestId: string;
     status: 'approved' | 'rejected';

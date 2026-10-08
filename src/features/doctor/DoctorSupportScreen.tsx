@@ -65,16 +65,16 @@ const FAQS_DATA: FAQItem[] = [
   {
     id: 'faq-3',
     category: 'Prescriptions',
-    question: 'How do digital e-prescriptions comply with regulations?',
+    question: 'What happens to a prescription after I send it?',
     answer:
-      'All e-prescriptions generated through Medicoo are digitally signed with your medical registration license number and QR cryptographic verification.',
+      'Medicoo auto-generates a PDF of your prescription and files it directly in the patient\'s Medical Records, along with your name, registration number, and the consultation date.',
   },
   {
     id: 'faq-4',
     category: 'Safety',
     question: 'How do I handle an in-call patient medical emergency?',
     answer:
-      'If a patient exhibits life-threatening symptoms, immediately tap the red "Emergency Protocol" trigger inside the consultation interface to connect local emergency EMS services.',
+      'Tap the red "Emergency Assistance" action in the consultation tools menu for one-tap access to national emergency (112) and ambulance (108) numbers, and to alert our clinical safety team for follow-up. This does not contact emergency services on your behalf - please call them directly using the numbers provided.',
   },
   {
     id: 'faq-5',

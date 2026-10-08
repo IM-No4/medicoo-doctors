@@ -83,11 +83,11 @@ const POLICY_FALLBACKS: Record<string, PolicyContent> = {
     sections: [
       {
         heading: '1. Digital E-Prescription Compliance',
-        body: 'All e-prescriptions generated through Medicoo must comply with medical council tele-health guidelines. Prescriptions are cryptographically signed with your medical registration ID and QR validation mark. Certain Schedule X/controlled substances are prohibited from remote telemedicine issuance.',
+        body: 'All e-prescriptions generated through Medicoo must comply with medical council tele-health guidelines and record your name and registration number on the generated document. Certain Schedule X/controlled substances are prohibited from remote telemedicine issuance.',
       },
       {
         heading: '2. Emergency Clinical Protocol',
-        body: 'If a patient presents emergent life-threatening symptoms (e.g. acute chest pain, severe dyspnea, stroke signs), you must immediately trigger the in-app "Emergency Protocol" and direct the patient to contact local emergency medical services (EMS).',
+        body: 'If a patient presents emergent life-threatening symptoms (e.g. acute chest pain, severe dyspnea, stroke signs), use the in-app "Emergency Assistance" action for quick-dial emergency numbers, and direct the patient to contact local emergency medical services (EMS) themselves - the app does not contact EMS on your or the patient\'s behalf.',
       },
       {
         heading: '3. Patient Identification & Verification',

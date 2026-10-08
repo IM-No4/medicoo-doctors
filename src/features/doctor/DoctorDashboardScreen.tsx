@@ -584,6 +584,58 @@ export default function DoctorDashboardScreen() {
                 </TouchableOpacity>
               )}
 
+              {/* ═══════════════════ CREDENTIAL EXPIRY ALERT STRIP ═══════════════════ */}
+              {Array.isArray(doctorData?.credentialAlerts) && doctorData.credentialAlerts.length > 0 && (() => {
+                const worst = doctorData.credentialAlerts.find((a: any) => a.status === 'expired') || doctorData.credentialAlerts[0];
+                const isExpired = worst.status === 'expired';
+                return (
+                  <TouchableOpacity
+                    style={[
+                      styles.pendingUpdateStrip,
+                      {
+                        backgroundColor: isExpired ? (isDark ? '#2A0E0E' : '#FEF2F2') : (isDark ? '#231805' : '#FFFBEB'),
+                        borderColor: isExpired ? (isDark ? '#7F1D1D' : '#FECACA') : (isDark ? '#5C3E08' : '#FDE68A'),
+                      },
+                    ]}
+                    onPress={() => navigation.navigate('DoctorOnboarding', { isEdit: true })}
+                    activeOpacity={0.75}
+                  >
+                    <View style={styles.pendingUpdateStripLeft}>
+                      <View
+                        style={[
+                          styles.pendingUpdateStripIcon,
+                          { backgroundColor: isExpired ? (isDark ? '#4C0D0D' : '#FEE2E2') : (isDark ? '#422806' : '#FEF3C7') },
+                        ]}
+                      >
+                        <AlertCircle size={13} color={isExpired ? '#EF4444' : (isDark ? '#FBBF24' : '#D97706')} strokeWidth={2.4} />
+                      </View>
+                      <Text
+                        style={[
+                          styles.pendingUpdateStripText,
+                          { color: isExpired ? (isDark ? '#FCA5A5' : '#991B1B') : (isDark ? '#FDE68A' : '#92400E') },
+                        ]}
+                        numberOfLines={1}
+                      >
+                        {isExpired
+                          ? `${worst.label} expired - update required`
+                          : `${worst.label} expires in ${worst.daysRemaining} day(s)`}
+                      </Text>
+                    </View>
+                    <View style={styles.pendingUpdateStripRight}>
+                      <Text
+                        style={[
+                          styles.pendingUpdateStripAction,
+                          { color: isExpired ? '#EF4444' : (isDark ? '#FBBF24' : '#B45309') },
+                        ]}
+                      >
+                        Update
+                      </Text>
+                      <ChevronRight size={14} color={isExpired ? '#EF4444' : (isDark ? '#FBBF24' : '#B45309')} strokeWidth={2.4} />
+                    </View>
+                  </TouchableOpacity>
+                );
+              })()}
+
               {/* ═══════════════════ 1. TODAY / NEXT CONSULTATION ═══════════════════ */}
               <View style={styles.sectionContainer}>
                 <View

@@ -1,4 +1,4 @@
-import { ChevronRight, CheckCircle2, FileText, FlaskConical, Pill, X } from 'lucide-react-native';
+import { AlertTriangle, ChevronRight, CheckCircle2, FileText, FlaskConical, Pill, X } from 'lucide-react-native';
 import React, { useEffect } from 'react';
 import * as NavigationBar from 'expo-navigation-bar';
 import { Modal, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -14,6 +14,7 @@ interface Props {
     onOpenReports: () => void;
     onRequestDocs?: () => void;
     onComplete?: () => void;
+    onEmergency?: () => void;
 }
 
 export default function InCallToolsSheet({
@@ -25,6 +26,7 @@ export default function InCallToolsSheet({
     onOpenReports,
     onRequestDocs,
     onComplete,
+    onEmergency,
 }: Props) {
     const insets = useSafeAreaInsets();
     const { theme, isDark } = useTheme();
@@ -127,6 +129,34 @@ export default function InCallToolsSheet({
 
                     {/* Action Cards */}
                     <View style={styles.cardList}>
+                        {onEmergency && (
+                            <TouchableOpacity
+                                style={[
+                                    styles.actionCard,
+                                    styles.emergencyCard,
+                                    { backgroundColor: isDark ? '#2A0E0E' : '#FEF2F2', borderColor: isDark ? '#7F1D1D' : '#FECACA' },
+                                ]}
+                                onPress={onEmergency}
+                                activeOpacity={0.7}
+                            >
+                                <View style={[styles.iconBox, { backgroundColor: isDark ? '#4C0D0D' : '#FEE2E2' }]}>
+                                    <AlertTriangle size={20} color="#EF4444" />
+                                </View>
+                                <View style={styles.cardContent}>
+                                    <Text style={[styles.cardTitle, { color: isDark ? '#FCA5A5' : '#B91C1C', fontWeight: '700' }]}>
+                                        Emergency Assistance
+                                    </Text>
+                                    <Text
+                                        style={[styles.cardDesc, { color: isDark ? '#F87171' : '#DC2626' }]}
+                                        numberOfLines={1}
+                                    >
+                                        Emergency numbers & alert our clinical safety team
+                                    </Text>
+                                </View>
+                                <ChevronRight size={18} color="#EF4444" />
+                            </TouchableOpacity>
+                        )}
+
                         {toolItems.map((item) => (
                             <TouchableOpacity
                                 key={item.key}
@@ -284,6 +314,9 @@ const styles = StyleSheet.create({
         padding: 12,
         borderRadius: 16,
         borderWidth: 1,
+    },
+    emergencyCard: {
+        marginBottom: 4,
     },
     iconBox: {
         width: 42,

@@ -31,10 +31,12 @@ import { useCall } from '../../context/CallContext';
 import {
     completeAppointmentRequest,
     ConsultationDetailsInput,
+    flagConsultationEmergency,
     saveConsultationDetails,
 } from '../../services/api/doctor.api';
 import { useTheme } from '../../theme/ThemeContext';
 import ConsultationDetailsModal from './components/ConsultationDetailsModal';
+import EmergencyActionSheet from './components/EmergencyActionSheet';
 import InCallToolsSheet from './components/InCallToolsSheet';
 import PatientReportsModal from './components/PatientReportsModal';
 
@@ -88,6 +90,7 @@ export default function DoctorCallScreen() {
     const [showToolsSheet, setShowToolsSheet] = useState(false);
     const [showNotesModal, setShowNotesModal] = useState(false);
     const [showReportsModal, setShowReportsModal] = useState(false);
+    const [showEmergencySheet, setShowEmergencySheet] = useState(false);
 
     // Status Modal State
     const [status, setStatus] = useState<{
@@ -228,6 +231,18 @@ export default function DoctorCallScreen() {
                 'Could Not Send',
                 error?.response?.data?.message || 'Could not send the prescription right now. It\'s still saved as a draft - please try again.'
             );
+        }
+    };
+
+    // Never rejects - EmergencyActionSheet expects that (the doctor gets a
+    // calm "notified" confirmation regardless; the direct-dial numbers in
+    // that sheet are what actually gets help, not this network call).
+    const handleNotifySafetyTeam = async () => {
+        if (!appointment?.requestId) return;
+        try {
+            await flagConsultationEmergency(appointment.requestId);
+        } catch (error) {
+            console.warn('Failed to notify clinical safety team', error);
         }
     };
 
@@ -459,6 +474,13 @@ export default function DoctorCallScreen() {
                         onOpenNotes={() => { setShowToolsSheet(false); setShowNotesModal(true); }}
                         onOpenReports={() => { setShowToolsSheet(false); setShowReportsModal(true); }}
                         onComplete={() => { setShowToolsSheet(false); handleEndCall(); }}
+                        onEmergency={() => { setShowToolsSheet(false); setShowEmergencySheet(true); }}
+                    />
+
+                    <EmergencyActionSheet
+                        visible={showEmergencySheet}
+                        onClose={() => setShowEmergencySheet(false)}
+                        onNotifySafetyTeam={handleNotifySafetyTeam}
                     />
 
                     <ConsultationDetailsModal
