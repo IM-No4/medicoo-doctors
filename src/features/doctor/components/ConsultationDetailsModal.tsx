@@ -50,6 +50,11 @@ interface Props {
     mode?: 'complete' | 'draft' | 'chat_prescription';
     initialData?: ConsultationDraft;
     onSaveDraft?: (data: ConsultationDraft) => void;
+    // Draft mode only - sends the current prescription to the patient
+    // right now, while the call is still active, instead of waiting until
+    // the consultation is completed. The button only appears once there's
+    // at least one medicine to send.
+    onSendNow?: (data: ConsultationDraft) => Promise<void>;
 }
 
 export type MedicineFormConfig = {
@@ -328,12 +333,14 @@ export default function ConsultationDetailsModal({
     mode = 'complete',
     initialData,
     onSaveDraft,
+    onSendNow,
 }: Props) {
     const insets = useSafeAreaInsets();
     const { isDark } = useTheme();
 
     const [activeTab, setActiveTab] = useState<'meds' | 'labs' | 'notes'>('meds');
     const [submitting, setSubmitting] = useState(false);
+    const [sendingNow, setSendingNow] = useState(false);
     const [notes, setNotes] = useState('');
     const [medicines, setMedicines] = useState<PrescribedMedicineInput[]>([]);
     const [labTests, setLabTests] = useState<PrescribedLabTestInput[]>([]);
@@ -382,6 +389,22 @@ export default function ConsultationDetailsModal({
 
     const handleSaveDraft = () => {
         onSaveDraft?.({ notes, prescribedMedicines: medicines, prescribedLabTests: labTests });
+        onClose();
+    };
+
+    // onSendNow (provided by DoctorCallScreen) is expected to handle its
+    // own success/error feedback (a status toast/modal) and never reject -
+    // this just drives the button's own loading state and keeps the
+    // shared draft in sync, the same as a normal save, since the doctor
+    // may reopen this sheet later in the same call to add more before the
+    // consultation is actually completed.
+    const handleSendNow = async () => {
+        if (!onSendNow || medicines.length === 0) return;
+        const draft = { notes, prescribedMedicines: medicines, prescribedLabTests: labTests };
+        setSendingNow(true);
+        await onSendNow(draft);
+        setSendingNow(false);
+        onSaveDraft?.(draft);
         onClose();
     };
 
@@ -819,9 +842,36 @@ export default function ConsultationDetailsModal({
                         </View>
 
                         {mode === 'draft' ? (
-                            <TouchableOpacity style={styles.primaryBtn} onPress={handleSaveDraft} activeOpacity={0.8}>
-                                <Text style={styles.primaryBtnText}>Save Prescription</Text>
-                            </TouchableOpacity>
+                            <>
+                                {onSendNow && medicines.length > 0 && (
+                                    <TouchableOpacity
+                                        style={[styles.primaryBtn, styles.sendNowBtn, sendingNow && { opacity: 0.7 }]}
+                                        onPress={handleSendNow}
+                                        disabled={sendingNow}
+                                        activeOpacity={0.8}
+                                    >
+                                        {sendingNow ? (
+                                            <ActivityIndicator color="#FFFFFF" />
+                                        ) : (
+                                            <Text style={styles.primaryBtnText}>Send Prescription Now</Text>
+                                        )}
+                                    </TouchableOpacity>
+                                )}
+                                <TouchableOpacity
+                                    style={[styles.primaryBtn, onSendNow && medicines.length > 0 && styles.saveBtnSecondary]}
+                                    onPress={handleSaveDraft}
+                                    activeOpacity={0.8}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.primaryBtnText,
+                                            onSendNow && medicines.length > 0 && { color: '#0FBBA1' },
+                                        ]}
+                                    >
+                                        Save Draft (Don&apos;t Send Yet)
+                                    </Text>
+                                </TouchableOpacity>
+                            </>
                         ) : (
                             <>
                                 <TouchableOpacity
@@ -1802,4 +1852,6 @@ const styles = StyleSheet.create({
     primaryBtnText: { color: '#FFFFFF', fontSize: 15, fontWeight: '800' },
     skipBtn: { alignItems: 'center', paddingVertical: 6 },
     skipBtnText: { fontSize: 12.5, fontWeight: '600' },
+    sendNowBtn: { marginBottom: 8 },
+    saveBtnSecondary: { backgroundColor: 'transparent' },
 });

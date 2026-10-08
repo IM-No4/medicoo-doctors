@@ -132,6 +132,12 @@ export const saveConsultationDetails = async (data: {
     notes?: string;
     prescribedMedicines?: PrescribedMedicineInput[];
     prescribedLabTests?: PrescribedLabTestInput[];
+    // true for an explicit "Send Prescription Now" action - the patient is
+    // notified immediately and (if there's a prescription) gets a real
+    // Medical Records entry for it. Omit/false for a silent autosave tick -
+    // no notification, no document generated, just persisted so a dropped
+    // call doesn't lose the draft.
+    notifyPatient?: boolean;
 }) => {
     const { requestId, ...details } = data;
     const res = await apiClient.post(`/api/doctor/appointment-requests/${requestId}/consultation-details`, details);

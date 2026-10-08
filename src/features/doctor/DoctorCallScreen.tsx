@@ -28,7 +28,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const VideoRender = Platform.OS === 'android' ? RtcTextureView : RtcSurfaceView;
 import StatusModal, { StatusType } from '../../components/modals/StatusModal';
 import { useCall } from '../../context/CallContext';
-import { completeAppointmentRequest, ConsultationDetailsInput } from '../../services/api/doctor.api';
+import {
+    completeAppointmentRequest,
+    ConsultationDetailsInput,
+    saveConsultationDetails,
+} from '../../services/api/doctor.api';
 import { useTheme } from '../../theme/ThemeContext';
 import ConsultationDetailsModal from './components/ConsultationDetailsModal';
 import InCallToolsSheet from './components/InCallToolsSheet';
@@ -204,6 +208,26 @@ export default function DoctorCallScreen() {
                     'OK'
                 );
             }
+        }
+    };
+
+    // "Send Prescription Now" from the in-call draft modal - unlike
+    // completing the consultation, the call keeps running; this only
+    // notifies the patient and files an interim Medical Records entry for
+    // whatever's in the draft right now. Never rejects (the modal's
+    // onSendNow contract expects that) - failures are surfaced here via
+    // the status modal instead.
+    const handleSendPrescriptionNow = async (details: ConsultationDetailsInput) => {
+        if (!appointment?.requestId) return;
+        try {
+            await saveConsultationDetails({ requestId: appointment.requestId, ...details, notifyPatient: true });
+            showStatus('success', 'Prescription Sent', 'The patient has been notified and can view it under Medical Records.');
+        } catch (error: any) {
+            showStatus(
+                'error',
+                'Could Not Send',
+                error?.response?.data?.message || 'Could not send the prescription right now. It\'s still saved as a draft - please try again.'
+            );
         }
     };
 
@@ -444,6 +468,7 @@ export default function DoctorCallScreen() {
                         onSubmit={async () => { }}
                         initialData={consultationDraft}
                         onSaveDraft={setConsultationDraft}
+                        onSendNow={handleSendPrescriptionNow}
                     />
 
                     <PatientReportsModal

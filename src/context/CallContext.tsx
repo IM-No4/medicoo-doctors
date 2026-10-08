@@ -7,8 +7,14 @@ import createAgoraRtcEngine, {
     IRtcEngine,
 } from 'react-native-agora';
 import { navigationRef } from '../navigation/navigationRef';
-import { getCallToken } from '../services/api/doctor.api';
+import { getCallToken, getDoctorAppointmentRequestDetail, saveConsultationDetails } from '../services/api/doctor.api';
 import { pipService } from '../services/pipService';
+
+// How long to wait after the last edit before autosaving the draft to the
+// backend - long enough that a doctor typing continuously doesn't fire a
+// request per keystroke, short enough that a dropped call/crash loses at
+// most a few seconds of work instead of the whole draft.
+const DRAFT_AUTOSAVE_DEBOUNCE_MS = 3000;
 
 export interface ConsultationDraft {
     notes: string;
@@ -102,6 +108,51 @@ export const CallProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
     }, [isInCall, isJoined]);
 
+    // Autosave the consultation draft during an active call - the only
+    // other place it's persisted is the final "Complete Consultation"/
+    // "Send Prescription Now" submit, which could be many minutes away
+    // from when the doctor actually wrote it. Silent by design: no
+    // notification, no PDF, just enough that a dropped call or a crashed
+    // app doesn't lose the draft (DoctorCallScreen fetches it back on
+    // mount for the same requestId).
+    const autosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    useEffect(() => {
+        if (autosaveTimerRef.current) {
+            clearTimeout(autosaveTimerRef.current);
+            autosaveTimerRef.current = null;
+        }
+
+        const requestId = activeCall?.appointment?.requestId;
+        if (!isInCall || !requestId) return;
+
+        const hasContent =
+            consultationDraft.notes.trim().length > 0 ||
+            consultationDraft.prescribedMedicines.length > 0 ||
+            consultationDraft.prescribedLabTests.length > 0;
+        if (!hasContent) return;
+
+        autosaveTimerRef.current = setTimeout(() => {
+            saveConsultationDetails({
+                requestId,
+                notes: consultationDraft.notes,
+                prescribedMedicines: consultationDraft.prescribedMedicines,
+                prescribedLabTests: consultationDraft.prescribedLabTests,
+            }).catch((error) => {
+                // Non-blocking - the call itself must never be interrupted
+                // by an autosave failure. The next edit's autosave tick (or
+                // the final complete/send-now submit) will catch up.
+                console.warn('Consultation draft autosave failed', error);
+            });
+        }, DRAFT_AUTOSAVE_DEBOUNCE_MS);
+
+        return () => {
+            if (autosaveTimerRef.current) {
+                clearTimeout(autosaveTimerRef.current);
+                autosaveTimerRef.current = null;
+            }
+        };
+    }, [consultationDraft, isInCall, activeCall]);
+
     // Listen to native Android PiP events
     useEffect(() => {
         const pipSub = pipService.addPipModeListener((inPip) => {
@@ -156,6 +207,52 @@ export const CallProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const startCall = async (data: ActiveCallData) => {
         try {
             const isVoice = data.type === 'voice';
+            // A genuinely new call (different appointment) must never
+            // inherit the previous patient's draft. Cleared immediately
+            // (not left showing stale content while the fetch below is in
+            // flight), then replaced with whatever was actually
+            // autosaved for this specific requestId, if anything - that's
+            // what makes autosave actually useful for recovery: a crashed
+            // app or a force-closed call screen loses nothing once the
+            // doctor reopens this same appointment's call.
+            // retryConnection calls startCall again for the SAME
+            // appointment (after a dropped connection), so the requestId
+            // comparison is what tells the two cases apart - a retry must
+            // keep whatever the doctor already typed this session, not
+            // reset or refetch over it.
+            const requestId = data.appointment?.requestId;
+            const isSameAppointment = activeCallRef.current?.appointment?.requestId === requestId;
+            if (!isSameAppointment) {
+                setConsultationDraft(EMPTY_DRAFT);
+                if (requestId) {
+                    getDoctorAppointmentRequestDetail(requestId)
+                        .then((res) => {
+                            const recovered = res?.data?.consultationDetails;
+                            if (!recovered) return;
+                            const hasRecoveredContent =
+                                (recovered.notes && recovered.notes.trim().length > 0) ||
+                                (recovered.prescribedMedicines || []).length > 0 ||
+                                (recovered.prescribedLabTests || []).length > 0;
+                            // Only overwrite if this is still the same call by
+                            // the time the fetch resolves (the doctor could
+                            // have already ended it, or started a different
+                            // one, while this was in flight).
+                            if (hasRecoveredContent && activeCallRef.current?.appointment?.requestId === requestId) {
+                                setConsultationDraft({
+                                    notes: recovered.notes || '',
+                                    prescribedMedicines: recovered.prescribedMedicines || [],
+                                    prescribedLabTests: recovered.prescribedLabTests || [],
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            // Non-blocking - worst case, the doctor starts
+                            // this call with a blank draft, same as before
+                            // autosave/recovery existed.
+                            console.warn('Failed to recover consultation draft', error);
+                        });
+                }
+            }
             setActiveCall(data);
             activeCallRef.current = data;
             setIsInCall(true);
