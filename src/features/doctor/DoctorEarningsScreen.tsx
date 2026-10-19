@@ -607,13 +607,14 @@ export default function DoctorEarningsScreen() {
 
     setWithdrawing(true);
     try {
-      await requestDoctorPayout(amount, defaultAccount.id);
+      const result = await requestDoctorPayout(amount, defaultAccount.id);
       setIsWithdrawModalVisible(false);
       await fetchData();
+      // In manual-payout mode the backend returns its own wording (the admin pays it from the bank within a couple of working days)
       showStatus(
         'success',
-        'Withdrawal Initiated',
-        `₹${amount.toLocaleString()} will be transferred to your account shortly.`
+        result?.manual ? 'Withdrawal Requested' : 'Withdrawal Initiated',
+        result?.message || `₹${amount.toLocaleString()} will be transferred to your account shortly.`
       );
     } catch (error: any) {
       showStatus(
