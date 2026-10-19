@@ -37,6 +37,9 @@ interface CallContextType {
     isJoined: boolean;
     isSystemPip: boolean;
     remoteUid: number | null;
+    /** Everyone else in the call: the patient, and (family consultations) the person who booked */
+    remoteUids: number[];
+    participants: { uid: number; role: string; name: string }[];
     duration: number;
     isMicOn: boolean;
     isVideoOn: boolean;
@@ -68,7 +71,10 @@ export const CallProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isMinimized, setIsMinimized] = useState(false);
     const [isSystemPip, setIsSystemPip] = useState(false);
     const [isJoined, setIsJoined] = useState(false);
-    const [remoteUid, setRemoteUid] = useState<number | null>(null);
+    const [remoteUids, setRemoteUids] = useState<number[]>([]);
+    const [participants, setParticipants] = useState<{ uid: number; role: string; name: string }[]>([]);
+    // The patient fills the screen when they are there (the person who booked shows as a tile), otherwise whoever is.
+    const remoteUid: number | null = remoteUids.includes(2) ? 2 : (remoteUids[0] ?? null);
     const [duration, setDuration] = useState(0);
 
     const [isMicOn, setIsMicOn] = useState(true);
@@ -274,7 +280,8 @@ export const CallProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 return;
             }
 
-            const { appId, channelName, token, uid } = await getCallToken(data.appointment.requestId);
+            const { appId, channelName, token, uid, participants: people } = await getCallToken(data.appointment.requestId);
+            setParticipants(people || []);
 
             const permissionsGranted = await requestPermissions(isVoice);
             if (!permissionsGranted) {
@@ -304,10 +311,10 @@ export const CallProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     setConnectionFailed(false);
                 },
                 onUserJoined: (_conn, remoteJoinedUid) => {
-                    setRemoteUid(remoteJoinedUid);
+                    setRemoteUids((prev) => (prev.includes(remoteJoinedUid) ? prev : [...prev, remoteJoinedUid]));
                 },
-                onUserOffline: () => {
-                    setRemoteUid(null);
+                onUserOffline: (_conn, remoteLeftUid) => {
+                    setRemoteUids((prev) => prev.filter((id) => id !== remoteLeftUid));
                 },
                 onConnectionStateChanged: (_conn, state) => {
                     if (state === ConnectionStateType.ConnectionStateReconnecting) {
@@ -381,7 +388,8 @@ export const CallProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsEngineReady(false);
         setIsMinimized(false);
         setIsSystemPip(false);
-        setRemoteUid(null);
+        setRemoteUids([]);
+        setParticipants([]);
         setJoinError(null);
         setDuration(0);
     };
@@ -431,7 +439,7 @@ export const CallProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!activeCall) return;
         setConnectionFailed(false);
         setJoinError(null);
-        setRemoteUid(null);
+        setRemoteUids([]);
         await startCall(activeCall);
     };
 
@@ -450,6 +458,8 @@ export const CallProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 isSystemPip,
                 isJoined,
                 remoteUid,
+                remoteUids,
+                participants,
                 duration,
                 isMicOn,
                 isVideoOn,

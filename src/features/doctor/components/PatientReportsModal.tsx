@@ -22,11 +22,13 @@ interface Props {
     visible: boolean;
     onClose: () => void;
     customerId?: string;
+    /** Set when the records belong to a family member looked after by `customerId` (no Medicoo account of their own) */
+    familyMemberId?: string | null;
 }
 
 const isImageDoc = (doc: PatientDocumentSummary) => doc.fileType === 'image' || doc.mimeType?.startsWith('image/');
 
-export default function PatientReportsModal({ visible, onClose, customerId }: Props) {
+export default function PatientReportsModal({ visible, onClose, customerId, familyMemberId }: Props) {
     const insets = useSafeAreaInsets();
     const { isDark } = useTheme();
     const [loading, setLoading] = useState(false);
@@ -54,7 +56,7 @@ export default function PatientReportsModal({ visible, onClose, customerId }: Pr
         setError(null);
         setLoading(true);
         getToken('access_token').then(setToken);
-        getPatientDocumentsForDoctor(customerId)
+        getPatientDocumentsForDoctor(customerId, familyMemberId)
             .then((data) => setDocuments(data.documents))
             .catch(() => setError('Could not load this patient\'s reports.'))
             .finally(() => setLoading(false));

@@ -106,6 +106,36 @@ function routeNotificationTap(data?: { [key: string]: string | object } | undefi
 
 /** Foreground message + token-refresh listeners. Call once for the app's lifetime. */
 export function initPushNotifications() {
+  // Firebase delivers a "notification + data" remote message straight to
+  // this JS handler when the app is foregrounded - the OS never auto-shows
+  // it the way it does when backgrounded/killed, so without this a doctor
+  // sitting in the app gets no sound, no banner, nothing for an incoming
+  // call, chat message, or appointment request. Re-displaying it as a
+  // local notification reuses the exact same sound/banner handler
+  // configured below, giving foreground the same behavior as background.
+  messaging().onMessage(async (remoteMessage) => {
+    const notification = remoteMessage.notification;
+    if (!notification) return;
+    try {
+      const isIncomingCall = remoteMessage.data?.type === 'call_incoming';
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: notification.title || 'Medicoo',
+          body: notification.body || '',
+          // Matches the sound names bundled via app.json's expo-notifications
+          // plugin - the same distinction the backend makes server-side
+          // (services/pushNotificationService.js's DOCTOR_SOUND_BY_TEMPLATE)
+          // for when the OS itself displays this (backgrounded/killed).
+          sound: isIncomingCall ? 'incoming_call.wav' : 'new_notification.wav',
+          data: (remoteMessage.data as Record<string, unknown>) || {},
+        },
+        trigger: null,
+      });
+    } catch (error) {
+      console.warn('Failed to display foreground notification:', error);
+    }
+  });
+
   messaging().onTokenRefresh(async () => {
     syncPushToken();
   });

@@ -367,25 +367,30 @@ export default function PatientConsultationDetailScreen() {
       .catch((e) => console.error('Failed to refresh appointment detail', e));
   }, [targetRequestId]);
 
-  const patientCustomerId = appointment?.customerId || initialAppointment?.customerId;
+  // Whose records these are. For a consultation booked for a family member that is the patient (their own account, or the family
+  // head looking after a patient without one) - never the records of the person who only booked it.
+  const patientCustomerId =
+    appointment?.recordsOwnerId || appointment?.customerId || initialAppointment?.recordsOwnerId || initialAppointment?.customerId;
+  const patientFamilyMemberId: string | null = appointment?.recordsFamilyMemberId || initialAppointment?.recordsFamilyMemberId || null;
+  const booking = appointment?.booking || initialAppointment?.booking || null;
 
   const fetchPatientHistory = useCallback(() => {
     if (!patientCustomerId) return;
     setLoadingHistory(true);
-    getPatientConsultationHistory(patientCustomerId, appointment?.requestId)
+    getPatientConsultationHistory(patientCustomerId, appointment?.requestId, patientFamilyMemberId)
       .then((res) => setPastConsultations(res?.data?.requests || []))
       .catch(() => setPastConsultations([]))
       .finally(() => setLoadingHistory(false));
-  }, [patientCustomerId, appointment?.requestId]);
+  }, [patientCustomerId, patientFamilyMemberId, appointment?.requestId]);
 
   const fetchPatientDocuments = useCallback(() => {
     if (!patientCustomerId) return;
     setLoadingDocs(true);
-    getPatientDocumentsForDoctor(patientCustomerId)
+    getPatientDocumentsForDoctor(patientCustomerId, patientFamilyMemberId)
       .then((res) => setPatientDocuments(res?.documents || []))
       .catch(() => setPatientDocuments([]))
       .finally(() => setLoadingDocs(false));
-  }, [patientCustomerId]);
+  }, [patientCustomerId, patientFamilyMemberId]);
 
   useEffect(() => {
     fetchPatientHistory();
@@ -447,10 +452,10 @@ export default function PatientConsultationDetailScreen() {
     age: ageLabel,
     image: patientDetails.image || '',
     phone: patientDetails.phone || '',
-    bloodGroup: patientDetails.bloodGroup || 'O+',
-    height: patientDetails.height || '172 cm',
-    weight: patientDetails.weight || '68 kg',
-    bmi: patientDetails.bmi || '23.0 (Normal)',
+    bloodGroup: patientDetails.bloodGroup || 'Not given',
+    height: patientDetails.height || 'Not given',
+    weight: patientDetails.weight || 'Not given',
+    bmi: patientDetails.bmi || 'Not given',
     allergies: patientDetails.allergies || ['None reported'],
     chronicConditions: patientDetails.chronicConditions || ['None reported'],
   };
@@ -827,6 +832,15 @@ export default function PatientConsultationDetailScreen() {
               <Text style={[styles.patientMetaLine, { color: subTextColor }]}>
                 {patientData.gender} • {patientData.age}
               </Text>
+
+              {booking && !booking.bookedForSelf ? (
+                <View style={styles.bookedByPill}>
+                  <Text style={styles.bookedByText} numberOfLines={2}>
+                    Booked by {booking.bookedBy?.name || 'a family member'}
+                    {booking.patientRelation ? ` · patient is their ${booking.patientRelation}` : ''}
+                  </Text>
+                </View>
+              ) : null}
 
               {patientData.phone ? (
                 <View style={styles.contactRow}>
@@ -1977,6 +1991,7 @@ export default function PatientConsultationDetailScreen() {
         visible={reportsModalVisible}
         onClose={() => setReportsModalVisible(false)}
         customerId={patientCustomerId}
+        familyMemberId={patientFamilyMemberId}
       />
 
       <ConsultationDetailsModal
@@ -2075,6 +2090,8 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '800',
   },
+  bookedByPill: { alignSelf: 'flex-start', marginTop: 6, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8, backgroundColor: 'rgba(16,185,129,0.12)' },
+  bookedByText: { fontSize: 11, fontWeight: '700', color: '#10B981' },
   patientNameLarge: {
     fontSize: 17,
     fontWeight: '800',

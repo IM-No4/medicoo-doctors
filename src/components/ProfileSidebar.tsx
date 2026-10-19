@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as NavigationBar from 'expo-navigation-bar';
 import React, { useEffect, useRef, useState } from 'react';
@@ -19,6 +19,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   ArrowLeft,
+  Bell,
   Calendar,
   ChevronRight,
   Clock,
@@ -34,6 +35,7 @@ import {
   Smartphone,
   Star,
   Sun,
+  Trash2,
   UserCog,
   UserPlus,
   Wallet,
@@ -52,7 +54,6 @@ interface Props {
   doctorName: string;
   specialization?: string;
   avatarUri?: string | null;
-  rating?: string | number;
   isOnline: boolean;
   onToggleOnline?: (val: boolean) => void;
   onLogout: () => void;
@@ -64,7 +65,6 @@ export default function ProfileSidebar({
   doctorName,
   specialization,
   avatarUri,
-  rating = '5.0',
   isOnline,
   onToggleOnline,
   onLogout,
@@ -76,6 +76,18 @@ export default function ProfileSidebar({
 
   const [rendered, setRendered] = useState(visible);
   const translateX = useRef(new Animated.Value(SCREEN_W)).current;
+  // True from the moment an option pushes a screen on top of this sidebar
+  // until Dashboard (and this sidebar along with it) regains focus - lets
+  // the back-button effect below step aside while something real is
+  // covering the sidebar, instead of racing React Navigation's own back
+  // handling for the same press.
+  const [coveredByPushedScreen, setCoveredByPushedScreen] = useState(false);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setCoveredByPushedScreen(false);
+    }, [])
+  );
   const [statusModal, setStatusModal] = useState<{
     visible: boolean;
     type: StatusType;
@@ -156,18 +168,28 @@ export default function ProfileSidebar({
     });
   };
 
-  // Intercept Android hardware back button to dismiss ProfileSidebar
+  // Intercept Android hardware back button to dismiss ProfileSidebar -
+  // but only while it's actually the top-most thing on screen. While a
+  // pushed screen covers it (coveredByPushedScreen), step aside entirely
+  // so React Navigation's own back handling pops that screen instead -
+  // otherwise this listener (registered before the push, so it wins over
+  // navigation's own) would silently swallow the first back press.
   useEffect(() => {
-    if (!visible) return;
+    if (!visible || coveredByPushedScreen) return;
     const onBackPress = () => {
       handleClose();
       return true;
     };
     const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
     return () => subscription.remove();
-  }, [visible]);
+  }, [visible, coveredByPushedScreen]);
 
   const navigateTo = (screen: string, params?: any) => {
+    // Deliberately left open and mounted underneath - tapping an option
+    // should feel like stacking a screen on top of the sidebar, not
+    // closing it. Coming back via the back button/gesture should land
+    // right back on the still-open sidebar, not the bare dashboard.
+    setCoveredByPushedScreen(true);
     const parentNav = navigation.getParent();
     if (parentNav) {
       parentNav.navigate(screen, params);
@@ -495,6 +517,15 @@ export default function ProfileSidebar({
           </View>
 
           <ZomatoRow
+            icon={<Bell size={18} color={iconColor} />}
+            title="Notification Settings"
+            textColor={textColor}
+            subTextColor={subTextColor}
+            dividerColor={dividerColor}
+            showDivider={true}
+            onPress={() => navigateTo('DoctorNotificationSettings')}
+          />
+          <ZomatoRow
             icon={<UserPlus size={18} color={iconColor} />}
             title="Invite a Colleague"
             textColor={textColor}
@@ -534,12 +565,22 @@ export default function ProfileSidebar({
             <LogOut size={18} color="#EF4444" />
             <Text style={styles.logoutRowText}>Log Out</Text>
           </TouchableOpacity>
+          <View style={[styles.rowDivider, { backgroundColor: dividerColor }]} />
+          <ZomatoRow
+            icon={<Trash2 size={18} color="#EF4444" />}
+            title="Delete Account"
+            textColor="#EF4444"
+            subTextColor={subTextColor}
+            dividerColor={dividerColor}
+            showDivider={false}
+            onPress={() => navigateTo('DoctorSettings')}
+          />
         </View>
 
         {/* ═══ 7. App Version & Compliance Footer ═══ */}
         <View style={styles.footerBrandingCol}>
           <Text style={[styles.appVersionText, { color: subTextColor }]}>
-            Medicoo Doctor • v1.0.0 (Build 104)
+            Medicoo Doctor • v1.0.0
           </Text>
           <Text style={[styles.appCopyrightText, { color: isDark ? '#4B5563' : '#94A3B8' }]}>
             Encrypted & Certified Telemedicine Portal

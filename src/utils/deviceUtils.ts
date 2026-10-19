@@ -17,13 +17,45 @@ export async function getDeviceId(): Promise<string> {
   return generated;
 }
 
-export async function getFCMToken(): Promise<string | null> {
+export type NotificationPermissionStatus = 'granted' | 'provisional' | 'denied' | 'not-determined';
+
+const toPermissionStatus = (authStatus: number): NotificationPermissionStatus => {
+  if (authStatus === messaging.AuthorizationStatus.AUTHORIZED) return 'granted';
+  if (authStatus === messaging.AuthorizationStatus.PROVISIONAL) return 'provisional';
+  if (authStatus === messaging.AuthorizationStatus.DENIED) return 'denied';
+  return 'not-determined';
+};
+
+/** Reads the current permission state without prompting the OS dialog. */
+export async function getNotificationPermissionStatus(): Promise<NotificationPermissionStatus> {
+  try {
+    return toPermissionStatus(await messaging().hasPermission());
+  } catch {
+    return 'not-determined';
+  }
+}
+
+/**
+ * Prompts the OS permission dialog (only actually shows it if the status is
+ * still undetermined - iOS/Android both no-op and just return the existing
+ * decision otherwise). Returns whether notifications are usable afterward.
+ */
+export async function requestNotificationPermission(): Promise<boolean> {
   try {
     const authStatus = await messaging().requestPermission();
-    const enabled =
+    return (
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL
+    );
+  } catch (error) {
+    console.warn('Failed to request notification permission:', error);
+    return false;
+  }
+}
 
+export async function getFCMToken(): Promise<string | null> {
+  try {
+    const enabled = await requestNotificationPermission();
     if (!enabled) return null;
 
     return await messaging().getToken();

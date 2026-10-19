@@ -10,9 +10,19 @@ export const respondToReschedule = async (requestId: string, data: { accept: boo
 // Dual-role endpoint (also called by the patient app/doctorpartner web) -
 // lives under /api/user/ because authMiddlewareConsumer authenticates both
 // customer and doctor tokens the same way, not because it's patient-only.
+export type CallParticipantInfo = { uid: number; role: string; name: string };
+
 export const getCallToken = async (requestId: string) => {
     const res = await apiClient.get(`/api/user/appointment-requests/${requestId}/call-token`);
-    return res.data.data as { appId: string; channelName: string; token: string; uid: number };
+    return res.data.data as {
+        appId: string;
+        channelName: string;
+        token: string;
+        uid: number;
+        role?: string;
+        /** who each Agora uid is: 1 doctor, 2 patient side, 3 the person who booked (when the patient has their own account) */
+        participants?: { uid: number; role: string; name: string }[];
+    };
 };
 
 // In-call "Emergency Assistance" action - logs the event on the appointment
@@ -84,9 +94,9 @@ export const completeAppointmentRequest = async (requestId: string, details?: Co
     return res.data;
 };
 
-export const getPatientConsultationHistory = async (customerId: string, excludeRequestId?: string) => {
+export const getPatientConsultationHistory = async (customerId: string, excludeRequestId?: string, familyMemberId?: string | null) => {
     const res = await apiClient.get(`/api/doctor/patients/${customerId}/history`, {
-        params: excludeRequestId ? { excludeRequestId } : undefined,
+        params: { ...(excludeRequestId ? { excludeRequestId } : {}), ...(familyMemberId ? { familyMemberId } : {}) },
     });
     return res.data;
 };
@@ -105,8 +115,12 @@ export type PatientDocumentSummary = {
     viewUrl: string;
 };
 
-export const getPatientDocumentsForDoctor = async (customerId: string) => {
-    const res = await apiClient.get(`/api/doctor/patients/${customerId}/documents`);
+// customerId = whose records these are (the patient's own account, or - with familyMemberId - the family head who looks after a
+// patient without one). Never the booker's own records when they booked for someone else.
+export const getPatientDocumentsForDoctor = async (customerId: string, familyMemberId?: string | null) => {
+    const res = await apiClient.get(`/api/doctor/patients/${customerId}/documents`, {
+        params: familyMemberId ? { familyMemberId } : undefined,
+    });
     return res.data.data as { documents: PatientDocumentSummary[] };
 };
 

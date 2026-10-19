@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { useSystemUI } from '../bootstrap/useSystemUI';
 import LegalAcceptanceModal from '../components/modals/LegalAcceptanceModal';
+import NotificationPermissionModal from '../components/modals/NotificationPermissionModal';
 import UpdateAvailableModal from '../components/modals/UpdateAvailableModal';
 import MandatoryUpdateScreen from '../features/update/MandatoryUpdateScreen';
 import MaintenanceScreen from '../features/maintenance/MaintenanceScreen';
@@ -56,6 +57,11 @@ export default function RootNavigator() {
       {/* ⚖️ TERMS & PRIVACY RE-ACCEPTANCE GATE - decides for itself whether
           to actually render based on Redux state + local snooze timestamp */}
       {boot.isAuthenticated && <LegalAcceptanceModal />}
+
+      {/* 🔔 NOTIFICATION PERMISSION PRIMING - decides for itself whether to
+          render; only ever asks once per install, after the legal gate (if
+          any) is clear. */}
+      {boot.isAuthenticated && <NotificationPermissionModal />}
 
       {/* 🛠️ MAINTENANCE-RESTRICTED BANNER - decides for itself whether to
           render based on appConfig.restricted */}

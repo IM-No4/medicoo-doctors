@@ -85,6 +85,7 @@ export default function DoctorChatScreen() {
     // Modals
     const [showCompleteModal, setShowCompleteModal] = useState(false);
     const [customerId, setCustomerId] = useState<string | null>(null);
+    const [familyMemberId, setFamilyMemberId] = useState<string | null>(null);
     const [showMenu, setShowMenu] = useState(false);
     const [showRxModal, setShowRxModal] = useState(false);
     const [rxModalMode, setRxModalMode] = useState<'chat_prescription' | 'draft' | 'complete'>('chat_prescription');
@@ -185,8 +186,10 @@ export default function DoctorChatScreen() {
         if (!requestId) return;
         getDoctorAppointmentRequestDetail(requestId)
             .then((res) => {
-                if (res?.data?.customerId) {
-                    setCustomerId(res.data.customerId);
+                // The patient's records, not the records of whoever booked it for them.
+                if (res?.data?.recordsOwnerId || res?.data?.customerId) {
+                    setCustomerId(res.data.recordsOwnerId || res.data.customerId);
+                    setFamilyMemberId(res.data.recordsFamilyMemberId || null);
                 }
                 if (res?.data?.consultationDetails) {
                     setConsultationDraft({
@@ -895,6 +898,7 @@ export default function DoctorChatScreen() {
                 visible={showReportsModal}
                 onClose={() => setShowReportsModal(false)}
                 customerId={customerId || undefined}
+                familyMemberId={familyMemberId}
             />
 
             <StatusModal

@@ -20,6 +20,7 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
+    Vibration,
     View,
 } from 'react-native';
 import { RenderModeType, RtcSurfaceView, RtcTextureView } from 'react-native-agora';
@@ -57,6 +58,8 @@ export default function DoctorCallScreen() {
         isJoined,
         isSystemPip,
         remoteUid,
+        remoteUids,
+        participants,
         duration,
         isMicOn,
         isVideoOn,
@@ -86,6 +89,11 @@ export default function DoctorCallScreen() {
         || appointment?.actionMeta?.patientName || 'Consultation';
 
     const [isControlsVisible] = useState(true);
+
+    // The patient fills the screen; when a family consultation has a third person (whoever booked it, who joined as well) they are a tile.
+    const nameOfUid = (uid: number) => participants.find((p) => p.uid === uid)?.name || (uid === 3 ? 'Booked by' : 'Participant');
+    const otherRemoteUids = remoteUids.filter((id) => id !== remoteUid);
+    const bookedBy = appointment?.booking && !appointment.booking.bookedForSelf ? appointment.booking : null;
     const [showCompleteModal, setShowCompleteModal] = useState(false);
     const [showToolsSheet, setShowToolsSheet] = useState(false);
     const [showNotesModal, setShowNotesModal] = useState(false);
@@ -165,6 +173,20 @@ export default function DoctorCallScreen() {
             });
         }
     }, [isInCall, appointment]);
+
+    // Tactile confirmation that a call is actually connecting - there's no
+    // ring/accept screen in this app (opening this screen already joins
+    // the channel), so this is the one alert a doctor gets if they opened
+    // it without having heard the push notification's own sound. Stops the
+    // moment the channel is joined, so it never vibrates mid-conversation.
+    useEffect(() => {
+        if (isJoined) {
+            Vibration.cancel();
+            return;
+        }
+        Vibration.vibrate([0, 400, 200, 400]);
+        return () => Vibration.cancel();
+    }, [isJoined]);
 
     // Handle Android hardware back press -> minimize to PiP instead of dropping call
     useEffect(() => {
@@ -275,6 +297,32 @@ export default function DoctorCallScreen() {
                 )}
             </View>
 
+            {/* The person who booked for the patient, when they have joined the call too */}
+            {!isSystemPip && otherRemoteUids.length > 0 && (
+                <View style={{ position: 'absolute', right: 12, top: insets.top + 74, zIndex: 20, gap: 10 }}>
+                    {otherRemoteUids.map((uid) => (
+                        <View
+                            key={`tile-${uid}`}
+                            style={{ width: 92, height: 128, borderRadius: 14, overflow: 'hidden', backgroundColor: '#374151', borderWidth: 1, borderColor: 'rgba(255,255,255,0.25)' }}
+                        >
+                            {isVoiceMode ? (
+                                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={{ fontSize: 28, fontWeight: '700', color: '#D1D5DB' }}>{nameOfUid(uid).charAt(0)}</Text>
+                                </View>
+                            ) : (
+                                <VideoRender canvas={{ uid, renderMode: RenderModeType.RenderModeHidden }} style={styles.videoStream} />
+                            )}
+                            <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 6, paddingVertical: 4, backgroundColor: 'rgba(0,0,0,0.55)' }}>
+                                <Text style={{ color: '#fff', fontSize: 11, fontWeight: '700' }} numberOfLines={1}>{nameOfUid(uid)}</Text>
+                                <Text style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9.5, fontWeight: '600' }} numberOfLines={1}>
+                                    {uid === 3 ? 'Booked this' : uid === 2 ? 'Patient' : ''}
+                                </Text>
+                            </View>
+                        </View>
+                    ))}
+                </View>
+            )}
+
             {/* Connection Lost Overlay (Hidden in system PiP) */}
             {!isSystemPip && connectionFailed && (
                 <View style={styles.connectionLostOverlay}>
@@ -310,7 +358,14 @@ export default function DoctorCallScreen() {
                         <TouchableOpacity style={styles.backButton} onPress={minimizeCall}>
                             <ChevronLeft size={28} color="#fff" />
                         </TouchableOpacity>
-                        <Text style={styles.topDoctorName}>{displayName}</Text>
+                        <View>
+                            <Text style={styles.topDoctorName}>{displayName}</Text>
+                            {bookedBy ? (
+                                <Text style={{ color: 'rgba(255,255,255,0.75)', fontSize: 11.5, fontWeight: '600' }}>
+                                    Booked by {bookedBy.bookedBy?.name}
+                                </Text>
+                            ) : null}
+                        </View>
                         <View style={styles.topBarRight}>
                             <BlurView intensity={20} tint="light" style={styles.timerPill}>
                                 <Text style={styles.timerTextMain}>{formatDuration(duration)}</Text>
@@ -496,7 +551,8 @@ export default function DoctorCallScreen() {
                     <PatientReportsModal
                         visible={showReportsModal}
                         onClose={() => setShowReportsModal(false)}
-                        customerId={appointment?.customerId}
+                        customerId={appointment?.recordsOwnerId || appointment?.customerId}
+                        familyMemberId={appointment?.recordsFamilyMemberId || null}
                     />
                 </>
             )}

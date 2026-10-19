@@ -17,7 +17,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Activity,
   AlertCircle,
@@ -27,6 +27,7 @@ import {
   CheckCircle2,
   ChevronRight,
   Clock,
+  Gift,
   Headphones,
   MessageCircle,
   Phone,
@@ -45,7 +46,10 @@ import StatusModal, { StatusType } from '../../components/modals/StatusModal';
 import SlowInternetLoader from '../../components/network/SlowInternetLoader';
 import TodayAvailabilityModal from './components/TodayAvailabilityModal';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { RootState } from '../../redux/store';
+import { AppDispatch, RootState } from '../../redux/store';
+import { loadProfileFromServer, setProfileName } from '../../redux/slices/profileSlice';
+import DoctorNameModal from '../../components/modals/DoctorNameModal';
+import { ActiveCampaignResponse, getActiveCampaign, joinCampaign } from '../../services/api/campaign.api';
 import {
   getDoctorAppointmentRequests,
   getDoctorEarnings,
@@ -101,10 +105,14 @@ export default function DoctorDashboardScreen() {
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
 
   const [doctorData, setDoctorData] = useState<any>(null);
+  const [nameModalDismissed, setNameModalDismissed] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
   const [upcomingAppointments, setUpcomingAppointments] = useState<any[]>([]);
   const [earningsSummary, setEarningsSummary] = useState<any>(null);
   const [reviewsSummary, setReviewsSummary] = useState<any>(null);
+  const [campaignInfo, setCampaignInfo] = useState<ActiveCampaignResponse | null>(null);
+  const [joiningCampaign, setJoiningCampaign] = useState(false);
 
   const [statusModal, setStatusModal] = useState<{
     visible: boolean;
@@ -210,11 +218,12 @@ export default function DoctorDashboardScreen() {
 
   const loadDashboardData = useCallback(async () => {
     try {
-      const [profileRes, appointmentsRes, earningsRes, reviewsRes] = await Promise.allSettled([
+      const [profileRes, appointmentsRes, earningsRes, reviewsRes, campaignRes] = await Promise.allSettled([
         getDoctorProfile(),
         getDoctorAppointmentRequests({ limit: 20 }),
         getDoctorEarnings(),
         getMyDoctorReviews(),
+        getActiveCampaign(),
       ]);
 
       if (profileRes.status === 'fulfilled' && profileRes.value) {
@@ -241,6 +250,10 @@ export default function DoctorDashboardScreen() {
 
       if (reviewsRes.status === 'fulfilled' && reviewsRes.value) {
         setReviewsSummary(reviewsRes.value);
+      }
+
+      if (campaignRes.status === 'fulfilled' && campaignRes.value) {
+        setCampaignInfo(campaignRes.value);
       }
     } catch (error) {
       console.error('Error loading dashboard data', error);
@@ -274,6 +287,24 @@ export default function DoctorDashboardScreen() {
     }
   };
 
+  const handleJoinCampaign = async () => {
+    if (!campaignInfo?.campaign || joiningCampaign) return;
+    try {
+      setJoiningCampaign(true);
+      const result = await joinCampaign(campaignInfo.campaign.id);
+      setCampaignInfo(result);
+    } catch (error: any) {
+      setStatusModal({
+        visible: true,
+        status: 'error',
+        title: 'Could Not Join Campaign',
+        message: error?.response?.data?.message || 'This campaign may no longer be available. Please try again.',
+      });
+    } finally {
+      setJoiningCampaign(false);
+    }
+  };
+
   const doctorName =
     doctorData?.approvedProfile?.displayName ||
     doctorData?.name ||
@@ -294,7 +325,7 @@ export default function DoctorDashboardScreen() {
     null;
 
   const nextConsultation = upcomingAppointments[0] || null;
-  const avgRating = reviewsSummary?.averageRating ? reviewsSummary.averageRating.toFixed(1) : '4.8';
+  const avgRating = reviewsSummary?.averageRating ? reviewsSummary.averageRating.toFixed(1) : '—';
 
   // Today's Revenue Calculation
   const { todayRevenue } = useMemo(() => {
@@ -309,9 +340,8 @@ export default function DoctorDashboardScreen() {
       }
     });
     const calculatedToday = todayCredits.reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
-    const fallbackToday = earningsSummary?.totalEarnings ? Math.min(earningsSummary.totalEarnings, 2450) : 0;
     return {
-      todayRevenue: calculatedToday > 0 ? calculatedToday : fallbackToday,
+      todayRevenue: calculatedToday,
     };
   }, [earningsSummary]);
 
@@ -633,6 +663,73 @@ export default function DoctorDashboardScreen() {
                       <ChevronRight size={14} color={isExpired ? '#EF4444' : (isDark ? '#FBBF24' : '#B45309')} strokeWidth={2.4} />
                     </View>
                   </TouchableOpacity>
+                );
+              })()}
+
+              {/* ═══════════════════ CAMPAIGN STRIP ═══════════════════ */}
+              {campaignInfo?.campaign && !campaignInfo.enrollment && (() => {
+                const { campaign } = campaignInfo;
+                return (
+                  <>
+                    {campaign.bannerImageUrl && (
+                      <Image
+                        source={{ uri: campaign.bannerImageUrl }}
+                        style={{ width: '100%', height: 110, borderRadius: 16, marginTop: 4 }}
+                        resizeMode="cover"
+                      />
+                    )}
+                    <TouchableOpacity
+                      style={[
+                        styles.pendingUpdateStrip,
+                        { backgroundColor: isDark ? '#1A0F2E' : '#F5F3FF', borderColor: isDark ? '#4C1D95' : '#DDD6FE' },
+                      ]}
+                      onPress={handleJoinCampaign}
+                      disabled={joiningCampaign}
+                      activeOpacity={0.75}
+                    >
+                    <View style={styles.pendingUpdateStripLeft}>
+                      <View style={[styles.pendingUpdateStripIcon, { backgroundColor: isDark ? '#3B0F6E' : '#EDE9FE' }]}>
+                        <Gift size={13} color={isDark ? '#C4B5FD' : '#7C3AED'} strokeWidth={2.4} />
+                      </View>
+                      <Text
+                        style={[styles.pendingUpdateStripText, { color: isDark ? '#DDD6FE' : '#5B21B6' }]}
+                        numberOfLines={2}
+                      >
+                        {`0% commission on your first ${campaign.freeConsultationsPerDoctor} consultations - tap to join`}
+                      </Text>
+                    </View>
+                    <View style={styles.pendingUpdateStripRight}>
+                      <Text style={[styles.pendingUpdateStripAction, { color: isDark ? '#C4B5FD' : '#7C3AED' }]}>
+                        {joiningCampaign ? 'Joining…' : 'Join'}
+                      </Text>
+                      {!joiningCampaign && <ChevronRight size={14} color={isDark ? '#C4B5FD' : '#7C3AED'} strokeWidth={2.4} />}
+                    </View>
+                    </TouchableOpacity>
+                  </>
+                );
+              })()}
+
+              {campaignInfo?.campaign && campaignInfo.enrollment && campaignInfo.enrollment.status === 'active' && (() => {
+                const { campaign, enrollment } = campaignInfo;
+                return (
+                  <View
+                    style={[
+                      styles.pendingUpdateStrip,
+                      { backgroundColor: isDark ? '#0B2A1C' : '#ECFDF5', borderColor: isDark ? '#065F46' : '#A7F3D0' },
+                    ]}
+                  >
+                    <View style={styles.pendingUpdateStripLeft}>
+                      <View style={[styles.pendingUpdateStripIcon, { backgroundColor: isDark ? '#064E3B' : '#D1FAE5' }]}>
+                        <Gift size={13} color={isDark ? '#6EE7B7' : '#059669'} strokeWidth={2.4} />
+                      </View>
+                      <Text
+                        style={[styles.pendingUpdateStripText, { color: isDark ? '#A7F3D0' : '#065F46' }]}
+                        numberOfLines={2}
+                      >
+                        {`${campaign.name}: ${enrollment.consultationsUsed}/${enrollment.consultationsLimit} free-commission consultations used`}
+                      </Text>
+                    </View>
+                  </View>
                 );
               })()}
 
@@ -1137,6 +1234,25 @@ export default function DoctorDashboardScreen() {
         onClose={() => setStatusModal((prev) => ({ ...prev, visible: false }))}
       />
 
+      {/* Doctors onboarded before the app asked for a name / email: ask once so patients can see the name and request alerts can reach them by email. */}
+      <DoctorNameModal
+        visible={
+          !!doctorData &&
+          (doctorData.approvalStatus === 'approved' || !!doctorData.hasApprovedProfile) &&
+          (!doctorData.name || !doctorData.email) &&
+          !nameModalDismissed
+        }
+        needName={!doctorData?.name}
+        needEmail={!doctorData?.email}
+        onLater={() => setNameModalDismissed(true)}
+        onSaved={(saved) => {
+          setDoctorData((prev: any) => ({ ...prev, ...saved }));
+          if (saved.name) dispatch(setProfileName(saved.name));
+          dispatch(loadProfileFromServer());
+          setNameModalDismissed(true);
+        }}
+      />
+
       {/* Profile Sidebar */}
       <ProfileSidebar
         visible={sidebarVisible}
@@ -1144,7 +1260,6 @@ export default function DoctorDashboardScreen() {
         doctorName={doctorName}
         specialization={specialization}
         avatarUri={avatarUri}
-        rating={avgRating}
         isOnline={isOnline}
         onToggleOnline={handleToggleOnline}
         onLogout={handleLogout}

@@ -23,12 +23,12 @@
       "package": "com.medicootech.medicoodoctor",
       "versionCode": 1,
       "permissions": [
-        "RECORD_AUDIO",
-        "CAMERA",
-        "MODIFY_AUDIO_SETTINGS",
-        "ACCESS_NETWORK_STATE",
-        "ACCESS_WIFI_STATE",
-        "POST_NOTIFICATIONS"
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.ACCESS_WIFI_STATE",
+        "android.permission.POST_NOTIFICATIONS"
       ],
       "googleServicesFile": "./firebase/google-services.json"
     },
@@ -59,7 +59,15 @@
           "microphonePermission": "Medicoo Doctors needs access to your microphone for audio and video consultations with patients."
         }
       ],
-      "expo-notifications",
+      [
+        "expo-notifications",
+        {
+          "sounds": [
+            "./src/assets/sounds/incoming_call.wav",
+            "./src/assets/sounds/new_notification.wav"
+          ]
+        }
+      ],
       [
         "expo-build-properties",
         {
@@ -83,6 +91,15 @@
     ],
     "experiments": {
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "expo-navigation-bar": {
+        "backgroundColor": "#00000000"
+      },
+      "eas": {
+        "projectId": "041a5a69-e3f1-4f28-bd11-59b4f0e7928c"
+      }
+    },
+    "owner": "medicootech-private-limited"
   }
 }

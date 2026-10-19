@@ -9,6 +9,7 @@ import DoctorDashboardScreen from '../features/doctor/DoctorDashboardScreen';
 import DoctorDetailScreen from '../features/doctor/DoctorDetailScreen';
 import DoctorEarningsScreen from '../features/doctor/DoctorEarningsScreen';
 import DoctorLiveChatScreen from '../features/doctor/DoctorLiveChatScreen';
+import DoctorNotificationSettingsScreen from '../features/doctor/DoctorNotificationSettingsScreen';
 import DoctorOnboardingScreen from '../features/doctor/DoctorOnboardingScreen';
 import DoctorPoliciesHubScreen from '../features/doctor/DoctorPoliciesHubScreen';
 import DoctorPolicyDetailScreen from '../features/doctor/DoctorPolicyDetailScreen';
@@ -39,12 +40,13 @@ function DoctorTabs() {
 
 export default function DoctorStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
       <Stack.Screen name="DoctorTabs" component={DoctorTabs} />
       <Stack.Screen name="DoctorDashboard" component={DoctorDashboardScreen} />
       <Stack.Screen name="DoctorOnboarding" component={DoctorOnboardingScreen} />
       <Stack.Screen name="DoctorDetail" component={DoctorDetailScreen} />
       <Stack.Screen name="DoctorSettings" component={DoctorSettingsScreen} />
+      <Stack.Screen name="DoctorNotificationSettings" component={DoctorNotificationSettingsScreen} />
       <Stack.Screen name="DoctorReviews" component={DoctorReviewsScreen} />
       <Stack.Screen name="DoctorReferral" component={DoctorReferralScreen} />
       <Stack.Screen name="DoctorSupport" component={DoctorSupportScreen} />

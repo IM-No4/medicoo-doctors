@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import {
     AlertTriangle,
     ArrowUpCircle,
+    BellOff,
     CalendarCheck,
     ChevronLeft,
     ChevronRight,
@@ -47,6 +48,11 @@ import {
 } from '../../services/api/user.api';
 import { ThemeMode } from '../../theme/colors';
 import { useTheme } from '../../theme/ThemeContext';
+import {
+    getNotificationPermissionStatus,
+    NotificationPermissionStatus,
+    requestNotificationPermission,
+} from '../../utils/deviceUtils';
 import { useLogout } from '../auth/useLogout';
 
 const DEFAULT_NOTIFICATION_SETTINGS: DoctorNotificationSettings = {
@@ -78,6 +84,8 @@ export default function DoctorSettingsScreen() {
     const [notificationSettings, setNotificationSettings] = useState<DoctorNotificationSettings>(
         DEFAULT_NOTIFICATION_SETTINGS
     );
+    const [notificationPermission, setNotificationPermission] = useState<NotificationPermissionStatus>('not-determined');
+    const [requestingPermission, setRequestingPermission] = useState(false);
 
     // Account deletion
     const [deletionStatus, setDeletionStatus] = useState<{
@@ -110,8 +118,23 @@ export default function DoctorSettingsScreen() {
         useCallback(() => {
             fetchSettings();
             fetchDeletionStatus();
+            getNotificationPermissionStatus().then(setNotificationPermission);
         }, [])
     );
+
+    const handleEnableNotifications = async () => {
+        if (notificationPermission === 'denied') {
+            Linking.openSettings();
+            return;
+        }
+        setRequestingPermission(true);
+        try {
+            await requestNotificationPermission();
+        } finally {
+            setRequestingPermission(false);
+            getNotificationPermissionStatus().then(setNotificationPermission);
+        }
+    };
 
     const hasChanges = useCallback(() => {
         if (!initialSettings) return false;
@@ -226,8 +249,17 @@ export default function DoctorSettingsScreen() {
                             const res = await requestAccountDeletion();
                             setDeletionStatus({ pending: true, deletionScheduledFor: res.deletionScheduledFor || null });
                             showStatus('success', 'Deletion Scheduled', res.message || 'Your account is scheduled for deletion.');
-                        } catch {
-                            showStatus('error', 'Request Failed', 'Could not schedule account deletion. Please try again.');
+                        } catch (error: any) {
+                            // A 400 here means a blocker (active appointments /
+                            // unwithdrawn earnings) - the server's own message
+                            // already names exactly what to resolve first, so
+                            // show that instead of a generic failure.
+                            const blockerMessage = error?.response?.data?.message;
+                            showStatus(
+                                'error',
+                                blockerMessage ? 'Action Needed' : 'Request Failed',
+                                blockerMessage || 'Could not schedule account deletion. Please try again.'
+                            );
                         } finally {
                             setDeletionActionLoading(false);
                         }
@@ -483,6 +515,37 @@ export default function DoctorSettingsScreen() {
 
                         {/* Notification Preferences */}
                         <Text style={[styles.sectionTitle, { color: theme.textMuted }]}>Notification Preferences</Text>
+                        {notificationPermission !== 'granted' && notificationPermission !== 'provisional' && (
+                            <View
+                                style={[
+                                    styles.permissionBanner,
+                                    { backgroundColor: isDark ? 'rgba(220, 38, 38, 0.12)' : '#FEF2F2' },
+                                ]}
+                            >
+                                <BellOff size={18} color="#DC2626" />
+                                <View style={styles.permissionBannerText}>
+                                    <Text style={styles.permissionBannerTitle}>Notifications are turned off</Text>
+                                    <Text style={[styles.feeSub, { color: theme.textSecondary }]}>
+                                        {notificationPermission === 'denied'
+                                            ? "You won't be notified about new requests or messages until you enable this in phone settings."
+                                            : "You won't be notified about new requests or messages until you enable this."}
+                                    </Text>
+                                </View>
+                                <TouchableOpacity
+                                    style={[styles.permissionBannerButton, requestingPermission && { opacity: 0.7 }]}
+                                    onPress={handleEnableNotifications}
+                                    disabled={requestingPermission}
+                                >
+                                    {requestingPermission ? (
+                                        <ActivityIndicator size="small" color="#fff" />
+                                    ) : (
+                                        <Text style={styles.permissionBannerButtonText}>
+                                            {notificationPermission === 'denied' ? 'Open Settings' : 'Enable'}
+                                        </Text>
+                                    )}
+                                </TouchableOpacity>
+                            </View>
+                        )}
                         <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border, borderWidth: 1 }]}>
                             {([
                                 { key: 'newAppointmentRequests' as const, label: 'New Appointment Requests', sub: 'When a patient requests a consultation' },
@@ -792,6 +855,27 @@ const styles = StyleSheet.create({
     themeOptionText: {
         fontSize: 13,
     },
+
+    // Notification permission banner
+    permissionBanner: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+        borderRadius: 14,
+        padding: 14,
+        marginBottom: 12,
+    },
+    permissionBannerText: { flex: 1 },
+    permissionBannerTitle: { fontSize: 13, fontWeight: '700', color: '#DC2626', marginBottom: 2 },
+    permissionBannerButton: {
+        backgroundColor: '#DC2626',
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        borderRadius: 10,
+        minWidth: 72,
+        alignItems: 'center',
+    },
+    permissionBannerButtonText: { fontSize: 12, fontWeight: '700', color: '#fff' },
 
     // Fees
     feeRow: {

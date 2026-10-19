@@ -74,6 +74,8 @@ type AppointmentRequestItem = {
   actionMeta?: {
     patientName?: string;
   };
+  // Present when it was booked by someone else for this patient (a family member)
+  booking?: { bookedForSelf: boolean; bookedBy?: { name: string } | null; patientRelation?: string } | null;
   rescheduleRequest?: {
     status: 'pending' | 'accepted' | 'rejected';
     proposedDate?: string;
@@ -497,6 +499,11 @@ export default function AppointmentRequestsScreen() {
             >
               {patientName}
             </Text>
+            {item.booking && !item.booking.bookedForSelf ? (
+              <Text style={{ fontSize: 11, fontWeight: '700', color: '#10B981', marginBottom: 2 }} numberOfLines={1}>
+                Booked by {item.booking.bookedBy?.name || 'a family member'}
+              </Text>
+            ) : null}
 
             <View style={styles.consultModeRow}>
               {type === 'video' && <Video size={13} color="#0FBBA1" />}

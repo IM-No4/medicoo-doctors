@@ -63,6 +63,20 @@ export const updateDoctorDraft = async (formData: FormData) => {
     return res.data;
 };
 
+// Adds the doctor's full name (shown to patients as "Dr. <name>"). Allowed when no
+// name is on record yet, or while the profile is still unverified.
+export const updateDoctorName = async (name: string): Promise<{ name: string }> => {
+    const res = await apiClient.put('/api/user/update-doctor-name', { name });
+    return res.data;
+};
+
+// Contact email for new-request alerts. Unlike push, it still reaches a doctor who
+// is logged out of the app.
+export const updateDoctorEmail = async (email: string): Promise<{ email: string }> => {
+    const res = await apiClient.put('/api/user/update-doctor-email', { email });
+    return res.data;
+};
+
 export const applyAsDoctor = async (formData: FormData) => {
     const res = await apiClient.post('/api/user/apply-doctor', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },

@@ -25,6 +25,7 @@ import {
     MessageSquare,
     Phone,
     Plus,
+    Mail,
     RefreshCw,
     Shield,
     ShieldAlert,
@@ -122,6 +123,7 @@ export default function DoctorOnboardingScreen() {
     const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
 
     const [currentStep, setCurrentStep] = useState<OnboardingStep>(OnboardingStep.BASIC_DETAILS);
+    const [nameLocked, setNameLocked] = useState(false);
 
     const handleFieldLayout = (fieldKey: string) => (event: any) => {
         fieldPositions.current[fieldKey] = event.nativeEvent.layout.y;
@@ -243,6 +245,11 @@ export default function DoctorOnboardingScreen() {
     });
 
     const [formData, setFormData] = useState({
+        // Shown to patients as "Dr. <name>"
+        name: '',
+        // Where new-request alerts go even when the app is logged out
+        email: '',
+
         // Step 1 - Eligibility
         telemedicineConsent: false,
 
@@ -368,6 +375,8 @@ export default function DoctorOnboardingScreen() {
                 const status = profile.approvalStatus || (isDoc && !profile.rejectionReason ? 'approved' : 'not-applied');
                 setApprovalStatus(status);
                 setRejectionReason(profile.rejectionReason || '');
+                // Once approved, the name is part of the verified identity - view only.
+                setNameLocked(Boolean(profile.name) && Boolean(profile.hasApprovedProfile || profile.approvalStatus === 'approved'));
 
                 const approvedCheck = Boolean(
                     (profile.approvedProfile && Object.keys(profile.approvedProfile).length > 0) ||
@@ -407,6 +416,8 @@ export default function DoctorOnboardingScreen() {
                 };
 
                 setFormData({
+                    name: profile.name || '',
+                    email: profile.email || '',
                     telemedicineConsent: profile.telemedicineConsent?.accepted || source.telemedicineConsent?.accepted || false,
                     doctorType: source.doctorType || '',
                     specialization: source.specialization || '',
@@ -495,6 +506,8 @@ export default function DoctorOnboardingScreen() {
     const prepareFormData = () => {
         const formDataToSend = new FormData();
 
+        if (formData.name.trim()) formDataToSend.append('name', formData.name.trim());
+        if (formData.email.trim()) formDataToSend.append('email', formData.email.trim());
         if (formData.doctorType) formDataToSend.append('doctorType', formData.doctorType);
         if (formData.specialization) formDataToSend.append('specialization', formData.specialization);
         if (formData.specializationCode) formDataToSend.append('specializationCode', formData.specializationCode);
@@ -617,6 +630,15 @@ export default function DoctorOnboardingScreen() {
         const errors: { [key: string]: string } = {};
 
         if (currentStep === OnboardingStep.BASIC_DETAILS) {
+            const typedName = formData.name.replace(/^dr\.?\s+/i, '').trim();
+            if (typedName.length < 2) {
+                errors.name = 'Please enter your full name';
+            } else if (typedName.length > 80 || /\d/.test(typedName)) {
+                errors.name = 'Enter your name using letters only (2-80 characters)';
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(formData.email.trim())) {
+                errors.email = 'Please enter a valid email address';
+            }
             if (!formData.doctorType) {
                 errors.doctorType = 'Please select your primary qualification type';
             }
@@ -626,7 +648,7 @@ export default function DoctorOnboardingScreen() {
 
             if (Object.keys(errors).length > 0) {
                 setFieldErrors(errors);
-                const firstKey = errors.doctorType ? 'doctorType' : 'specialization';
+                const firstKey = errors.name ? 'name' : errors.email ? 'email' : errors.doctorType ? 'doctorType' : 'specialization';
                 setTimeout(() => scrollToField(firstKey), 50);
                 return;
             }
@@ -950,6 +972,72 @@ export default function DoctorOnboardingScreen() {
     // --- Step 1: Basic Details ---
     const renderBasicDetailsStep = () => (
         <View style={styles.stepContainer}>
+            {/* Name */}
+            <View style={styles.card}>
+                <Text style={styles.cardHeaderTitle}>Your Name</Text>
+                <Text style={styles.cardHeaderSub}>
+                    Patients will see you as “Dr. {formData.name.replace(/^dr\.?\s+/i, '').trim() || 'Your Name'}”
+                </Text>
+                <View
+                    ref={el => { fieldRefs.current.name = el; }}
+                    onLayout={handleFieldLayout('name')}
+                    style={[styles.inputGroup, { marginTop: 12 }]}
+                >
+                    <Text style={styles.label}>
+                        Full Name <Text style={styles.reqStar}>*</Text>
+                    </Text>
+                    <View style={[styles.inputWithIcon, fieldErrors.name && styles.inputError]}>
+                        <User size={18} color={formData.name ? '#0FBBA1' : '#94A3B8'} />
+                        <TextInput
+                            style={styles.inputInside}
+                            placeholder="e.g. Priya Sharma"
+                            placeholderTextColor="#94A3B8"
+                            value={formData.name}
+                            onChangeText={t => updateField('name', t)}
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            maxLength={80}
+                            editable={!isReadOnly && !nameLocked}
+                        />
+                    </View>
+                    {nameLocked && (
+                        <Text style={[styles.cardHeaderSub, { marginTop: 6 }]}>
+                            Your name is part of your verified profile. Contact support to change it.
+                        </Text>
+                    )}
+                    {fieldErrors.name && <Text style={styles.errorText}>{fieldErrors.name}</Text>}
+                </View>
+
+                <View
+                    ref={el => { fieldRefs.current.email = el; }}
+                    onLayout={handleFieldLayout('email')}
+                    style={[styles.inputGroup, { marginTop: 12 }]}
+                >
+                    <Text style={styles.label}>
+                        Email <Text style={styles.reqStar}>*</Text>
+                    </Text>
+                    <View style={[styles.inputWithIcon, fieldErrors.email && styles.inputError]}>
+                        <Mail size={18} color={formData.email ? '#0FBBA1' : '#94A3B8'} />
+                        <TextInput
+                            style={styles.inputInside}
+                            placeholder="you@example.com"
+                            placeholderTextColor="#94A3B8"
+                            value={formData.email}
+                            onChangeText={t => updateField('email', t)}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            keyboardType="email-address"
+                            maxLength={120}
+                            editable={!isReadOnly}
+                        />
+                    </View>
+                    <Text style={[styles.cardHeaderSub, { marginTop: 6 }]}>
+                        We email you every new appointment request, so you never miss one even when you're logged out.
+                    </Text>
+                    {fieldErrors.email && <Text style={styles.errorText}>{fieldErrors.email}</Text>}
+                </View>
+            </View>
+
             {/* Profile Photo Upload Card */}
             <View style={styles.card}>
                 <Text style={styles.cardHeaderTitle}>Doctor Profile Photo</Text>

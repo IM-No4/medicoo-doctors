@@ -3,82 +3,65 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as NavigationBar from 'expo-navigation-bar';
 import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   Clipboard,
-  Dimensions,
   Platform,
   ScrollView,
   Share,
   StatusBar as RNStatusBar,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
 import {
   ArrowLeft,
   Check,
-  CheckCircle2,
   Copy,
+  Gift,
   Globe,
   Share2,
   Sparkles,
   Stethoscope,
-  UserCheck,
   UserPlus,
   Users,
 } from 'lucide-react-native';
 
 import StatusModal, { StatusType } from '../../components/modals/StatusModal';
-import { RootState } from '../../redux/store';
+import { getReferralInfo, redeemReferralCode, ReferredColleague } from '../../services/api/referral.api';
 import { useTheme } from '../../theme/ThemeContext';
-
-interface ConnectedDoctor {
-  id: string;
-  name: string;
-  specialization: string;
-  date: string;
-  status: 'Active on Medicoo' | 'Invitation Sent';
-}
-
-const SAMPLE_COLLEAGUES: ConnectedDoctor[] = [
-  {
-    id: 'col-1',
-    name: 'Dr. David Miller',
-    specialization: 'Internal Medicine',
-    date: 'Sep 24, 2026',
-    status: 'Active on Medicoo',
-  },
-  {
-    id: 'col-2',
-    name: 'Dr. Aisha Patel',
-    specialization: 'Pediatrics',
-    date: 'Sep 18, 2026',
-    status: 'Active on Medicoo',
-  },
-  {
-    id: 'col-3',
-    name: 'Dr. Robert Chen',
-    specialization: 'Cardiology',
-    date: 'Sep 29, 2026',
-    status: 'Invitation Sent',
-  },
-];
 
 export default function DoctorReferralScreen() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
   const { isDark } = useTheme();
-  const profile = useSelector((state: RootState) => state.profile);
 
   const [copied, setCopied] = useState(false);
-  const [colleagues] = useState<ConnectedDoctor[]>(SAMPLE_COLLEAGUES);
+  const [loading, setLoading] = useState(true);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
+  const [colleagues, setColleagues] = useState<ReferredColleague[]>([]);
 
-  // Generate doctor code based on name or fallback
-  const doctorName = profile.name || 'DOCTOR';
-  const cleanCodeName = doctorName.replace(/^dr\.?\s*/i, '').replace(/\s+/g, '').toUpperCase().slice(0, 6);
-  const referralCode = `MED-${cleanCodeName || 'DOC'}77`;
+  const [showRedeemField, setShowRedeemField] = useState(false);
+  const [redeemCode, setRedeemCode] = useState('');
+  const [redeeming, setRedeeming] = useState(false);
+
+  const loadReferralInfo = async () => {
+    try {
+      const info = await getReferralInfo();
+      setReferralCode(info.referralCode);
+      setColleagues(info.colleagues || []);
+    } catch (err) {
+      console.warn('Failed to load referral info:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadReferralInfo();
+  }, []);
 
   // Status Modal
   const [statusModal, setStatusModal] = useState<{
@@ -127,6 +110,7 @@ export default function DoctorReferralScreen() {
       : 20;
 
   const handleCopyCode = () => {
+    if (!referralCode) return;
     Clipboard.setString(referralCode);
     setCopied(true);
     showStatus('success', 'Code Copied!', `Invite code "${referralCode}" copied to clipboard.`);
@@ -134,6 +118,7 @@ export default function DoctorReferralScreen() {
   };
 
   const handleShareInvite = async () => {
+    if (!referralCode) return;
     const inviteMessage = `Hello Colleague! Join me on Medicoo, the verified telemedicine network for doctors. Register with my invitation code "${referralCode}" to start managing your teleconsultations and digital prescriptions: https://medicoo.com/doctors/join?ref=${referralCode}`;
     try {
       await Share.share({
@@ -142,6 +127,26 @@ export default function DoctorReferralScreen() {
       });
     } catch (err) {
       console.warn('Share error:', err);
+    }
+  };
+
+  const handleRedeemCode = async () => {
+    const trimmed = redeemCode.trim();
+    if (!trimmed) return;
+    setRedeeming(true);
+    try {
+      const result = await redeemReferralCode(trimmed);
+      if (result.success) {
+        showStatus('success', 'Code Redeemed!', result.message || 'You’re now connected to the colleague who invited you.');
+        setRedeemCode('');
+        setShowRedeemField(false);
+      } else {
+        showStatus('error', 'Could Not Redeem Code', result.message || 'Please check the code and try again.');
+      }
+    } catch (err: any) {
+      showStatus('error', 'Could Not Redeem Code', err?.response?.data?.message || 'Please check the code and try again.');
+    } finally {
+      setRedeeming(false);
     }
   };
 
@@ -215,15 +220,20 @@ export default function DoctorReferralScreen() {
           {/* Connected Count Indicator */}
           <View style={styles.heroStatsRow}>
             <View style={styles.heroStatItem}>
-              <Text style={styles.heroStatValue}>{colleagues.length}</Text>
-              <Text style={styles.heroStatLabel}>Colleagues Invited</Text>
+              <Text style={styles.heroStatValue}>{loading ? '—' : colleagues.length}</Text>
+              <Text style={styles.heroStatLabel}>Colleagues Joined</Text>
             </View>
             <View style={styles.heroStatDivider} />
             <View style={styles.heroStatItem}>
               <Text style={styles.heroStatValue}>
-                {colleagues.filter((r) => r.status === 'Active on Medicoo').length}
+                {loading
+                  ? '—'
+                  : colleagues.filter((r) => {
+                      const joined = new Date(r.date).getTime();
+                      return Date.now() - joined <= 30 * 24 * 60 * 60 * 1000;
+                    }).length}
               </Text>
-              <Text style={styles.heroStatLabel}>Active on Portal</Text>
+              <Text style={styles.heroStatLabel}>This Month</Text>
             </View>
           </View>
         </LinearGradient>
@@ -252,15 +262,21 @@ export default function DoctorReferralScreen() {
               },
             ]}
           >
-            <Text style={[styles.codeText, { color: textColor }]}>{referralCode}</Text>
+            {loading ? (
+              <ActivityIndicator size="small" color="#0FBBA1" />
+            ) : (
+              <Text style={[styles.codeText, { color: textColor }]}>{referralCode || '—'}</Text>
+            )}
 
             <TouchableOpacity
               style={[
                 styles.copyBtn,
                 copied && { backgroundColor: '#059669' },
+                !referralCode && { opacity: 0.5 },
               ]}
               onPress={handleCopyCode}
               activeOpacity={0.8}
+              disabled={!referralCode}
             >
               {copied ? (
                 <>
@@ -278,13 +294,56 @@ export default function DoctorReferralScreen() {
 
           {/* Share Invite Button */}
           <TouchableOpacity
-            style={styles.shareBtn}
+            style={[styles.shareBtn, !referralCode && { opacity: 0.5 }]}
             onPress={handleShareInvite}
             activeOpacity={0.8}
+            disabled={!referralCode}
           >
             <Share2 size={16} color="#FFFFFF" />
             <Text style={styles.shareBtnText}>Share Invitation Link</Text>
           </TouchableOpacity>
+
+          {/* Redeem a Colleague's Code */}
+          {showRedeemField ? (
+            <View style={styles.redeemRow}>
+              <TextInput
+                value={redeemCode}
+                onChangeText={setRedeemCode}
+                placeholder="Enter colleague's code"
+                placeholderTextColor={subTextColor}
+                autoCapitalize="characters"
+                style={[
+                  styles.redeemInput,
+                  {
+                    color: textColor,
+                    borderColor: isDark ? '#1E2D3D' : '#E2E8F0',
+                    backgroundColor: isDark ? '#0D1520' : '#F8FAFC',
+                  },
+                ]}
+              />
+              <TouchableOpacity
+                style={[styles.redeemBtn, (!redeemCode.trim() || redeeming) && { opacity: 0.5 }]}
+                onPress={handleRedeemCode}
+                activeOpacity={0.8}
+                disabled={!redeemCode.trim() || redeeming}
+              >
+                {redeeming ? (
+                  <ActivityIndicator size="small" color="#FFFFFF" />
+                ) : (
+                  <Text style={styles.redeemBtnText}>Redeem</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={styles.redeemToggle}
+              onPress={() => setShowRedeemField(true)}
+              activeOpacity={0.7}
+            >
+              <Gift size={14} color="#0FBBA1" />
+              <Text style={styles.redeemToggleText}>Have a colleague&apos;s code? Redeem it</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* ═══ 3. Why Invite Colleagues Card ═══ */}
@@ -367,56 +426,76 @@ export default function DoctorReferralScreen() {
             </Text>
           </View>
 
-          <View style={styles.referralsListCol}>
-            {colleagues.map((item, idx) => {
-              const isActive = item.status === 'Active on Medicoo';
-              return (
-                <View key={item.id}>
-                  <View style={styles.referralRow}>
-                    <View
-                      style={[
-                        styles.doctorAvatarBox,
-                        { backgroundColor: isActive ? '#ECFDF5' : '#FFFBEB' },
-                      ]}
-                    >
-                      <Stethoscope size={18} color={isActive ? '#059669' : '#D97706'} />
-                    </View>
-
-                    <View style={styles.referralInfoCol}>
-                      <Text style={[styles.referralDoctorName, { color: textColor }]}>
-                        {item.name}
-                      </Text>
-                      <Text style={[styles.referralSpecialty, { color: subTextColor }]}>
-                        {item.specialization} • {item.date}
-                      </Text>
-                    </View>
-
-                    <View style={styles.referralRightCol}>
+          {loading ? (
+            <View style={styles.listLoadingBox}>
+              <ActivityIndicator size="small" color="#0FBBA1" />
+            </View>
+          ) : colleagues.length === 0 ? (
+            <View style={styles.emptyColleaguesBox}>
+              <Users size={28} color={subTextColor} />
+              <Text style={[styles.emptyColleaguesText, { color: subTextColor }]}>
+                No colleagues yet - share your code above to start building your network.
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.referralsListCol}>
+              {colleagues.map((item, idx) => {
+                const isActive = item.status === 'Active on Medicoo';
+                const formattedDate = (() => {
+                  try {
+                    return new Date(item.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+                  } catch {
+                    return item.date;
+                  }
+                })();
+                return (
+                  <View key={item.id}>
+                    <View style={styles.referralRow}>
                       <View
                         style={[
-                          styles.statusBadge,
-                          isActive ? styles.statusBadgeDone : styles.statusBadgePending,
+                          styles.doctorAvatarBox,
+                          { backgroundColor: isActive ? '#ECFDF5' : '#FFFBEB' },
                         ]}
                       >
-                        <Text
-                          style={[
-                            styles.statusBadgeText,
-                            { color: isActive ? '#059669' : '#D97706' },
-                          ]}
-                        >
-                          {item.status}
+                        <Stethoscope size={18} color={isActive ? '#059669' : '#D97706'} />
+                      </View>
+
+                      <View style={styles.referralInfoCol}>
+                        <Text style={[styles.referralDoctorName, { color: textColor }]}>
+                          {item.name}
+                        </Text>
+                        <Text style={[styles.referralSpecialty, { color: subTextColor }]}>
+                          {item.specialization} • {formattedDate}
                         </Text>
                       </View>
-                    </View>
-                  </View>
 
-                  {idx < colleagues.length - 1 && (
-                    <View style={[styles.rowDivider, { backgroundColor: dividerColor }]} />
-                  )}
-                </View>
-              );
-            })}
-          </View>
+                      <View style={styles.referralRightCol}>
+                        <View
+                          style={[
+                            styles.statusBadge,
+                            isActive ? styles.statusBadgeDone : styles.statusBadgePending,
+                          ]}
+                        >
+                          <Text
+                            style={[
+                              styles.statusBadgeText,
+                              { color: isActive ? '#059669' : '#D97706' },
+                            ]}
+                          >
+                            {item.status}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+
+                    {idx < colleagues.length - 1 && (
+                      <View style={[styles.rowDivider, { backgroundColor: dividerColor }]} />
+                    )}
+                  </View>
+                );
+              })}
+            </View>
+          )}
         </View>
       </ScrollView>
 
@@ -613,6 +692,64 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 13.5,
     fontWeight: '700',
+  },
+
+  // ═══ Redeem a Colleague's Code ═══
+  redeemToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    gap: 6,
+  },
+  redeemToggleText: {
+    color: '#0FBBA1',
+    fontSize: 12.5,
+    fontWeight: '700',
+  },
+  redeemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 10,
+  },
+  redeemInput: {
+    flex: 1,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 12,
+    borderWidth: 1,
+    fontSize: 13,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  redeemBtn: {
+    backgroundColor: '#0FBBA1',
+    paddingHorizontal: 16,
+    paddingVertical: 11,
+    borderRadius: 12,
+  },
+  redeemBtnText: {
+    color: '#FFFFFF',
+    fontSize: 12.5,
+    fontWeight: '700',
+  },
+
+  // ═══ Colleague List Loading/Empty ═══
+  listLoadingBox: {
+    paddingVertical: 24,
+    alignItems: 'center',
+  },
+  emptyColleaguesBox: {
+    paddingVertical: 24,
+    alignItems: 'center',
+    gap: 8,
+  },
+  emptyColleaguesText: {
+    fontSize: 12.5,
+    fontWeight: '500',
+    textAlign: 'center',
+    maxWidth: 240,
   },
 
   // ═══ Steps ═══
