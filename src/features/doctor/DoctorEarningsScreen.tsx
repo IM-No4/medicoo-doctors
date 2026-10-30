@@ -66,6 +66,7 @@ import {
 } from '../../services/api/doctor.api';
 import { useTheme } from '../../theme/ThemeContext';
 import SlowInternetLoader from '../../components/network/SlowInternetLoader';
+import AutoPayoutCard from './components/AutoPayoutCard';
 
 if (
   Platform.OS === 'android' &&
@@ -928,6 +929,17 @@ export default function DoctorEarningsScreen() {
             </View>
           )}
         </View>
+
+        {/* Automatic payout requests (Medicoo still reviews and pays each one) */}
+        <AutoPayoutCard
+          hasPayoutMethod={hasPaymentProfile}
+          isDark={isDark}
+          cardBg={cardBg}
+          cardBorder={cardBorder}
+          textColor={textColor}
+          subTextColor={subTextColor}
+          onMessage={showStatus}
+        />
 
         {/* ═══ 3. Card: Consultation Earnings & Transaction History ═══ */}
         <View

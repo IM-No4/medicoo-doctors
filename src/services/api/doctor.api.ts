@@ -256,6 +256,37 @@ export const requestDoctorPayout = async (amount: number, fundAccountId: string)
     return res.data;
 };
 
+// --- Automatic payout requests (features/doctor/components/AutoPayoutCard.tsx) ---
+// The backend raises the same payout request the Withdraw button would, on the chosen day. The admin still approves and pays it.
+
+export type AutoPayoutSettings = {
+    enabled: boolean;
+    frequency: 'weekly' | 'monthly';
+    dayOfWeek: number; // 0 = Sunday
+    dayOfMonth: number; // 1 - 28
+    minAmount: number;
+    paymentMethodId: string;
+    nextRunAt: string | null;
+    lastRunAt: string | null;
+    lastStatus: 'requested' | 'skipped' | 'failed' | null;
+    lastMessage: string;
+    lastRequestId: string;
+    lastAmount: number;
+    minimumAllowed: number;
+};
+
+export const getAutoPayoutSettings = async () => {
+    const res = await apiClient.get('/api/doctor-payout/auto-payout');
+    return res.data.data as AutoPayoutSettings;
+};
+
+export const saveAutoPayoutSettings = async (
+    settings: Pick<AutoPayoutSettings, 'enabled' | 'frequency' | 'dayOfWeek' | 'dayOfMonth' | 'minAmount'>
+) => {
+    const res = await apiClient.put('/api/doctor-payout/auto-payout', settings);
+    return res.data.data as AutoPayoutSettings;
+};
+
 // --- Doctor's own reviews (DoctorReviewsScreen.tsx) ---
 
 export type DoctorReviewItem = {
