@@ -42,6 +42,7 @@ import SlowInternetLoader from '../../components/network/SlowInternetLoader';
 import { RootState } from '../../redux/store';
 import { getDoctorEarnings, getMyDoctorReviews } from '../../services/api/doctor.api';
 import { getDoctorProfile } from '../../services/api/user.api';
+import { accent } from '../../theme/accents';
 import { useTheme } from '../../theme/ThemeContext';
 
 export default function DoctorDetailScreen() {
@@ -337,10 +338,10 @@ export default function DoctorDetailScreen() {
                 <View
                   style={[
                     styles.metricIconCircle,
-                    { backgroundColor: isDark ? '#0E2924' : '#E6FAF6' },
+                    { backgroundColor: accent('blue', isDark).bg },
                   ]}
                 >
-                  <Stethoscope size={16} color="#0FBBA1" />
+                  <Stethoscope size={16} color={accent('blue', isDark).fg} />
                 </View>
                 <Text style={[styles.metricValue, { color: textColor }]}>
                   {experience}
@@ -413,10 +414,10 @@ export default function DoctorDetailScreen() {
                 <View
                   style={[
                     styles.detailIconCircle,
-                    { backgroundColor: isDark ? '#0E2924' : '#E6FAF6' },
+                    { backgroundColor: accent('violet', isDark).bg },
                   ]}
                 >
-                  <BookOpen size={16} color="#0FBBA1" />
+                  <BookOpen size={16} color={accent('violet', isDark).fg} />
                 </View>
                 <View style={styles.detailTextCol}>
                   <Text style={[styles.detailLabel, { color: subTextColor }]}>

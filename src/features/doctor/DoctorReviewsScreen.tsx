@@ -27,6 +27,7 @@ import {
   DoctorReviewItem,
   getMyDoctorReviews,
 } from '../../services/api/doctor.api';
+import { accent } from '../../theme/accents';
 import { useTheme } from '../../theme/ThemeContext';
 
 const EMPTY_BREAKDOWN: DoctorRatingBreakdown[] = [5, 4, 3, 2, 1].map((stars) => ({
@@ -271,10 +272,10 @@ export default function DoctorReviewsScreen() {
             <View
               style={[
                 styles.twinIconCircle,
-                { backgroundColor: isDark ? '#0E2924' : '#E6FAF6' },
+                { backgroundColor: accent('amber', isDark).bg },
               ]}
             >
-              <ThumbsUp size={16} color="#0FBBA1" />
+              <ThumbsUp size={16} color={accent('amber', isDark).fg} />
             </View>
             <View style={styles.twinTextCol}>
               <Text style={[styles.twinTitle, { color: subTextColor }]}>
@@ -391,13 +392,13 @@ export default function DoctorReviewsScreen() {
                         <View
                           style={[
                             styles.patientAvatarCircle,
-                            { backgroundColor: isDark ? '#172230' : '#E6FAF6' },
+                            { backgroundColor: accent('blue', isDark).bg },
                           ]}
                         >
                           <Text
                             style={[
                               styles.patientAvatarLetter,
-                              { color: isDark ? '#0FBBA1' : '#0D9488' },
+                              { color: accent('blue', isDark).fg },
                             ]}
                           >
                             {item.patientName.charAt(0).toUpperCase()}

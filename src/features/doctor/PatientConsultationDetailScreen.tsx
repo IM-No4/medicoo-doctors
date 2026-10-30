@@ -66,6 +66,7 @@ import {
   respondToReschedule,
   saveConsultationDetails,
 } from '../../services/api/doctor.api';
+import { accent } from '../../theme/accents';
 import { useTheme } from '../../theme/ThemeContext';
 import SlowInternetLoader from '../../components/network/SlowInternetLoader';
 import { useCall } from '../../context/CallContext';
@@ -333,6 +334,8 @@ export default function PatientConsultationDetailScreen() {
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
   const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
   const iconColor = isDark ? '#94A3B8' : '#64748B';
+  const neutralTileBg = isDark ? '#172230' : '#F1F5F9';
+  const A = { green: accent('green', isDark), blue: accent('blue', isDark), violet: accent('violet', isDark), sky: accent('sky', isDark), amber: accent('amber', isDark) };
 
   useEffect(() => {
     RNStatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content', true);
@@ -807,13 +810,13 @@ export default function PatientConsultationDetailScreen() {
               <View
                 style={[
                   styles.avatarLarge,
-                  { backgroundColor: isDark ? '#172230' : '#E6FAF6' },
+                  { backgroundColor: A.blue.bg },
                 ]}
               >
                 <Text
                   style={[
                     styles.avatarTextLarge,
-                    { color: isDark ? '#0FBBA1' : '#0D9488' },
+                    { color: A.blue.fg },
                   ]}
                 >
                   {patientData.name.charAt(0).toUpperCase()}
@@ -844,7 +847,7 @@ export default function PatientConsultationDetailScreen() {
 
               {patientData.phone ? (
                 <View style={styles.contactRow}>
-                  <Phone size={12} color={iconColor} />
+                  <Phone size={12} color={A.sky.fg} />
                   <Text style={[styles.contactText, { color: subTextColor }]}>
                     {patientData.phone}
                   </Text>
@@ -879,7 +882,7 @@ export default function PatientConsultationDetailScreen() {
               ]}
             >
               <View style={styles.demoLabelRow}>
-                <Scale size={12} color="#0FBBA1" />
+                <Scale size={12} color={iconColor} />
                 <Text style={[styles.demoLabel, { color: subTextColor }]}>Weight</Text>
               </View>
               <Text style={[styles.demoValue, { color: textColor }]}>
@@ -975,7 +978,7 @@ export default function PatientConsultationDetailScreen() {
         >
           <View style={styles.cardHeaderRowFlex}>
             <View style={styles.cardHeaderRow}>
-              <FileText size={16} color="#0FBBA1" />
+              <FileText size={16} color={A.violet.fg} />
               <Text style={[styles.cardTitle, { color: textColor }]}>
                 Medical Records & Lab Scans
               </Text>
@@ -1013,7 +1016,7 @@ export default function PatientConsultationDetailScreen() {
                   activeOpacity={0.7}
                 >
                   <View style={styles.docIconWrap}>
-                    <FileText size={18} color="#0FBBA1" />
+                    <FileText size={18} color={A.violet.fg} />
                   </View>
                   <View style={styles.docTextWrap}>
                     <Text style={[styles.docName, { color: textColor }]} numberOfLines={1}>
@@ -1027,7 +1030,7 @@ export default function PatientConsultationDetailScreen() {
                       })}
                     </Text>
                   </View>
-                  <Eye size={16} color="#0FBBA1" />
+                  <Eye size={16} color={A.violet.fg} />
                 </TouchableOpacity>
               ))}
             </View>
@@ -1050,7 +1053,7 @@ export default function PatientConsultationDetailScreen() {
         <View style={styles.timelineContainer}>
           <View style={styles.timelineSectionHeader}>
             <View style={styles.titleIconRow}>
-              <CalendarClock size={18} color="#0FBBA1" />
+              <CalendarClock size={18} color={A.blue.fg} />
               <Text style={[styles.timelineSectionTitle, { color: textColor }]}>
                 Consultation Timeline
               </Text>
@@ -1058,13 +1061,13 @@ export default function PatientConsultationDetailScreen() {
             <View
               style={[
                 styles.countPill,
-                { backgroundColor: isDark ? '#172230' : '#E6FAF6' },
+                { backgroundColor: A.violet.bg },
               ]}
             >
               <Text
                 style={[
                   styles.countPillText,
-                  { color: isDark ? '#0FBBA1' : '#0D9488' },
+                  { color: A.violet.fg },
                 ]}
               >
                 {allSessions.length} {allSessions.length === 1 ? 'Record' : 'Records'}
@@ -1268,8 +1271,8 @@ export default function PatientConsultationDetailScreen() {
                             style={[
                               styles.inlineDeclineBtn,
                               {
-                                backgroundColor: isDark ? '#172230' : '#E6FAF6',
-                                borderColor: isDark ? '#1A2F3D' : '#CCFBF1',
+                                backgroundColor: A.sky.bg,
+                                borderColor: isDark ? '#1A2737' : '#E2E8F0',
                                 marginTop: 10,
                                 alignSelf: 'flex-start',
                               },
@@ -1283,8 +1286,8 @@ export default function PatientConsultationDetailScreen() {
                             }
                             activeOpacity={0.7}
                           >
-                            <MessageSquare size={14} color="#0FBBA1" />
-                            <Text style={[styles.inlineDeclineText, { color: '#0FBBA1' }]}>
+                            <MessageSquare size={14} color={A.sky.fg} />
+                            <Text style={[styles.inlineDeclineText, { color: A.sky.fg }]}>
                               Open Patient Chat
                             </Text>
                           </TouchableOpacity>
@@ -1341,7 +1344,7 @@ export default function PatientConsultationDetailScreen() {
                           >
                             <View style={styles.refundHeaderRow}>
                               {isRefunded ? (
-                                <RotateCcw size={14} color="#0FBBA1" />
+                                <RotateCcw size={14} color={iconColor} />
                               ) : (
                                 <CreditCard size={14} color={iconColor} />
                               )}
@@ -1600,7 +1603,7 @@ export default function PatientConsultationDetailScreen() {
                                   onPress={() => handleOpenRxModal(session)}
                                   activeOpacity={0.7}
                                 >
-                                  <Pill size={14} color="#0FBBA1" />
+                                  <Pill size={14} color={A.violet.fg} />
                                   <Text style={[styles.secondaryActionBtnText, { color: textColor }]}>
                                     {hasRx ? 'Edit Draft Rx' : '+ Add Prescription'}
                                   </Text>
@@ -1642,7 +1645,7 @@ export default function PatientConsultationDetailScreen() {
                           {sessionVitals && (
                             <View style={styles.vitalsBlock}>
                               <View style={styles.subSectionHeader}>
-                                <Activity size={14} color="#0FBBA1" />
+                                <Activity size={14} color={A.green.fg} />
                                 <Text style={[styles.subSectionTitle, { color: textColor }]}>
                                   Recorded Consultation Vitals
                                 </Text>
@@ -1671,7 +1674,7 @@ export default function PatientConsultationDetailScreen() {
                                   ]}
                                 >
                                   <View style={styles.vitalHeaderRow}>
-                                    <Activity size={12} color="#0FBBA1" />
+                                    <Activity size={12} color={A.green.fg} />
                                     <Text style={[styles.vitalLabel, { color: subTextColor }]}>Heart Rate</Text>
                                   </View>
                                   <Text style={[styles.vitalValue, { color: textColor }]}>
@@ -1716,7 +1719,7 @@ export default function PatientConsultationDetailScreen() {
                           <View style={styles.rxBlockContainer}>
                             <View style={styles.cardHeaderRowFlex}>
                               <View style={styles.subSectionHeader}>
-                                <Pill size={14} color="#0FBBA1" />
+                                <Pill size={14} color={A.violet.fg} />
                                 <Text style={[styles.subSectionTitle, { color: textColor }]}>
                                   Prescriptions & Clinical Notes
                                 </Text>
@@ -1755,7 +1758,7 @@ export default function PatientConsultationDetailScreen() {
                                           <Text style={[styles.rxItemTitle, { color: textColor }]}>
                                             {med.medicineName}
                                           </Text>
-                                          <Text style={[styles.rxItemDosage, { color: '#0FBBA1' }]}>
+                                          <Text style={[styles.rxItemDosage, { color: subTextColor }]}>
                                             {med.intakeDetails?.dosage}
                                           </Text>
                                         </View>
@@ -1896,8 +1899,8 @@ export default function PatientConsultationDetailScreen() {
                 style={[
                   styles.secondaryBtn,
                   {
-                    backgroundColor: isDark ? '#172230' : '#E6FAF6',
-                    borderColor: isDark ? '#1A2F3D' : '#CCFBF1',
+                    backgroundColor: A.sky.bg,
+                    borderColor: isDark ? '#1A2737' : '#E2E8F0',
                   },
                 ]}
                 onPress={() =>
@@ -1909,7 +1912,7 @@ export default function PatientConsultationDetailScreen() {
                 }
                 activeOpacity={0.7}
               >
-                <MessageSquare size={16} color="#0FBBA1" />
+                <MessageSquare size={16} color={A.sky.fg} />
                 <Text style={styles.secondaryBtnText}>Message</Text>
               </TouchableOpacity>
             )}
@@ -1966,8 +1969,8 @@ export default function PatientConsultationDetailScreen() {
                 styles.secondaryBtn,
                 {
                   flex: 1,
-                  backgroundColor: isDark ? '#172230' : '#E6FAF6',
-                  borderColor: isDark ? '#1A2F3D' : '#CCFBF1',
+                  backgroundColor: neutralTileBg,
+                  borderColor: isDark ? '#1A2737' : '#E2E8F0',
                 },
               ]}
               onPress={() =>
@@ -1979,7 +1982,7 @@ export default function PatientConsultationDetailScreen() {
               }
               activeOpacity={0.7}
             >
-              <MessageSquare size={16} color="#0FBBA1" />
+              <MessageSquare size={16} color={A.sky.fg} />
               <Text style={styles.secondaryBtnText}>Open Patient Chat</Text>
             </TouchableOpacity>
           </View>
@@ -2091,7 +2094,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   bookedByPill: { alignSelf: 'flex-start', marginTop: 6, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8, backgroundColor: 'rgba(16,185,129,0.12)' },
-  bookedByText: { fontSize: 11, fontWeight: '700', color: '#10B981' },
+  bookedByText: { fontSize: 11, fontWeight: '700', color: '#64748B' },
   patientNameLarge: {
     fontSize: 17,
     fontWeight: '800',
@@ -2179,7 +2182,7 @@ const styles = StyleSheet.create({
   viewAllReportsLink: {
     fontSize: 12.5,
     fontWeight: '700',
-    color: '#0FBBA1',
+    color: '#64748B',
   },
   docsLoadingRow: {
     flexDirection: 'row',
@@ -2206,7 +2209,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 8,
-    backgroundColor: '#E6FAF6',
+    backgroundColor: 'rgba(100, 116, 139, 0.14)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -2608,12 +2611,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
-    backgroundColor: '#E6FAF6',
+    backgroundColor: 'rgba(100, 116, 139, 0.14)',
   },
   editRxText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#0FBBA1',
+    color: '#64748B',
   },
   rxContentCol: {
     gap: 8,
@@ -2671,7 +2674,7 @@ const styles = StyleSheet.create({
   addRxLink: {
     fontSize: 11.5,
     fontWeight: '700',
-    color: '#0FBBA1',
+    color: '#64748B',
   },
 
   // Reschedule Callout
@@ -2786,7 +2789,7 @@ const styles = StyleSheet.create({
   secondaryBtnText: {
     fontSize: 13.5,
     fontWeight: '700',
-    color: '#0FBBA1',
+    color: '#0EA5E9',
   },
   primaryCallBtn: {
     flex: 2,

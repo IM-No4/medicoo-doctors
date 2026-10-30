@@ -24,6 +24,7 @@ import {
 } from 'lucide-react-native';
 
 import { getLegalDocument, LegalDocumentType, LegalSectionDto } from '../../services/api/legal.api';
+import { accent } from '../../theme/accents';
 import { useTheme } from '../../theme/ThemeContext';
 
 interface PolicyContent {
@@ -156,6 +157,7 @@ export default function DoctorPolicyDetailScreen() {
   const textColor = isDark ? '#E2E8F0' : '#1E293B';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
   const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
+  const green = accent('green', isDark);
 
   useEffect(() => {
     RNStatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content', true);
@@ -255,9 +257,9 @@ export default function DoctorPolicyDetailScreen() {
           ]}
         >
           <View style={styles.topBadgeRow}>
-            <View style={styles.badgePill}>
-              <ShieldCheck size={14} color="#0FBBA1" />
-              <Text style={styles.badgePillText}>{fallback.badge}</Text>
+            <View style={[styles.badgePill, { backgroundColor: green.bg }]}>
+              <ShieldCheck size={14} color={green.fg} />
+              <Text style={[styles.badgePillText, { color: green.fg }]}>{fallback.badge}</Text>
             </View>
             <Text style={[styles.versionText, { color: subTextColor }]}>
               {docVersion}
@@ -302,7 +304,7 @@ export default function DoctorPolicyDetailScreen() {
           ]}
         >
           <View style={styles.certRow}>
-            <CheckCircle2 size={20} color="#0FBBA1" />
+            <CheckCircle2 size={20} color={green.fg} />
             <View style={styles.certTextCol}>
               <Text style={[styles.certTitle, { color: textColor }]}>
                 Legally Binding & Certified

@@ -28,6 +28,7 @@ import {
   Users,
 } from 'lucide-react-native';
 
+import { accent, AccentKind } from '../../theme/accents';
 import { useTheme } from '../../theme/ThemeContext';
 
 export interface PolicyMeta {
@@ -122,40 +123,24 @@ export default function DoctorPoliciesHubScreen() {
       ? (RNStatusBar.currentHeight ?? 24)
       : 20;
 
+  // each kind of policy has its own accent; the tile and the icon both come from the theme-aware accent so dark mode follows
+  const POLICY_ACCENT: Record<string, { kind: AccentKind; Icon: any }> = {
+    'file-text': { kind: 'violet', Icon: FileText },
+    'shield-check': { kind: 'blue', Icon: ShieldCheck },
+    stethoscope: { kind: 'green', Icon: Stethoscope },
+    users: { kind: 'violet', Icon: Users },
+    'credit-card': { kind: 'amber', Icon: CreditCard },
+  };
+  const policyTone = (iconName: string) => POLICY_ACCENT[iconName] || { kind: 'violet' as AccentKind, Icon: FileText };
+
   const getPolicyIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'file-text':
-        return <FileText size={20} color="#0FBBA1" />;
-      case 'shield-check':
-        return <ShieldCheck size={20} color="#0284C7" />;
-      case 'stethoscope':
-        return <Stethoscope size={20} color="#059669" />;
-      case 'users':
-        return <Users size={20} color="#7C3AED" />;
-      case 'credit-card':
-        return <CreditCard size={20} color="#D97706" />;
-      default:
-        return <FileText size={20} color="#0FBBA1" />;
-    }
+    const { kind, Icon } = policyTone(iconName);
+    return <Icon size={20} color={accent(kind, isDark).fg} />;
   };
 
-  const getIconBg = (iconName: string) => {
-    if (isDark) return '#172230';
-    switch (iconName) {
-      case 'file-text':
-        return '#ECFDF5';
-      case 'shield-check':
-        return '#E0F2FE';
-      case 'stethoscope':
-        return '#ECFDF5';
-      case 'users':
-        return '#F5F3FF';
-      case 'credit-card':
-        return '#FEF3C7';
-      default:
-        return '#F1F5F9';
-    }
-  };
+  const getIconBg = (iconName: string) => accent(policyTone(iconName).kind, isDark).bg;
+
+  const blue = accent('blue', isDark);
 
   return (
     <View style={[styles.container, { backgroundColor: bgColor }]}>
@@ -210,8 +195,8 @@ export default function DoctorPoliciesHubScreen() {
           ]}
         >
           <View style={styles.topOverviewRow}>
-            <View style={styles.overviewIconBox}>
-              <Scale size={22} color="#0FBBA1" />
+            <View style={[styles.overviewIconBox, { backgroundColor: blue.bg }]}>
+              <Scale size={22} color={blue.fg} />
             </View>
             <View style={styles.overviewTextCol}>
               <Text style={[styles.overviewTitle, { color: textColor }]}>
@@ -267,8 +252,8 @@ export default function DoctorPoliciesHubScreen() {
                         <Text style={[styles.policyTitle, { color: textColor }]}>
                           {policy.title}
                         </Text>
-                        <View style={styles.badgePill}>
-                          <Text style={styles.badgePillText}>{policy.badge}</Text>
+                        <View style={[styles.badgePill, { backgroundColor: blue.bg }]}>
+                          <Text style={[styles.badgePillText, { color: blue.fg }]}>{policy.badge}</Text>
                         </View>
                       </View>
 
@@ -304,7 +289,7 @@ export default function DoctorPoliciesHubScreen() {
           ]}
         >
           <View style={styles.legalHelpRow}>
-            <ShieldCheck size={20} color="#0FBBA1" />
+            <ShieldCheck size={20} color={blue.fg} />
             <View style={styles.legalHelpTextCol}>
               <Text style={[styles.legalHelpTitle, { color: textColor }]}>
                 Legal & Compliance Support

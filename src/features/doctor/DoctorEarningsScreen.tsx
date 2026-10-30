@@ -64,6 +64,7 @@ import {
   getPayoutMethodVerificationStatus,
   requestDoctorPayout,
 } from '../../services/api/doctor.api';
+import { accent } from '../../theme/accents';
 import { useTheme } from '../../theme/ThemeContext';
 import SlowInternetLoader from '../../components/network/SlowInternetLoader';
 import AutoPayoutCard from './components/AutoPayoutCard';
@@ -199,6 +200,8 @@ export default function DoctorEarningsScreen() {
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
   const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
   const iconColor = isDark ? '#94A3B8' : '#475569';
+  const neutralTileBg = isDark ? '#172230' : '#F1F5F9';
+  const A = { green: accent('green', isDark), blue: accent('blue', isDark), violet: accent('violet', isDark), sky: accent('sky', isDark), amber: accent('amber', isDark) };
 
   useEffect(() => {
     RNStatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content', true);
@@ -702,7 +705,7 @@ export default function DoctorEarningsScreen() {
         >
           <View style={styles.balanceHeaderRow}>
             <View style={styles.titleIconRow}>
-              <Wallet size={16} color="#0FBBA1" />
+              <Wallet size={16} color={A.green.fg} />
               <Text style={[styles.cardTitle, { color: textColor }]}>
                 Available for Withdrawal
               </Text>
@@ -746,7 +749,7 @@ export default function DoctorEarningsScreen() {
 
             <View style={styles.metricItem}>
               <View style={styles.metricLabelRow}>
-                <TrendingUp size={12} color="#0FBBA1" />
+                <TrendingUp size={12} color={A.green.fg} />
                 <Text style={[styles.metricLabel, { color: subTextColor }]}>
                   This Month
                 </Text>
@@ -799,7 +802,7 @@ export default function DoctorEarningsScreen() {
         >
           <View style={styles.cardHeaderRow}>
             <View style={styles.titleIconRow}>
-              <Landmark size={16} color="#0FBBA1" />
+              <Landmark size={16} color={A.blue.fg} />
               <Text style={[styles.cardTitle, { color: textColor }]}>
                 Payout Method
               </Text>
@@ -810,7 +813,7 @@ export default function DoctorEarningsScreen() {
                 onPress={() => setIsSetupModalVisible(true)}
                 activeOpacity={0.7}
               >
-                <Edit3 size={13} color="#0FBBA1" />
+                <Edit3 size={13} color={iconColor} />
                 <Text style={styles.changeAccountLinkText}>Edit</Text>
               </TouchableOpacity>
             ) : null}
@@ -831,10 +834,10 @@ export default function DoctorEarningsScreen() {
                   <View
                     style={[
                       styles.bankCardLogoCircle,
-                      { backgroundColor: isDark ? '#0E2924' : '#E6FAF6' },
+                      { backgroundColor: A.blue.bg },
                     ]}
                   >
-                    <Building2 size={16} color="#0FBBA1" />
+                    <Building2 size={16} color={A.blue.fg} />
                   </View>
                   <View style={{ flex: 1 }}>
                     <Text
@@ -903,10 +906,10 @@ export default function DoctorEarningsScreen() {
                 <View
                   style={[
                     styles.emptyPayoutIconCircle,
-                    { backgroundColor: isDark ? '#172230' : '#E6FAF6' },
+                    { backgroundColor: A.blue.bg },
                   ]}
                 >
-                  <Landmark size={20} color="#0FBBA1" />
+                  <Landmark size={20} color={A.blue.fg} />
                 </View>
                 <View style={styles.emptyPayoutTextCol}>
                   <Text style={[styles.emptyPayoutHeadline, { color: textColor }]}>
@@ -954,10 +957,10 @@ export default function DoctorEarningsScreen() {
               <View
                 style={[
                   styles.headerIconCircle,
-                  { backgroundColor: isDark ? '#0E2924' : '#E6FAF6' },
+                  { backgroundColor: A.green.bg },
                 ]}
               >
-                <TrendingUp size={16} color="#0FBBA1" />
+                <TrendingUp size={16} color={A.green.fg} />
               </View>
               <View>
                 <Text style={[styles.cardTitle, { color: textColor }]}>
@@ -1051,9 +1054,7 @@ export default function DoctorEarningsScreen() {
                               ? isDark
                                 ? '#2E2210'
                                 : '#FEF3C7'
-                              : isDark
-                              ? '#0E2924'
-                              : '#E6FAF6',
+                              : A.green.bg,
                           },
                         ]}
                       >
@@ -1062,7 +1063,7 @@ export default function DoctorEarningsScreen() {
                         ) : isOnHold ? (
                           <Clock size={16} color="#D97706" />
                         ) : (
-                          <ArrowUpRight size={16} color="#10B981" />
+                          <ArrowUpRight size={16} color={A.green.fg} />
                         )}
                       </View>
 
@@ -1162,10 +1163,10 @@ export default function DoctorEarningsScreen() {
               <View
                 style={[
                   styles.headerIconCircle,
-                  { backgroundColor: isDark ? '#0E2924' : '#E6FAF6' },
+                  { backgroundColor: A.violet.bg },
                 ]}
               >
-                <Receipt size={16} color="#0FBBA1" />
+                <Receipt size={16} color={A.violet.fg} />
               </View>
               <View>
                 <Text style={[styles.cardTitle, { color: textColor }]}>
@@ -1255,11 +1256,11 @@ export default function DoctorEarningsScreen() {
                           style={[
                             styles.txIconCircle,
                             {
-                              backgroundColor: isDark ? '#172230' : '#E6FAF6',
+                              backgroundColor: A.blue.bg,
                             },
                           ]}
                         >
-                          <ArrowDownRight size={16} color="#0FBBA1" />
+                          <ArrowDownRight size={16} color={A.blue.fg} />
                         </View>
 
                         <View>
@@ -2007,7 +2008,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   settlementBadge: {
-    backgroundColor: '#E6FAF6',
+    backgroundColor: 'rgba(100, 116, 139, 0.14)',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 8,
@@ -2015,7 +2016,7 @@ const styles = StyleSheet.create({
   settlementBadgeText: {
     fontSize: 10.5,
     fontWeight: '700',
-    color: '#0FBBA1',
+    color: '#64748B',
   },
   balanceAmountText: {
     fontSize: 32,
@@ -2080,7 +2081,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: '#E6FAF6',
+    backgroundColor: 'rgba(100, 116, 139, 0.14)',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
@@ -2088,7 +2089,7 @@ const styles = StyleSheet.create({
   changeAccountLinkText: {
     fontSize: 11.5,
     fontWeight: '700',
-    color: '#0FBBA1',
+    color: '#64748B',
   },
   bankCardSurface: {
     borderRadius: 14,
@@ -2161,7 +2162,7 @@ const styles = StyleSheet.create({
   payoutScheduleText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#0FBBA1',
+    color: '#64748B',
   },
 
   // Empty Payout State

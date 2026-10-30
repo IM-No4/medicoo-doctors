@@ -393,7 +393,7 @@ export default function ManageAvailabilityScreen() {
                           }
                           activeOpacity={0.7}
                         >
-                          <Clock size={14} color="#0FBBA1" />
+                          <Clock size={14} color="#3B82F6" />
                           <Text
                             style={[styles.timeSlotText, { color: textColor }]}
                           >
@@ -416,7 +416,7 @@ export default function ManageAvailabilityScreen() {
                           onPress={() => setPickerFor({ day, field: 'end' })}
                           activeOpacity={0.7}
                         >
-                          <Clock size={14} color="#0FBBA1" />
+                          <Clock size={14} color="#3B82F6" />
                           <Text
                             style={[styles.timeSlotText, { color: textColor }]}
                           >

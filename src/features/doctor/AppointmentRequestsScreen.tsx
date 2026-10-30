@@ -35,6 +35,7 @@ import {
   getDoctorAppointmentRequests,
   respondToAppointmentRequest,
 } from '../../services/api/doctor.api';
+import { accent } from '../../theme/accents';
 import { useTheme } from '../../theme/ThemeContext';
 import SlowInternetLoader from '../../components/network/SlowInternetLoader';
 
@@ -246,6 +247,8 @@ export default function AppointmentRequestsScreen() {
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
   const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
   const iconColor = isDark ? '#94A3B8' : '#64748B';
+  const neutralTileBg = isDark ? '#172230' : '#F1F5F9';
+  const A = { green: accent('green', isDark), blue: accent('blue', isDark), violet: accent('violet', isDark), sky: accent('sky', isDark), amber: accent('amber', isDark) };
 
   useEffect(() => {
     RNStatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content', true);
@@ -478,13 +481,13 @@ export default function AppointmentRequestsScreen() {
             <View
               style={[
                 styles.patientAvatarCircle,
-                { backgroundColor: isDark ? '#172230' : '#E6FAF6' },
+                { backgroundColor: A.blue.bg },
               ]}
             >
               <Text
                 style={[
                   styles.patientAvatarLetter,
-                  { color: isDark ? '#0FBBA1' : '#0D9488' },
+                  { color: A.blue.fg },
                 ]}
               >
                 {patientName.charAt(0).toUpperCase()}
@@ -500,15 +503,15 @@ export default function AppointmentRequestsScreen() {
               {patientName}
             </Text>
             {item.booking && !item.booking.bookedForSelf ? (
-              <Text style={{ fontSize: 11, fontWeight: '700', color: '#10B981', marginBottom: 2 }} numberOfLines={1}>
+              <Text style={{ fontSize: 11, fontWeight: '700', color: iconColor, marginBottom: 2 }} numberOfLines={1}>
                 Booked by {item.booking.bookedBy?.name || 'a family member'}
               </Text>
             ) : null}
 
             <View style={styles.consultModeRow}>
-              {type === 'video' && <Video size={13} color="#0FBBA1" />}
-              {type === 'voice' && <Phone size={13} color="#0FBBA1" />}
-              {type === 'chat' && <MessageCircle size={13} color="#0FBBA1" />}
+              {type === 'video' && <Video size={13} color={A.sky.fg} />}
+              {type === 'voice' && <Phone size={13} color={A.sky.fg} />}
+              {type === 'chat' && <MessageCircle size={13} color={A.sky.fg} />}
               <Text style={[styles.consultModeLabel, { color: subTextColor }]}>
                 {type === 'video'
                   ? 'Video Call'
@@ -552,14 +555,14 @@ export default function AppointmentRequestsScreen() {
           ]}
         >
           <View style={styles.scheduleItem}>
-            <Calendar size={14} color="#0FBBA1" />
+            <Calendar size={14} color={A.blue.fg} />
             <Text style={[styles.scheduleDateText, { color: textColor }]}>
               {formatDate(item.preferredDate)}
             </Text>
           </View>
 
           <View style={styles.scheduleItem}>
-            <Clock size={14} color="#0FBBA1" />
+            <Clock size={14} color={A.blue.fg} />
             <Text style={[styles.scheduleTimeText, { color: textColor }]}>
               {formatTime(item.preferredTime)}
             </Text>
@@ -657,7 +660,7 @@ export default function AppointmentRequestsScreen() {
             { backgroundColor: isDark ? '#111B27' : '#FFFFFF' },
           ]}
         >
-          <Inbox size={26} color="#0FBBA1" />
+          <Inbox size={26} color={iconColor} />
         </View>
         <Text style={[styles.emptyTitle, { color: textColor }]}>
           No {activeLabel.toLowerCase()}

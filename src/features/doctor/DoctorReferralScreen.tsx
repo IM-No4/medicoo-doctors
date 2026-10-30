@@ -340,7 +340,7 @@ export default function DoctorReferralScreen() {
               onPress={() => setShowRedeemField(true)}
               activeOpacity={0.7}
             >
-              <Gift size={14} color="#0FBBA1" />
+              <Gift size={14} color="#8B5CF6" />
               <Text style={styles.redeemToggleText}>Have a colleague&apos;s code? Redeem it</Text>
             </TouchableOpacity>
           )}

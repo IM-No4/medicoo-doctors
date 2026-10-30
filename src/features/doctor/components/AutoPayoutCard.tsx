@@ -139,7 +139,7 @@ export default function AutoPayoutCard({
     <View style={[styles.card, { backgroundColor: cardBg, borderColor: cardBorder }]}>
       <View style={styles.headerRow}>
         <View style={styles.titleRow}>
-          <CalendarClock size={16} color={accent} />
+          <CalendarClock size={16} color={isDark ? "#60A5FA" : "#3B82F6"} />
           <Text style={[styles.title, { color: textColor }]}>Automatic payout request</Text>
         </View>
         <Switch
