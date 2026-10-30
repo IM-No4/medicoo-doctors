@@ -1,8 +1,9 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as NavigationBar from 'expo-navigation-bar';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -27,7 +28,6 @@ import {
   CheckCircle2,
   ChevronRight,
   Clock,
-  Gift,
   Headphones,
   MessageCircle,
   Phone,
@@ -49,7 +49,6 @@ import { useLanguage } from '../../i18n/LanguageContext';
 import { AppDispatch, RootState } from '../../redux/store';
 import { loadProfileFromServer, setProfileName } from '../../redux/slices/profileSlice';
 import DoctorNameModal from '../../components/modals/DoctorNameModal';
-import { ActiveCampaignResponse, getActiveCampaign, joinCampaign } from '../../services/api/campaign.api';
 import {
   getDoctorAppointmentRequests,
   getDoctorEarnings,
@@ -103,6 +102,10 @@ export default function DoctorDashboardScreen() {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [todayModalVisible, setTodayModalVisible] = useState(false);
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
+  // pull to refresh is only armed when the page is at the very top, so a drag lower down never starts it
+  const [atTop, setAtTop] = useState(true);
+  const lastRefreshAt = useRef(0);
+  const [touchOnHeader, setTouchOnHeader] = useState(false);
 
   const [doctorData, setDoctorData] = useState<any>(null);
   const [nameModalDismissed, setNameModalDismissed] = useState(false);
@@ -111,8 +114,6 @@ export default function DoctorDashboardScreen() {
   const [upcomingAppointments, setUpcomingAppointments] = useState<any[]>([]);
   const [earningsSummary, setEarningsSummary] = useState<any>(null);
   const [reviewsSummary, setReviewsSummary] = useState<any>(null);
-  const [campaignInfo, setCampaignInfo] = useState<ActiveCampaignResponse | null>(null);
-  const [joiningCampaign, setJoiningCampaign] = useState(false);
 
   const [statusModal, setStatusModal] = useState<{
     visible: boolean;
@@ -194,6 +195,8 @@ export default function DoctorDashboardScreen() {
   const handleScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
       const scrollY = e.nativeEvent.contentOffset.y;
+      const nowAtTop = scrollY <= 1;
+      setAtTop((previous) => (previous === nowAtTop ? previous : nowAtTop));
       const isPast = scrollY > 80;
       if (isPast !== isScrolledPastHero) {
         setIsScrolledPastHero(isPast);
@@ -218,12 +221,11 @@ export default function DoctorDashboardScreen() {
 
   const loadDashboardData = useCallback(async () => {
     try {
-      const [profileRes, appointmentsRes, earningsRes, reviewsRes, campaignRes] = await Promise.allSettled([
+      const [profileRes, appointmentsRes, earningsRes, reviewsRes] = await Promise.allSettled([
         getDoctorProfile(),
         getDoctorAppointmentRequests({ limit: 20 }),
         getDoctorEarnings(),
         getMyDoctorReviews(),
-        getActiveCampaign(),
       ]);
 
       if (profileRes.status === 'fulfilled' && profileRes.value) {
@@ -251,10 +253,6 @@ export default function DoctorDashboardScreen() {
       if (reviewsRes.status === 'fulfilled' && reviewsRes.value) {
         setReviewsSummary(reviewsRes.value);
       }
-
-      if (campaignRes.status === 'fulfilled' && campaignRes.value) {
-        setCampaignInfo(campaignRes.value);
-      }
     } catch (error) {
       console.error('Error loading dashboard data', error);
     } finally {
@@ -270,6 +268,7 @@ export default function DoctorDashboardScreen() {
   );
 
   const handleToggleOnline = async (val: boolean) => {
+    if (togglingStatus) return;
     try {
       setTogglingStatus(true);
       setIsOnline(val);
@@ -284,24 +283,6 @@ export default function DoctorDashboardScreen() {
       });
     } finally {
       setTogglingStatus(false);
-    }
-  };
-
-  const handleJoinCampaign = async () => {
-    if (!campaignInfo?.campaign || joiningCampaign) return;
-    try {
-      setJoiningCampaign(true);
-      const result = await joinCampaign(campaignInfo.campaign.id);
-      setCampaignInfo(result);
-    } catch (error: any) {
-      setStatusModal({
-        visible: true,
-        status: 'error',
-        title: 'Could Not Join Campaign',
-        message: error?.response?.data?.message || 'This campaign may no longer be available. Please try again.',
-      });
-    } finally {
-      setJoiningCampaign(false);
     }
   };
 
@@ -469,7 +450,12 @@ export default function DoctorDashboardScreen() {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
+            enabled={atTop && !togglingStatus && !touchOnHeader}
             onRefresh={() => {
+              // one refresh at a time, and not again within 3 seconds of the last one
+              const now = Date.now();
+              if (refreshing || now - lastRefreshAt.current < 3000) return;
+              lastRefreshAt.current = now;
               setRefreshing(true);
               loadDashboardData();
             }}
@@ -480,7 +466,12 @@ export default function DoctorDashboardScreen() {
         }
       >
         {/* ═══════════════════ RESTRAINED HERO HEADER ═══════════════════ */}
-        <View style={styles.heroWrapper}>
+        <View
+          style={styles.heroWrapper}
+          onTouchStart={() => setTouchOnHeader(true)}
+          onTouchEnd={() => setTouchOnHeader(false)}
+          onTouchCancel={() => setTouchOnHeader(false)}
+        >
           <LinearGradient
             colors={['#087F6D', '#0FBBA1']}
             start={{ x: 0, y: 0 }}
@@ -525,7 +516,15 @@ export default function DoctorDashboardScreen() {
               </View>
 
               {/* Practice Telehealth Status Banner */}
-              <View style={styles.practiceStatusBox}>
+              <TouchableOpacity
+                style={styles.practiceStatusBox}
+                activeOpacity={0.8}
+                disabled={togglingStatus}
+                onPress={() => handleToggleOnline(!isOnline)}
+                accessibilityRole="switch"
+                accessibilityState={{ checked: isOnline, busy: togglingStatus }}
+                accessibilityLabel="Online for consultations"
+              >
                 <View style={styles.practiceStatusLeft}>
                   <View
                     style={[
@@ -539,20 +538,19 @@ export default function DoctorDashboardScreen() {
                     </Text>
                     <Text style={styles.practiceStatusSub} numberOfLines={1}>
                       {isOnline
-                        ? 'Ready to receive calls & chat requests'
-                        : 'Appointments & direct calls paused'}
+                        ? 'Tap to go offline'
+                        : 'Tap to go online'}
                     </Text>
                   </View>
                 </View>
 
-                <Switch
-                  value={isOnline}
-                  onValueChange={handleToggleOnline}
-                  disabled={togglingStatus}
-                  trackColor={{ false: 'rgba(255,255,255,0.25)', true: '#34D399' }}
-                  thumbColor="#FFFFFF"
-                />
-              </View>
+                {/* looks like a switch, works as a tap: nothing to drag */}
+                <View style={[styles.switchTrack, { backgroundColor: isOnline ? '#34D399' : 'rgba(255,255,255,0.3)' }, isOnline ? styles.switchTrackOn : styles.switchTrackOff]}>
+                  <View style={[styles.switchThumb, isOnline ? styles.switchThumbOn : styles.switchThumbOff]}>
+                    {togglingStatus && <ActivityIndicator size={12 as any} color="#0FBBA1" />}
+                  </View>
+                </View>
+              </TouchableOpacity>
             </View>
           </LinearGradient>
         </View>
@@ -663,73 +661,6 @@ export default function DoctorDashboardScreen() {
                       <ChevronRight size={14} color={isExpired ? '#EF4444' : (isDark ? '#FBBF24' : '#B45309')} strokeWidth={2.4} />
                     </View>
                   </TouchableOpacity>
-                );
-              })()}
-
-              {/* ═══════════════════ CAMPAIGN STRIP ═══════════════════ */}
-              {campaignInfo?.campaign && !campaignInfo.enrollment && (() => {
-                const { campaign } = campaignInfo;
-                return (
-                  <>
-                    {campaign.bannerImageUrl && (
-                      <Image
-                        source={{ uri: campaign.bannerImageUrl }}
-                        style={{ width: '100%', height: 110, borderRadius: 16, marginTop: 4 }}
-                        resizeMode="cover"
-                      />
-                    )}
-                    <TouchableOpacity
-                      style={[
-                        styles.pendingUpdateStrip,
-                        { backgroundColor: isDark ? '#1A0F2E' : '#F5F3FF', borderColor: isDark ? '#4C1D95' : '#DDD6FE' },
-                      ]}
-                      onPress={handleJoinCampaign}
-                      disabled={joiningCampaign}
-                      activeOpacity={0.75}
-                    >
-                    <View style={styles.pendingUpdateStripLeft}>
-                      <View style={[styles.pendingUpdateStripIcon, { backgroundColor: isDark ? '#3B0F6E' : '#EDE9FE' }]}>
-                        <Gift size={13} color={isDark ? '#C4B5FD' : '#7C3AED'} strokeWidth={2.4} />
-                      </View>
-                      <Text
-                        style={[styles.pendingUpdateStripText, { color: isDark ? '#DDD6FE' : '#5B21B6' }]}
-                        numberOfLines={2}
-                      >
-                        {`0% commission on your first ${campaign.freeConsultationsPerDoctor} consultations - tap to join`}
-                      </Text>
-                    </View>
-                    <View style={styles.pendingUpdateStripRight}>
-                      <Text style={[styles.pendingUpdateStripAction, { color: isDark ? '#C4B5FD' : '#7C3AED' }]}>
-                        {joiningCampaign ? 'Joining…' : 'Join'}
-                      </Text>
-                      {!joiningCampaign && <ChevronRight size={14} color={isDark ? '#C4B5FD' : '#7C3AED'} strokeWidth={2.4} />}
-                    </View>
-                    </TouchableOpacity>
-                  </>
-                );
-              })()}
-
-              {campaignInfo?.campaign && campaignInfo.enrollment && campaignInfo.enrollment.status === 'active' && (() => {
-                const { campaign, enrollment } = campaignInfo;
-                return (
-                  <View
-                    style={[
-                      styles.pendingUpdateStrip,
-                      { backgroundColor: isDark ? '#0B2A1C' : '#ECFDF5', borderColor: isDark ? '#065F46' : '#A7F3D0' },
-                    ]}
-                  >
-                    <View style={styles.pendingUpdateStripLeft}>
-                      <View style={[styles.pendingUpdateStripIcon, { backgroundColor: isDark ? '#064E3B' : '#D1FAE5' }]}>
-                        <Gift size={13} color={isDark ? '#6EE7B7' : '#059669'} strokeWidth={2.4} />
-                      </View>
-                      <Text
-                        style={[styles.pendingUpdateStripText, { color: isDark ? '#A7F3D0' : '#065F46' }]}
-                        numberOfLines={2}
-                      >
-                        {`${campaign.name}: ${enrollment.consultationsUsed}/${enrollment.consultationsLimit} free-commission consultations used`}
-                      </Text>
-                    </View>
-                  </View>
                 );
               })()}
 
@@ -1384,6 +1315,25 @@ const styles = StyleSheet.create({
     paddingVertical: 9,
     borderRadius: 12,
   },
+  switchTrack: {
+    width: 44,
+    height: 26,
+    borderRadius: 13,
+    justifyContent: 'center',
+    paddingHorizontal: 3,
+  },
+  switchTrackOn: { alignItems: 'flex-end' },
+  switchTrackOff: { alignItems: 'flex-start' },
+  switchThumb: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  switchThumbOn: {},
+  switchThumbOff: {},
   practiceStatusLeft: {
     flexDirection: 'row',
     alignItems: 'center',
