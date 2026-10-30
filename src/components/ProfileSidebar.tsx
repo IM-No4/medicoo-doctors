@@ -573,7 +573,7 @@ export default function ProfileSidebar({
             subTextColor={subTextColor}
             dividerColor={dividerColor}
             showDivider={false}
-            onPress={() => navigateTo('DoctorSettings')}
+            onPress={() => navigateTo('DeleteAccount')}
           />
         </View>
 

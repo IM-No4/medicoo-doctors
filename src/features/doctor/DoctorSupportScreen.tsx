@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -9,15 +9,12 @@ import {
   ScrollView,
   StatusBar as RNStatusBar,
   StyleSheet,
-  Switch,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
-  AlertCircle,
   ArrowLeft,
   ChevronDown,
   ChevronRight,
@@ -26,19 +23,14 @@ import {
   Mail,
   MessageSquare,
   PhoneCall,
-  Send,
   Shield,
   Sparkles,
 } from 'lucide-react-native';
 
 import StatusModal, { StatusType } from '../../components/modals/StatusModal';
+import { accent } from '../../theme/accents';
 import { useTheme } from '../../theme/ThemeContext';
-import {
-  createSupportRequest,
-  getSupportRequests,
-  SupportTicket,
-  SupportTicketCategory,
-} from '../../services/api/support.api';
+import { getSupportRequests, SupportTicket, TICKET_CATEGORIES } from '../../services/api/support.api';
 
 interface FAQItem {
   id: string;
@@ -94,15 +86,6 @@ interface Ticket {
   replyPreview: string;
 }
 
-const TICKET_CATEGORIES: { label: string; value: SupportTicketCategory }[] = [
-  { label: 'Payouts & Earnings', value: 'payouts_earnings' },
-  { label: 'Schedule & Availability', value: 'schedule_availability' },
-  { label: 'Patient Consultation', value: 'patient_consultation' },
-  { label: 'E-Prescriptions', value: 'e_prescriptions' },
-  { label: 'Account & Verification', value: 'account_verification' },
-  { label: 'Technical Glitch', value: 'technical_glitch' },
-];
-
 const formatTicketDate = (iso?: string) => {
   if (!iso) return '';
   const d = new Date(iso);
@@ -152,14 +135,6 @@ export default function DoctorSupportScreen() {
   // FAQ Accordion
   const [expandedFaq, setExpandedFaq] = useState<string | null>(null);
 
-  // Ticket Form
-  const [selectedCategory, setSelectedCategory] = useState(TICKET_CATEGORIES[0]);
-  const [ticketSubject, setTicketSubject] = useState('');
-  const [ticketMessage, setTicketMessage] = useState('');
-  const [isUrgent, setIsUrgent] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [showTicketForm, setShowTicketForm] = useState(false);
-
   // Tickets
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loadingTickets, setLoadingTickets] = useState(true);
@@ -176,9 +151,11 @@ export default function DoctorSupportScreen() {
     }
   };
 
-  useEffect(() => {
-    loadTickets();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadTickets();
+    }, [])
+  );
 
   // Status Modal
   const [statusModal, setStatusModal] = useState<{
@@ -205,6 +182,7 @@ export default function DoctorSupportScreen() {
   const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
   const inputBg = isDark ? '#0D1520' : '#F8FAFC';
   const inputBorder = isDark ? '#1E2D3D' : '#E2E8F0';
+  const A = { green: accent('green', isDark), blue: accent('blue', isDark), violet: accent('violet', isDark), amber: accent('amber', isDark) };
 
   useEffect(() => {
     RNStatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content', true);
@@ -242,54 +220,6 @@ export default function DoctorSupportScreen() {
 
   const handleLiveChat = () => {
     navigation.navigate('DoctorLiveChat');
-  };
-
-  const handleSubmitTicket = async () => {
-    if (!ticketSubject.trim()) {
-      showStatus('warning', 'Subject Required', 'Please enter a brief subject for your request.');
-      return;
-    }
-    if (!ticketMessage.trim() || ticketMessage.trim().length < 10) {
-      showStatus('warning', 'Details Required', 'Please provide issue details (min. 10 characters).');
-      return;
-    }
-
-    setSubmitting(true);
-    try {
-      const res = await createSupportRequest({
-        category: selectedCategory.value,
-        priority: isUrgent ? 'urgent' : 'medium',
-        subject: ticketSubject.trim(),
-        description: ticketMessage.trim(),
-      });
-
-      const newTicket: Ticket = {
-        id: res.data.requestId,
-        subject: ticketSubject.trim(),
-        category: selectedCategory.label,
-        date: formatTicketDate(res.data.createdOn) || 'Just now',
-        status: isUrgent ? 'Escalated' : 'In Review',
-        replyPreview: isUrgent
-          ? 'Emergency ticket escalated to medical operations lead.'
-          : 'Request received. Our team will respond shortly.',
-      };
-
-      setTickets((prev) => [newTicket, ...prev]);
-      setTicketSubject('');
-      setTicketMessage('');
-      setIsUrgent(false);
-      setShowTicketForm(false);
-
-      showStatus(
-        'success',
-        'Ticket Created',
-        `Ticket #${res.data.requestId} has been lodged. Our team will get back to you shortly.`
-      );
-    } catch {
-      showStatus('error', 'Submission Failed', 'Could not submit your request. Please check your connection and try again.');
-    } finally {
-      setSubmitting(false);
-    }
   };
 
   return (
@@ -367,8 +297,8 @@ export default function DoctorSupportScreen() {
               onPress={handleCallSupport}
               activeOpacity={0.6}
             >
-              <View style={[styles.channelIconBox, { backgroundColor: '#ECFDF5' }]}>
-                <PhoneCall size={18} color="#059669" />
+              <View style={[styles.channelIconBox, { backgroundColor: A.green.bg }]}>
+                <PhoneCall size={18} color={A.green.fg} />
               </View>
               <View style={styles.channelTextCol}>
                 <Text style={[styles.channelRowTitle, { color: textColor }]}>
@@ -389,8 +319,8 @@ export default function DoctorSupportScreen() {
               onPress={handleEmailSupport}
               activeOpacity={0.6}
             >
-              <View style={[styles.channelIconBox, { backgroundColor: '#EFF6FF' }]}>
-                <Mail size={18} color="#2563EB" />
+              <View style={[styles.channelIconBox, { backgroundColor: A.blue.bg }]}>
+                <Mail size={18} color={A.blue.fg} />
               </View>
               <View style={styles.channelTextCol}>
                 <Text style={[styles.channelRowTitle, { color: textColor }]}>
@@ -411,8 +341,8 @@ export default function DoctorSupportScreen() {
               onPress={handleLiveChat}
               activeOpacity={0.6}
             >
-              <View style={[styles.channelIconBox, { backgroundColor: '#F5F3FF' }]}>
-                <MessageSquare size={18} color="#7C3AED" />
+              <View style={[styles.channelIconBox, { backgroundColor: A.violet.bg }]}>
+                <MessageSquare size={18} color={A.violet.fg} />
               </View>
               <View style={styles.channelTextCol}>
                 <Text style={[styles.channelRowTitle, { color: textColor }]}>
@@ -441,174 +371,17 @@ export default function DoctorSupportScreen() {
                     Raise a Support Request
                   </Text>
                 </View>
-                {!showTicketForm && (
-                  <TouchableOpacity
-                    style={styles.toggleFormBtn}
-                    onPress={() => setShowTicketForm(true)}
-                    activeOpacity={0.7}
-                  >
-                    <Text style={styles.toggleFormBtnText}>+ New Request</Text>
-                  </TouchableOpacity>
-                )}
+                <TouchableOpacity
+                  style={styles.toggleFormBtn}
+                  onPress={() => navigation.navigate('DoctorNewSupportRequest')}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.toggleFormBtnText}>+ New Request</Text>
+                </TouchableOpacity>
               </View>
             </View>
 
-            {showTicketForm ? (
-              <View style={styles.formInsideCardCol}>
-                {/* Category Pills */}
-                <Text style={[styles.formInputLabel, { color: textColor }]}>
-                  Category
-                </Text>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.categoryPillsRow}
-                >
-                  {TICKET_CATEGORIES.map((cat) => {
-                    const isSelected = selectedCategory.value === cat.value;
-                    return (
-                      <TouchableOpacity
-                        key={cat.value}
-                        style={[
-                          styles.catPill,
-                          {
-                            backgroundColor: isSelected
-                              ? '#0FBBA1'
-                              : isDark
-                              ? '#172230'
-                              : '#F1F5F9',
-                            borderColor: isSelected
-                              ? '#0FBBA1'
-                              : isDark
-                              ? '#1E2D3D'
-                              : '#E2E8F0',
-                          },
-                        ]}
-                        onPress={() => setSelectedCategory(cat)}
-                        activeOpacity={0.7}
-                      >
-                        <Text
-                          style={[
-                            styles.catPillText,
-                            {
-                              color: isSelected ? '#FFFFFF' : subTextColor,
-                              fontWeight: isSelected ? '700' : '500',
-                            },
-                          ]}
-                        >
-                          {cat.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </ScrollView>
-
-                {/* Subject */}
-                <Text style={[styles.formInputLabel, { color: textColor }]}>
-                  Subject
-                </Text>
-                <TextInput
-                  style={[
-                    styles.textInput,
-                    {
-                      backgroundColor: inputBg,
-                      borderColor: inputBorder,
-                      color: textColor,
-                    },
-                  ]}
-                  placeholder="e.g., Payout discrepancy for consultation #892"
-                  placeholderTextColor={subTextColor}
-                  value={ticketSubject}
-                  onChangeText={setTicketSubject}
-                  maxLength={100}
-                />
-
-                {/* Description */}
-                <Text style={[styles.formInputLabel, { color: textColor }]}>
-                  Details
-                </Text>
-                <TextInput
-                  style={[
-                    styles.textAreaInput,
-                    {
-                      backgroundColor: inputBg,
-                      borderColor: inputBorder,
-                      color: textColor,
-                    },
-                  ]}
-                  placeholder="Describe your query or provide the patient appointment ID..."
-                  placeholderTextColor={subTextColor}
-                  value={ticketMessage}
-                  onChangeText={setTicketMessage}
-                  multiline
-                  numberOfLines={4}
-                  textAlignVertical="top"
-                />
-
-                {/* Urgent Switch */}
-                <View
-                  style={[
-                    styles.urgentSwitchRow,
-                    {
-                      backgroundColor: isDark ? '#172230' : '#F8FAFC',
-                      borderColor: isDark ? '#1E2D3D' : '#E2E8F0',
-                    },
-                  ]}
-                >
-                  <View style={styles.urgentLeft}>
-                    <AlertCircle size={17} color={isUrgent ? '#EF4444' : subTextColor} />
-                    <View style={styles.urgentTextCol}>
-                      <Text
-                        style={[
-                          styles.urgentTitle,
-                          { color: isUrgent ? '#EF4444' : textColor },
-                        ]}
-                      >
-                        Consultation Emergency
-                      </Text>
-                      <Text style={[styles.urgentSub, { color: subTextColor }]}>
-                        Immediate live priority routing
-                      </Text>
-                    </View>
-                  </View>
-                  <Switch
-                    value={isUrgent}
-                    onValueChange={setIsUrgent}
-                    trackColor={{ false: '#CBD5E1', true: '#FCA5A5' }}
-                    thumbColor={isUrgent ? '#EF4444' : '#F8FAFC'}
-                  />
-                </View>
-
-                {/* Action Buttons */}
-                <View style={styles.formActionRow}>
-                  <TouchableOpacity
-                    style={[styles.cancelBtn, { borderColor: dividerColor }]}
-                    onPress={() => setShowTicketForm(false)}
-                    activeOpacity={0.7}
-                  >
-                    <Text style={[styles.cancelBtnText, { color: subTextColor }]}>
-                      Cancel
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={[styles.submitBtn, submitting && { opacity: 0.7 }]}
-                    onPress={handleSubmitTicket}
-                    disabled={submitting}
-                    activeOpacity={0.8}
-                  >
-                    {submitting ? (
-                      <ActivityIndicator size="small" color="#FFFFFF" />
-                    ) : (
-                      <>
-                        <Send size={15} color="#FFFFFF" />
-                        <Text style={styles.submitBtnText}>Submit Request</Text>
-                      </>
-                    )}
-                  </TouchableOpacity>
-                </View>
-              </View>
-            ) : loadingTickets ? (
+            {loadingTickets ? (
               <View style={styles.ticketsLoadingRow}>
                 <ActivityIndicator size="small" color={subTextColor} />
               </View>
@@ -640,14 +413,17 @@ export default function DoctorSupportScreen() {
                                 isResolved && styles.statusPillResolved,
                                 isEscalated && styles.statusPillEscalated,
                                 !isResolved && !isEscalated && styles.statusPillReview,
+                                isResolved && { backgroundColor: A.green.bg },
+                                isEscalated && { backgroundColor: isDark ? '#2A1417' : '#FEF2F2' },
+                                !isResolved && !isEscalated && { backgroundColor: A.amber.bg },
                               ]}
                             >
                               <Text
                                 style={[
                                   styles.statusPillText,
-                                  isResolved && { color: '#059669' },
-                                  isEscalated && { color: '#DC2626' },
-                                  !isResolved && !isEscalated && { color: '#D97706' },
+                                  isResolved && { color: A.green.fg },
+                                  isEscalated && { color: isDark ? '#F87171' : '#DC2626' },
+                                  !isResolved && !isEscalated && { color: A.amber.fg },
                                 ]}
                               >
                                 {tk.status}
@@ -747,7 +523,7 @@ export default function DoctorSupportScreen() {
             activeOpacity={0.7}
           >
             <View style={styles.complianceRow}>
-              <Shield size={18} color="#0FBBA1" />
+              <Shield size={18} color={A.blue.fg} />
               <View style={styles.complianceTextCol}>
                 <Text style={[styles.complianceTitle, { color: textColor }]}>
                   HIPAA & Telemedicine Certified

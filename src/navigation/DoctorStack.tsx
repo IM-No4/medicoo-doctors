@@ -3,12 +3,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
 import AppointmentRequestsScreen from '../features/doctor/AppointmentRequestsScreen';
+import DeleteAccountScreen from '../features/doctor/DeleteAccountScreen';
 import DoctorCallScreen from '../features/doctor/DoctorCallScreen';
 import DoctorChatScreen from '../features/doctor/DoctorChatScreen';
 import DoctorDashboardScreen from '../features/doctor/DoctorDashboardScreen';
 import DoctorDetailScreen from '../features/doctor/DoctorDetailScreen';
 import DoctorEarningsScreen from '../features/doctor/DoctorEarningsScreen';
 import DoctorLiveChatScreen from '../features/doctor/DoctorLiveChatScreen';
+import DoctorNewSupportRequestScreen from '../features/doctor/DoctorNewSupportRequestScreen';
 import DoctorNotificationSettingsScreen from '../features/doctor/DoctorNotificationSettingsScreen';
 import DoctorOnboardingScreen from '../features/doctor/DoctorOnboardingScreen';
 import DoctorPoliciesHubScreen from '../features/doctor/DoctorPoliciesHubScreen';
@@ -46,10 +48,12 @@ export default function DoctorStack() {
       <Stack.Screen name="DoctorOnboarding" component={DoctorOnboardingScreen} />
       <Stack.Screen name="DoctorDetail" component={DoctorDetailScreen} />
       <Stack.Screen name="DoctorSettings" component={DoctorSettingsScreen} />
+      <Stack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
       <Stack.Screen name="DoctorNotificationSettings" component={DoctorNotificationSettingsScreen} />
       <Stack.Screen name="DoctorReviews" component={DoctorReviewsScreen} />
       <Stack.Screen name="DoctorReferral" component={DoctorReferralScreen} />
       <Stack.Screen name="DoctorSupport" component={DoctorSupportScreen} />
+      <Stack.Screen name="DoctorNewSupportRequest" component={DoctorNewSupportRequestScreen} />
       <Stack.Screen name="DoctorLiveChat" component={DoctorLiveChatScreen} />
       <Stack.Screen name="DoctorPolicies" component={DoctorPoliciesHubScreen} />
       <Stack.Screen name="DoctorPolicyDetail" component={DoctorPolicyDetailScreen} />

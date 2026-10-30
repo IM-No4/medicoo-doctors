@@ -14,6 +14,15 @@ export type SupportTicketCategory =
     | 'account_verification'
     | 'technical_glitch';
 
+export const TICKET_CATEGORIES: { label: string; value: SupportTicketCategory }[] = [
+    { label: 'Payouts & Earnings', value: 'payouts_earnings' },
+    { label: 'Schedule & Availability', value: 'schedule_availability' },
+    { label: 'Patient Consultation', value: 'patient_consultation' },
+    { label: 'E-Prescriptions', value: 'e_prescriptions' },
+    { label: 'Account & Verification', value: 'account_verification' },
+    { label: 'Technical Glitch', value: 'technical_glitch' },
+];
+
 export type SupportTicketPriority = 'low' | 'medium' | 'high' | 'urgent';
 export type SupportTicketStatus = 'open' | 'in_progress' | 'resolved' | 'closed';
 
