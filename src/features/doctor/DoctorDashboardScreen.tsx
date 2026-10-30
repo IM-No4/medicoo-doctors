@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as NavigationBar from 'expo-navigation-bar';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -105,6 +105,7 @@ export default function DoctorDashboardScreen() {
   // pull to refresh is only armed when the page is at the very top, so a drag lower down never starts it
   const [atTop, setAtTop] = useState(true);
   const lastRefreshAt = useRef(0);
+  const pastHeroRef = useRef(false);
   const [touchOnHeader, setTouchOnHeader] = useState(false);
 
   const [doctorData, setDoctorData] = useState<any>(null);
@@ -156,11 +157,12 @@ export default function DoctorDashboardScreen() {
       : '#FFFFFF'
     : 'transparent';
 
+  // The bar itself is the <RNStatusBar> in the render below. Setting it imperatively as well made the two disagree: RN keeps a stack of
+  // the status bars that are mounted, and a bar mounted later by another tab (Settings, Chat) wins over a style set by hand.
+  const isFocused = useIsFocused();
+
   useEffect(() => {
-    RNStatusBar.setBarStyle(currentStatusBarStyle, true);
     if (Platform.OS === 'android') {
-      RNStatusBar.setBackgroundColor(currentStatusBarBg, true);
-      RNStatusBar.setTranslucent(true);
       if (isDark) {
         NavigationBar.setBackgroundColorAsync('#080E17');
         NavigationBar.setButtonStyleAsync('light');
@@ -169,7 +171,7 @@ export default function DoctorDashboardScreen() {
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
-  }, [isDark, currentStatusBarStyle, currentStatusBarBg]);
+  }, [isDark]);
 
   // Hide bottom tab bar menu when modals or the profile sidebar are displayed
   useEffect(() => {
@@ -179,37 +181,20 @@ export default function DoctorDashboardScreen() {
     });
   }, [todayModalVisible, sidebarVisible, statusModal.visible, navigation]);
 
-  useFocusEffect(
-    useCallback(() => {
-      RNStatusBar.setBarStyle(isScrolledPastHero && !isDark ? 'dark-content' : 'light-content', true);
-      if (Platform.OS === 'android') {
-        RNStatusBar.setBackgroundColor(
-          isScrolledPastHero ? (isDark ? '#080E17' : '#FFFFFF') : 'transparent',
-          true
-        );
-        RNStatusBar.setTranslucent(true);
-      }
-    }, [isScrolledPastHero, isDark])
-  );
-
   const handleScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
       const scrollY = e.nativeEvent.contentOffset.y;
       const nowAtTop = scrollY <= 1;
       setAtTop((previous) => (previous === nowAtTop ? previous : nowAtTop));
+      // compared with a ref, not the state: a fast flick back to the top fires several events before the state has re-rendered, and a
+      // stale comparison used to drop the last one and leave the bar in the "scrolled" style over the green header
       const isPast = scrollY > 80;
-      if (isPast !== isScrolledPastHero) {
+      if (isPast !== pastHeroRef.current) {
+        pastHeroRef.current = isPast;
         setIsScrolledPastHero(isPast);
-        RNStatusBar.setBarStyle(isPast && !isDark ? 'dark-content' : 'light-content', true);
-        if (Platform.OS === 'android') {
-          RNStatusBar.setBackgroundColor(
-            isPast ? (isDark ? '#080E17' : '#FFFFFF') : 'transparent',
-            true
-          );
-        }
       }
     },
-    [isScrolledPastHero, isDark]
+    []
   );
 
   const getGreeting = () => {
@@ -421,11 +406,15 @@ export default function DoctorDashboardScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: bgColor }]}>
-      <RNStatusBar
-        barStyle={currentStatusBarStyle}
-        translucent={true}
-        backgroundColor={currentStatusBarBg}
-      />
+      {/* mounted only while this screen is the one in view (and the profile menu, which has its own bar, is closed), so it is the top of the status bar stack and follows the scroll */}
+      {isFocused && !sidebarVisible && (
+        <RNStatusBar
+          animated
+          barStyle={currentStatusBarStyle}
+          translucent={true}
+          backgroundColor={currentStatusBarBg}
+        />
+      )}
 
       {/* Solid StatusBar Background Overlay when scrolled past hero */}
       {isScrolledPastHero && (
