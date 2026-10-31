@@ -92,6 +92,14 @@
     "experiments": {
       "reactCompiler": true
     },
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/041a5a69-e3f1-4f28-bd11-59b4f0e7928c",
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
     "extra": {
       "expo-navigation-bar": {
         "backgroundColor": "#00000000"
