@@ -45,7 +45,7 @@ const NOTIFICATION_ITEMS: {
 export default function DoctorNotificationSettingsScreen() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const [loading, setLoading] = useState(true);
   const [notificationSettings, setNotificationSettings] = useState<DoctorNotificationSettings>(
@@ -66,13 +66,13 @@ export default function DoctorNotificationSettingsScreen() {
     setStatusModal({ visible: true, status, title, message });
   };
 
-  const bgColor = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
-  const iconColor = isDark ? '#94A3B8' : '#475569';
+  const bgColor = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const dividerColor = theme.cardSecondary;
+  const iconColor = theme.textSecondary;
 
   React.useEffect(() => {
     RNStatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content', true);
@@ -241,7 +241,7 @@ export default function DoctorNotificationSettingsScreen() {
                   value={notificationSettings[item.key]}
                   onValueChange={() => toggleNotificationSetting(item.key)}
                   disabled={savingKey === item.key}
-                  trackColor={{ false: isDark ? '#2B4A5E' : '#CBD5E1', true: '#0FBBA1' }}
+                  trackColor={{ false: theme.border, true: '#0FBBA1' }}
                   thumbColor={Platform.OS === 'android' ? '#FFFFFF' : undefined}
                 />
               </View>

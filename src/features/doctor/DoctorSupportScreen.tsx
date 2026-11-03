@@ -130,7 +130,7 @@ const mapApiTicketToUi = (ticket: SupportTicket): Ticket => {
 export default function DoctorSupportScreen() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
 
   // FAQ Accordion
   const [expandedFaq, setExpandedFaq] = useState<string | null>(null);
@@ -174,14 +174,14 @@ export default function DoctorSupportScreen() {
     setStatusModal({ visible: true, status, title, message });
   };
 
-  const bgColor = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
-  const inputBg = isDark ? '#011A29' : '#F8FAFC';
-  const inputBorder = isDark ? '#10384D' : '#E2E8F0';
+  const bgColor = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const dividerColor = theme.cardSecondary;
+  const inputBg = theme.background;
+  const inputBorder = theme.border;
   const A = { green: accent('green', isDark), blue: accent('blue', isDark), violet: accent('violet', isDark), amber: accent('amber', isDark) };
 
   useEffect(() => {
@@ -414,7 +414,7 @@ export default function DoctorSupportScreen() {
                                 isEscalated && styles.statusPillEscalated,
                                 !isResolved && !isEscalated && styles.statusPillReview,
                                 isResolved && { backgroundColor: A.green.bg },
-                                isEscalated && { backgroundColor: isDark ? '#2A1417' : '#FEF2F2' },
+                                isEscalated && { backgroundColor: theme.errorBg },
                                 !isResolved && !isEscalated && { backgroundColor: A.amber.bg },
                               ]}
                             >
@@ -422,7 +422,7 @@ export default function DoctorSupportScreen() {
                                 style={[
                                   styles.statusPillText,
                                   isResolved && { color: A.green.fg },
-                                  isEscalated && { color: isDark ? '#F87171' : '#DC2626' },
+                                  isEscalated && { color: theme.error },
                                   !isResolved && !isEscalated && { color: A.amber.fg },
                                 ]}
                               >

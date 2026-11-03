@@ -53,7 +53,7 @@ const formatReviewDate = (isoString: string) => {
 export default function DoctorReviewsScreen() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const [activeFilter, setActiveFilter] = useState('All');
   const [loading, setLoading] = useState(true);
@@ -66,13 +66,13 @@ export default function DoctorReviewsScreen() {
 
   const filters = ['All', 'Recent', 'Highest', 'Lowest'];
 
-  const bgColor = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
-  const iconColor = isDark ? '#94A3B8' : '#475569';
+  const bgColor = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const dividerColor = theme.cardSecondary;
+  const iconColor = theme.textSecondary;
 
   useEffect(() => {
     RNStatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content', true);
@@ -245,7 +245,7 @@ export default function DoctorReviewsScreen() {
                   <View
                     style={[
                       styles.progressBarBg,
-                      { backgroundColor: isDark ? '#10384D' : '#F1F5F9' },
+                      { backgroundColor: theme.cardSecondary },
                     ]}
                   >
                     <View
@@ -296,7 +296,7 @@ export default function DoctorReviewsScreen() {
             <View
               style={[
                 styles.twinIconCircle,
-                { backgroundColor: isDark ? '#2E2210' : '#FEF3C7' },
+                { backgroundColor: theme.warningBg },
               ]}
             >
               <Sparkles size={16} color="#F59E0B" />
@@ -369,7 +369,7 @@ export default function DoctorReviewsScreen() {
               <View
                 style={[
                   styles.emptyIconCircle,
-                  { backgroundColor: isDark ? '#082E41' : '#F1F5F9' },
+                  { backgroundColor: theme.cardSecondary },
                 ]}
               >
                 <MessageSquare size={24} color={subTextColor} />
@@ -423,7 +423,7 @@ export default function DoctorReviewsScreen() {
                         style={[
                           styles.ratingPill,
                           {
-                            backgroundColor: isDark ? '#2E2210' : '#FEF3C7',
+                            backgroundColor: theme.warningBg,
                           },
                         ]}
                       >
@@ -438,7 +438,7 @@ export default function DoctorReviewsScreen() {
                       <Text
                         style={[
                           styles.reviewCommentText,
-                          { color: isDark ? '#CBD5E1' : '#2B4A5E' },
+                          { color: theme.textSecondary },
                         ]}
                       >
                         {item.comment}

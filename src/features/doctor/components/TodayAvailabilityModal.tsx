@@ -123,7 +123,7 @@ export default function TodayAvailabilityModal({
   appointmentsCountToday,
   onSave,
 }: TodayAvailabilityModalProps) {
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
   const insets = useSafeAreaInsets();
 
   const [rendered, setRendered] = useState(visible);
@@ -283,11 +283,11 @@ export default function TodayAvailabilityModal({
     }
   };
 
-  const modalBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#E2E8F0';
-  const textColor = isDark ? '#F1F5F9' : '#012233';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#0A2F42' : '#F1F5F9';
+  const modalBg = theme.card;
+  const cardBorder = theme.border;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const dividerColor = theme.cardSecondary;
 
   return (
     <View style={StyleSheet.absoluteFillObject} pointerEvents={visible ? 'auto' : 'none'}>
@@ -315,7 +315,7 @@ export default function TodayAvailabilityModal({
           <View
             style={[
               styles.handleBar,
-              { backgroundColor: isDark ? '#2B4A5E' : '#CBD5E1' },
+              { backgroundColor: theme.border },
             ]}
           />
         </View>
@@ -341,7 +341,7 @@ export default function TodayAvailabilityModal({
             onPress={handleClose}
             style={[
               styles.closeBtn,
-              { backgroundColor: isDark ? '#0A2F42' : '#F1F5F9' },
+              { backgroundColor: theme.cardSecondary },
             ]}
             activeOpacity={0.7}
           >
@@ -354,7 +354,7 @@ export default function TodayAvailabilityModal({
           style={[
             styles.statusToggleCard,
             {
-              backgroundColor: isDark ? '#011A29' : '#F8FAFC',
+              backgroundColor: theme.background,
               borderColor: cardBorder,
             },
           ]}
@@ -387,8 +387,8 @@ export default function TodayAvailabilityModal({
             style={[
               styles.warningBanner,
               {
-                backgroundColor: isDark ? '#2A1A05' : '#FFFBEB',
-                borderColor: isDark ? '#5C3E08' : '#FDE68A',
+                backgroundColor: theme.warningBg,
+                borderColor: theme.warningBorder,
               },
             ]}
           >
@@ -396,7 +396,7 @@ export default function TodayAvailabilityModal({
             <Text
               style={[
                 styles.warningText,
-                { color: isDark ? '#FDE68A' : '#92400E' },
+                { color: theme.warningText },
               ]}
             >
               You have {appointmentsCountToday} confirmed appointment(s) today. Marking off blocks new bookings, but existing appointments remain active.
@@ -483,7 +483,7 @@ export default function TodayAvailabilityModal({
                 style={[
                   styles.timeChip,
                   {
-                    backgroundColor: isDark ? '#011A29' : '#F8FAFC',
+                    backgroundColor: theme.background,
                     borderColor: cardBorder,
                   },
                 ]}
@@ -510,7 +510,7 @@ export default function TodayAvailabilityModal({
                 style={[
                   styles.timeChip,
                   {
-                    backgroundColor: isDark ? '#011A29' : '#F8FAFC',
+                    backgroundColor: theme.background,
                     borderColor: cardBorder,
                   },
                 ]}
@@ -543,7 +543,7 @@ export default function TodayAvailabilityModal({
           <TouchableOpacity
             style={[
               styles.cancelBtn,
-              { backgroundColor: isDark ? '#0A2F42' : '#F1F5F9' },
+              { backgroundColor: theme.cardSecondary },
             ]}
             onPress={handleClose}
             disabled={saving}

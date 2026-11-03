@@ -21,6 +21,10 @@ export interface ThemeColors {
   successBg: string;
   warning: string;
   warningBg: string;
+  warningText: string;
+  warningBorder: string;
+  errorBorder: string;
+  inset: string;
   info: string;
   infoBg: string;
   shadow: string;
@@ -48,6 +52,10 @@ export const lightTheme: ThemeColors = {
   successBg: '#ECFDF5',
   warning: '#F59E0B',
   warningBg: '#FFFBEB',
+  warningText: '#B45309',
+  warningBorder: '#FDE68A',
+  errorBorder: '#FECACA',
+  inset: '#EFF2F6',
   info: '#3B82F6',
   infoBg: '#EFF6FF',
   shadow: '#000000',
@@ -75,6 +83,10 @@ export const darkTheme: ThemeColors = {
   successBg: '#064E3B',
   warning: '#FBBF24',
   warningBg: '#452A0A',
+  warningText: '#FBBF24',
+  warningBorder: '#5C3E08',
+  errorBorder: '#7F1D1D',
+  inset: '#011A29',
   info: '#60A5FA',
   infoBg: '#1E3A8A',
   shadow: '#000000',
@@ -85,4 +97,9 @@ export const darkTheme: ThemeColors = {
 export const brand = {
   navy: '#012233',
   mint: '#05E0AE',
+  primary: '#0FBBA1', // buttons, links, selected states (same in light and dark)
+  danger: '#EF4444',
+  white: '#FFFFFF', // text and icons on a primary or navy surface
 } as const;
+
+export const themeFor = (isDark: boolean): ThemeColors => (isDark ? darkTheme : lightTheme);

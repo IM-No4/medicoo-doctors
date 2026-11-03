@@ -43,7 +43,7 @@ import {
 
 import StatusModal, { StatusType } from './modals/StatusModal';
 import { useLanguage } from '../i18n/LanguageContext';
-import { ThemeMode } from '../theme/colors';
+import { brand, ThemeMode } from '../theme/colors';
 import { useTheme } from '../theme/ThemeContext';
 
 const { width: SCREEN_W } = Dimensions.get('window');
@@ -71,7 +71,7 @@ export default function ProfileSidebar({
 }: Props) {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
-  const { isDark, themeMode, setThemeMode } = useTheme();
+  const { theme, isDark, themeMode, setThemeMode } = useTheme();
   const { t } = useLanguage();
 
   const [rendered, setRendered] = useState(visible);
@@ -104,13 +104,13 @@ export default function ProfileSidebar({
     setStatusModal({ visible: true, type, title, message });
   };
 
-  const bgColor = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
-  const iconColor = isDark ? '#94A3B8' : '#475569';
+  const bgColor = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const dividerColor = theme.cardSecondary;
+  const iconColor = theme.textSecondary;
 
   useEffect(() => {
     if (visible) {
@@ -274,7 +274,7 @@ export default function ProfileSidebar({
                   {avatarUri ? (
                     <Image source={{ uri: avatarUri }} style={styles.avatarImg} />
                   ) : (
-                    <Text style={[styles.avatarLetter, { color: isDark ? '#E2E8F0' : '#FFFFFF' }]}>
+                    <Text style={[styles.avatarLetter, { color: brand.white }]}>
                       {doctorName.charAt(0).toUpperCase()}
                     </Text>
                   )}
@@ -284,14 +284,14 @@ export default function ProfileSidebar({
                     styles.onlineDot,
                     {
                       backgroundColor: isOnline ? '#22C55E' : '#94A3B8',
-                      borderColor: isDark ? '#062420' : '#064E3B',
+                      borderColor: theme.primaryLight,
                     },
                   ]}
                 />
               </View>
 
               <View style={styles.doctorInfoCol}>
-                <Text style={[styles.doctorNameText, { color: isDark ? '#E2E8F0' : '#FFFFFF' }]} numberOfLines={1}>
+                <Text style={[styles.doctorNameText, { color: brand.white }]} numberOfLines={1}>
                   {doctorName.startsWith('Dr.') ? doctorName : `Dr. ${doctorName}`}
                 </Text>
                 <View style={styles.editProfileRow}>
@@ -307,11 +307,11 @@ export default function ProfileSidebar({
             <View style={styles.bottomBannerStrip}>
               <View style={styles.verifiedRow}>
                 <ShieldCheck size={17} color="#4ADE80" strokeWidth={2.2} />
-                <Text style={[styles.verifiedText, { color: isDark ? '#E2E8F0' : '#FFFFFF' }]}>Medicoo Certified Doctor</Text>
+                <Text style={[styles.verifiedText, { color: brand.white }]}>Medicoo Certified Doctor</Text>
               </View>
 
               <View style={styles.statusPill}>
-                <ChevronRight size={13} color={isDark ? '#E2E8F0' : '#FFFFFF'} />
+                <ChevronRight size={13} color={brand.white} />
               </View>
             </View>
           </LinearGradient>
@@ -367,7 +367,7 @@ export default function ProfileSidebar({
               <Switch
                 value={isOnline}
                 onValueChange={onToggleOnline}
-                trackColor={{ false: isDark ? '#2B4A5E' : '#CBD5E1', true: '#0FBBA1' }}
+                trackColor={{ false: theme.border, true: '#0FBBA1' }}
                 thumbColor={Platform.OS === 'android' ? '#FFFFFF' : undefined}
               />
             )}
@@ -381,7 +381,7 @@ export default function ProfileSidebar({
             onPress={() => navigateTo('DoctorEarnings')}
             activeOpacity={0.7}
           >
-            <View style={[styles.twinIconCircle, { backgroundColor: isDark ? '#07303A' : '#E6FAF6' }]}>
+            <View style={[styles.twinIconCircle, { backgroundColor: theme.primaryLight }]}>
               <Wallet size={16} color="#0FBBA1" />
             </View>
             <View style={styles.twinTextCol}>
@@ -395,7 +395,7 @@ export default function ProfileSidebar({
             onPress={() => navigateTo('DoctorReviews')}
             activeOpacity={0.7}
           >
-            <View style={[styles.twinIconCircle, { backgroundColor: isDark ? '#2E2210' : '#FEF3C7' }]}>
+            <View style={[styles.twinIconCircle, { backgroundColor: theme.warningBg }]}>
               <Star size={16} color="#F59E0B" />
             </View>
             <View style={styles.twinTextCol}>
@@ -476,7 +476,7 @@ export default function ProfileSidebar({
               style={[
                 styles.themeSegment,
                 {
-                  backgroundColor: isDark ? '#10384D' : '#F1F5F9',
+                  backgroundColor: theme.cardSecondary,
                 },
               ]}
             >
@@ -582,7 +582,7 @@ export default function ProfileSidebar({
           <Text style={[styles.appVersionText, { color: subTextColor }]}>
             Medicoo Doctor • v1.0.0
           </Text>
-          <Text style={[styles.appCopyrightText, { color: isDark ? '#4B5563' : '#94A3B8' }]}>
+          <Text style={[styles.appCopyrightText, { color: theme.textMuted }]}>
             Encrypted & Certified Telemedicine Portal
           </Text>
         </View>

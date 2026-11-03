@@ -1,4 +1,5 @@
 import { CalendarClock } from 'lucide-react-native';
+import { themeFor } from '../../../theme/colors';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import {
@@ -72,8 +73,8 @@ export default function AutoPayoutCard({
   }, [load]);
 
   const accent = '#0FBBA1';
-  const chipBg = isDark ? '#082E41' : '#F1F5F9';
-  const border = isDark ? '#082E41' : '#E2E8F0';
+  const chipBg = themeFor(isDark).cardSecondary;
+  const border = themeFor(isDark).border;
 
   if (loading) {
     return (
@@ -146,7 +147,7 @@ export default function AutoPayoutCard({
           value={draft.enabled}
           onValueChange={(enabled) => setDraft({ ...draft, enabled })}
           disabled={!hasPayoutMethod || saving}
-          trackColor={{ false: isDark ? '#2B4A5E' : '#CBD5E1', true: accent }}
+          trackColor={{ false: themeFor(isDark).border, true: accent }}
           thumbColor="#FFFFFF"
         />
       </View>

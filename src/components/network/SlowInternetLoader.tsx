@@ -36,7 +36,7 @@ export default function SlowInternetLoader({
   fullScreen = false,
   style,
 }: SlowInternetLoaderProps) {
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
   const { isOffline, checkConnection, isChecking } = useNetwork();
   const { isSlow, isVerySlow } = useSlowLoadDetector(isLoading, {
     slowThresholdMs,
@@ -65,7 +65,7 @@ export default function SlowInternetLoader({
     <View
       style={[
         containerStyle,
-        { backgroundColor: fullScreen ? (isDark ? '#011A29' : '#FFFFFF') : 'transparent' },
+        { backgroundColor: fullScreen ? (theme.card) : 'transparent' },
         style,
       ]}
     >
@@ -74,15 +74,15 @@ export default function SlowInternetLoader({
           <View
             style={[
               styles.iconCircle,
-              { backgroundColor: isDark ? '#2A1417' : '#FEF2F2' },
+              { backgroundColor: theme.errorBg },
             ]}
           >
             <WifiOff size={22} color="#EF4444" />
           </View>
-          <Text style={[styles.titleText, { color: isDark ? '#F8FAFC' : '#012233' }]}>
+          <Text style={[styles.titleText, { color: theme.text }]}>
             No Internet Connection
           </Text>
-          <Text style={[styles.subText, { color: isDark ? '#94A3B8' : '#64748B' }]}>
+          <Text style={[styles.subText, { color: theme.textSecondary }]}>
             Please check your network and try again.
           </Text>
           <TouchableOpacity
@@ -112,7 +112,7 @@ export default function SlowInternetLoader({
             style={[
               styles.loadingMessage,
               {
-                color: isDark ? '#94A3B8' : '#64748B',
+                color: theme.textSecondary,
                 fontSize: fullScreen ? 14 : 12.5,
               },
             ]}
@@ -162,7 +162,7 @@ export default function SlowInternetLoader({
               <Text
                 style={[
                   styles.slowNoticeBody,
-                  { color: isDark ? '#CBD5E1' : '#475569' },
+                  { color: theme.textSecondary },
                 ]}
               >
                 {isVerySlow ? verySlowMessage : slowMessage}
@@ -173,18 +173,18 @@ export default function SlowInternetLoader({
                   style={[
                     styles.smallRetryBtn,
                     {
-                      backgroundColor: isDark ? '#10384D' : '#FFFFFF',
-                      borderColor: isDark ? '#2B4A5E' : '#E2E8F0',
+                      backgroundColor: theme.card,
+                      borderColor: theme.border,
                     },
                   ]}
                   onPress={onRetry}
                   activeOpacity={0.7}
                 >
-                  <RefreshCw size={11} color={isDark ? '#E2E8F0' : '#0A2F42'} />
+                  <RefreshCw size={11} color={theme.text} />
                   <Text
                     style={[
                       styles.smallRetryBtnText,
-                      { color: isDark ? '#E2E8F0' : '#0A2F42' },
+                      { color: theme.text },
                     ]}
                   >
                     Refresh

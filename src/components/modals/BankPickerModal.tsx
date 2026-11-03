@@ -1,4 +1,5 @@
 import { Check, Search, X } from 'lucide-react-native';
+import { themeFor } from '../../theme/colors';
 import React, { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
@@ -35,12 +36,12 @@ export default function BankPickerModal({
   const insets = useSafeAreaInsets();
   const [search, setSearch] = useState('');
 
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
-  const inputBg = isDark ? '#011A29' : '#F8FAFC';
-  const chipBg = isDark ? '#10384D' : '#F1F5F9';
+  const cardBg = themeFor(isDark).card;
+  const textColor = themeFor(isDark).text;
+  const subTextColor = themeFor(isDark).textSecondary;
+  const dividerColor = themeFor(isDark).cardSecondary;
+  const inputBg = themeFor(isDark).background;
+  const chipBg = themeFor(isDark).cardSecondary;
 
   const filteredBanks = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -110,7 +111,7 @@ export default function BankPickerModal({
                           styles.bankRow,
                           {
                             borderBottomColor: dividerColor,
-                            backgroundColor: isSelected ? (isDark ? '#07303A' : '#E6FAF6') : 'transparent',
+                            backgroundColor: isSelected ? (themeFor(isDark).primaryLight) : 'transparent',
                           },
                         ]}
                         onPress={() => {

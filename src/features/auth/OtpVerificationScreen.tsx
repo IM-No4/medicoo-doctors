@@ -192,13 +192,13 @@ export default function OtpVerificationScreen() {
 
   const isComplete = otp.join('').length === 6;
 
-  const sheetBg = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#012233';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const inputBg = isDark ? '#011A29' : '#F1F5F9';
-  const inputBorder = isDark ? '#10384D' : '#E2E8F0';
+  const sheetBg = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const inputBg = theme.inset;
+  const inputBorder = theme.border;
 
   return (
     <View style={styles.container}>
@@ -296,7 +296,7 @@ export default function OtpVerificationScreen() {
                   digit
                     ? {
                         borderColor: '#0FBBA1',
-                        backgroundColor: isDark ? '#062420' : '#E6FAF6',
+                        backgroundColor: theme.primaryLight,
                       }
                     : null,
                 ]}

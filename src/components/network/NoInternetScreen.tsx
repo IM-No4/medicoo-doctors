@@ -23,7 +23,7 @@ export default function NoInternetScreen({
   description = 'Please check your Wi-Fi or mobile network connection and try again. Your offline consultation records are saved safely.',
 }: NoInternetScreenProps) {
   const insets = useSafeAreaInsets();
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
   const { isChecking, checkConnection } = useNetwork();
 
   const handleRetry = async () => {
@@ -35,9 +35,9 @@ export default function NoInternetScreen({
     }
   };
 
-  const bgColor = isDark ? '#011A29' : '#FFFFFF';
-  const textColor = isDark ? '#F8FAFC' : '#012233';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
+  const bgColor = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
 
   return (
     <View
@@ -54,13 +54,13 @@ export default function NoInternetScreen({
         <View
           style={[
             styles.iconOuterCircle,
-            { backgroundColor: isDark ? '#1C1620' : '#FEF2F2' },
+            { backgroundColor: theme.errorBg },
           ]}
         >
           <View
             style={[
               styles.iconInnerCircle,
-              { backgroundColor: isDark ? '#2E1519' : '#FEE2E2' },
+              { backgroundColor: theme.errorBg },
             ]}
           >
             <WifiOff size={42} color="#EF4444" strokeWidth={2.2} />
@@ -77,8 +77,8 @@ export default function NoInternetScreen({
           style={[
             styles.tipBox,
             {
-              backgroundColor: isDark ? '#082E41' : '#F8FAFC',
-              borderColor: isDark ? '#10384D' : '#E2E8F0',
+              backgroundColor: theme.background,
+              borderColor: theme.border,
             },
           ]}
         >

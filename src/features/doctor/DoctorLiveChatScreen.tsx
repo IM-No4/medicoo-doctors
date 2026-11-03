@@ -51,7 +51,7 @@ const CATEGORIES = [
 export default function DoctorLiveChatScreen() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
   const flatListRef = useRef<FlatList>(null);
 
   const [loading, setLoading] = useState(true);
@@ -82,14 +82,14 @@ export default function DoctorLiveChatScreen() {
     setStatusModal({ visible: true, status, title, message });
   };
 
-  const bgColor = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const inputBg = isDark ? '#011A29' : '#FFFFFF';
-  const inputBorder = isDark ? '#10384D' : '#E2E8F0';
-  const agentBubbleBg = isDark ? '#082E41' : '#FFFFFF';
+  const bgColor = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const inputBg = theme.card;
+  const inputBorder = theme.border;
+  const agentBubbleBg = theme.card;
   const userBubbleBg = '#0FBBA1';
 
   useEffect(() => {
@@ -250,7 +250,7 @@ export default function DoctorLiveChatScreen() {
           styles.headerBar,
           {
             paddingTop: topPadding + 6,
-            borderBottomColor: isDark ? '#082E41' : '#E2E8F0',
+            borderBottomColor: theme.border,
           },
         ]}
       >
@@ -351,7 +351,7 @@ export default function DoctorLiveChatScreen() {
               {starting && <ActivityIndicator color="#0FBBA1" style={{ marginTop: 12 }} />}
 
               {chat?.status === 'closed' && (
-                <View style={[styles.closedNotice, { backgroundColor: isDark ? '#0F2A20' : '#F0FDF4' }]}>
+                <View style={[styles.closedNotice, { backgroundColor: theme.successBg }]}>
                   <Text style={styles.closedNoticeText}>This chat was closed. Start a new one above.</Text>
                 </View>
               )}
@@ -414,7 +414,7 @@ export default function DoctorLiveChatScreen() {
               styles.inputDockContainer,
               {
                 backgroundColor: cardBg,
-                borderTopColor: isDark ? '#082E41' : '#E2E8F0',
+                borderTopColor: theme.border,
                 paddingBottom: Math.max(insets.bottom, 12),
               },
             ]}

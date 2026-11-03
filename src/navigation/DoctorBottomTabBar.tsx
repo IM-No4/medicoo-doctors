@@ -51,7 +51,7 @@ export default function DoctorBottomTabBar({
   navigation,
 }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
 
   // The bottom menu should ONLY show on the Home screen
   const currentRoute = state.routes[state.index];
@@ -67,10 +67,10 @@ export default function DoctorBottomTabBar({
     return null;
   }
 
-  const bgColor = isDark ? '#082E41' : '#FFFFFF';
-  const borderColor = isDark ? '#082E41' : '#E2E8F0';
+  const bgColor = theme.card;
+  const borderColor = theme.border;
   const activeColor = '#0FBBA1';
-  const inactiveColor = isDark ? '#64748B' : '#94A3B8';
+  const inactiveColor = theme.textMuted;
   const activeBg = isDark ? 'rgba(15, 187, 161, 0.12)' : 'rgba(15, 187, 161, 0.08)';
 
   // Calculate bottom padding for home indicator / navigation bar

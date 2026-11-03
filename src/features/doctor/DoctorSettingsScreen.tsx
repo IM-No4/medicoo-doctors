@@ -405,7 +405,7 @@ export default function DoctorSettingsScreen() {
                                                 {
                                                     backgroundColor: isSelected
                                                         ? '#0FBBA1'
-                                                        : (isDark ? '#262626' : '#F3F4F6'),
+                                                        : (theme.inset),
                                                     borderColor: isSelected ? '#0FBBA1' : theme.border,
                                                 },
                                             ]}
@@ -441,7 +441,7 @@ export default function DoctorSettingsScreen() {
                                 activeOpacity={0.7}
                             >
                                 <View style={styles.actionLeft}>
-                                    <View style={[styles.iconBox, { backgroundColor: isDark ? '#262626' : '#F3F4F6' }]}>
+                                    <View style={[styles.iconBox, { backgroundColor: theme.inset }]}>
                                         <Globe size={20} color={theme.textSecondary} />
                                     </View>
                                     <View>
@@ -581,7 +581,7 @@ export default function DoctorSettingsScreen() {
                                 onPress={() => navigation.navigate('DoctorOnboarding', { isEdit: true })}
                             >
                                 <View style={styles.actionLeft}>
-                                    <View style={[styles.iconBox, { backgroundColor: isDark ? '#262626' : '#F3F4F6' }]}>
+                                    <View style={[styles.iconBox, { backgroundColor: theme.inset }]}>
                                         <UserCog size={20} color={theme.textSecondary} />
                                     </View>
                                     <Text style={[styles.actionText, { color: theme.text }]}>Edit Profile Details</Text>
@@ -596,7 +596,7 @@ export default function DoctorSettingsScreen() {
                                 onPress={() => navigation.navigate('ManageAppointments')}
                             >
                                 <View style={styles.actionLeft}>
-                                    <View style={[styles.iconBox, { backgroundColor: isDark ? '#262626' : '#F3F4F6' }]}>
+                                    <View style={[styles.iconBox, { backgroundColor: theme.inset }]}>
                                         <CalendarCheck size={20} color={theme.textSecondary} />
                                     </View>
                                     <Text style={[styles.actionText, { color: theme.text }]}>Manage Appointments</Text>
@@ -611,7 +611,7 @@ export default function DoctorSettingsScreen() {
                                 onPress={() => navigation.navigate('ManageAvailability')}
                             >
                                 <View style={styles.actionLeft}>
-                                    <View style={[styles.iconBox, { backgroundColor: isDark ? '#262626' : '#F3F4F6' }]}>
+                                    <View style={[styles.iconBox, { backgroundColor: theme.inset }]}>
                                         <FileText size={20} color={theme.textSecondary} />
                                     </View>
                                     <Text style={[styles.actionText, { color: theme.text }]}>Manage Availability</Text>
@@ -626,7 +626,7 @@ export default function DoctorSettingsScreen() {
                                 onPress={() => navigation.navigate('DoctorEarnings')}
                             >
                                 <View style={styles.actionLeft}>
-                                    <View style={[styles.iconBox, { backgroundColor: isDark ? '#262626' : '#F3F4F6' }]}>
+                                    <View style={[styles.iconBox, { backgroundColor: theme.inset }]}>
                                         <Wallet size={20} color={theme.textSecondary} />
                                     </View>
                                     <Text style={[styles.actionText, { color: theme.text }]}>Earnings</Text>
@@ -641,7 +641,7 @@ export default function DoctorSettingsScreen() {
                                 onPress={() => navigation.navigate('DoctorReviews')}
                             >
                                 <View style={styles.actionLeft}>
-                                    <View style={[styles.iconBox, { backgroundColor: isDark ? '#262626' : '#F3F4F6' }]}>
+                                    <View style={[styles.iconBox, { backgroundColor: theme.inset }]}>
                                         <Star size={20} color={theme.textSecondary} />
                                     </View>
                                     <Text style={[styles.actionText, { color: theme.text }]}>Reviews & Ratings</Text>

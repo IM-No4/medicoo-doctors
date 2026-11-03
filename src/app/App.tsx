@@ -126,7 +126,7 @@ function SlowBootScreen() {
 // UI element.
 function SystemNavBarBackground({ skip }: { skip: boolean }) {
   const insets = useSafeAreaInsets();
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
 
   if (Platform.OS !== 'android' || insets.bottom <= 0 || skip) return null;
 
@@ -139,7 +139,7 @@ function SystemNavBarBackground({ skip }: { skip: boolean }) {
         right: 0,
         bottom: 0,
         height: insets.bottom,
-        backgroundColor: isDark ? '#011A29' : '#FFFFFF',
+        backgroundColor: theme.card,
       }}
     />
   );

@@ -46,7 +46,7 @@ const { width, height } = Dimensions.get('window');
 // Doctor-only version - connected to CallContext for background persistence & in-app PiP
 export default function DoctorCallScreen() {
     const insets = useSafeAreaInsets();
-    const { isDark } = useTheme();
+    const { theme, isDark } = useTheme();
     const route = useRoute<any>();
     const navigation = useNavigation();
     const { appointment: routeAppointment, type: routeType = 'video', displayName: displayNameParam } = route.params || {};
@@ -436,8 +436,8 @@ export default function DoctorCallScreen() {
                     style={[
                         styles.actionRowBackground,
                         {
-                            backgroundColor: isDark ? '#082E41' : '#FFFFFF',
-                            borderTopColor: isDark ? '#1C4A60' : '#E2E8F0',
+                            backgroundColor: theme.card,
+                            borderTopColor: theme.border,
                             paddingBottom: Math.max(insets.bottom, 16),
                         },
                     ]}
@@ -446,11 +446,11 @@ export default function DoctorCallScreen() {
                     <TouchableOpacity
                         style={[
                             styles.iconCircle,
-                            { backgroundColor: !isMicOn ? (isDark ? '#451A1A' : '#FEE2E2') : (isDark ? '#10384D' : '#F1F5F9') },
+                            { backgroundColor: !isMicOn ? (theme.errorBg) : (theme.cardSecondary) },
                         ]}
                         onPress={toggleMic}
                     >
-                        {isMicOn ? <Mic size={22} color={isDark ? '#F8FAFC' : '#012233'} /> : <MicOff size={22} color="#EF4444" />}
+                        {isMicOn ? <Mic size={22} color={theme.text} /> : <MicOff size={22} color="#EF4444" />}
                     </TouchableOpacity>
 
                     {/* Video Button */}
@@ -458,11 +458,11 @@ export default function DoctorCallScreen() {
                         <TouchableOpacity
                             style={[
                                 styles.iconCircle,
-                                { backgroundColor: !isVideoOn ? (isDark ? '#451A1A' : '#FEE2E2') : (isDark ? '#10384D' : '#F1F5F9') },
+                                { backgroundColor: !isVideoOn ? (theme.errorBg) : (theme.cardSecondary) },
                             ]}
                             onPress={toggleVideo}
                         >
-                            {isVideoOn ? <VideoIcon size={22} color={isDark ? '#F8FAFC' : '#012233'} /> : <VideoOff size={22} color="#EF4444" />}
+                            {isVideoOn ? <VideoIcon size={22} color={theme.text} /> : <VideoOff size={22} color="#EF4444" />}
                         </TouchableOpacity>
                     )}
 
@@ -480,13 +480,13 @@ export default function DoctorCallScreen() {
                         <TouchableOpacity
                             style={[
                                 styles.iconCircle,
-                                { backgroundColor: isDark ? '#10384D' : '#F1F5F9' },
+                                { backgroundColor: theme.cardSecondary },
                                 !isVideoOn && { opacity: 0.35 },
                             ]}
                             onPress={toggleCameraSwitch}
                             disabled={!isVideoOn}
                         >
-                            <SwitchCamera size={22} color={isVideoOn ? (isDark ? '#F8FAFC' : '#012233') : (isDark ? '#64748B' : '#94A3B8')} />
+                            <SwitchCamera size={22} color={isVideoOn ? (theme.text) : (theme.textMuted)} />
                         </TouchableOpacity>
                     )}
 
@@ -494,11 +494,11 @@ export default function DoctorCallScreen() {
                     <TouchableOpacity
                         style={[
                             styles.iconCircle,
-                            { backgroundColor: isSpeakerOn ? (isDark ? '#07303A' : '#E6FAF6') : (isDark ? '#10384D' : '#F1F5F9') },
+                            { backgroundColor: isSpeakerOn ? (theme.primaryLight) : (theme.cardSecondary) },
                         ]}
                         onPress={toggleSpeaker}
                     >
-                        {isSpeakerOn ? <Volume2 size={22} color="#0FBBA1" /> : <VolumeX size={22} color={isDark ? '#94A3B8' : '#64748B'} />}
+                        {isSpeakerOn ? <Volume2 size={22} color="#0FBBA1" /> : <VolumeX size={22} color={theme.textSecondary} />}
                     </TouchableOpacity>
                 </View>
             )}

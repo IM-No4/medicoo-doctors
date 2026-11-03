@@ -140,7 +140,7 @@ export default function DoctorPolicyDetailScreen() {
   const insets = useSafeAreaInsets();
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const { policyType = 'terms', policyTitle = 'Terms & Policies' } = route.params || {};
 
@@ -151,12 +151,12 @@ export default function DoctorPolicyDetailScreen() {
   const [docSections, setDocSections] = useState<LegalSectionDto[]>(fallback.sections);
   const [docVersion, setDocVersion] = useState(fallback.version);
 
-  const bgColor = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
+  const bgColor = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const dividerColor = theme.cardSecondary;
   const green = accent('green', isDark);
 
   useEffect(() => {

@@ -24,7 +24,7 @@ import { useTheme } from '../../theme/ThemeContext';
 export default function DoctorNewSupportRequestScreen() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const [category, setCategory] = useState(TICKET_CATEGORIES[0]);
   const [subject, setSubject] = useState('');
@@ -42,14 +42,14 @@ export default function DoctorNewSupportRequestScreen() {
   const showStatus = (status: StatusType, title: string, body: string, done = false) =>
     setStatusModal({ visible: true, status, title, message: body, done });
 
-  const bgColor = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
-  const inputBg = isDark ? '#011A29' : '#F8FAFC';
-  const inputBorder = isDark ? '#10384D' : '#E2E8F0';
+  const bgColor = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const dividerColor = theme.cardSecondary;
+  const inputBg = theme.background;
+  const inputBorder = theme.border;
 
   const topPadding = insets.top > 0 ? insets.top : Platform.OS === 'android' ? (RNStatusBar.currentHeight ?? 24) : 20;
 
@@ -113,8 +113,8 @@ export default function DoctorNewSupportRequestScreen() {
                     style={[
                       styles.pill,
                       {
-                        backgroundColor: selected ? '#0FBBA1' : isDark ? '#10384D' : '#F1F5F9',
-                        borderColor: selected ? '#0FBBA1' : isDark ? '#10384D' : '#E2E8F0',
+                        backgroundColor: selected ? '#0FBBA1' : theme.cardSecondary,
+                        borderColor: selected ? '#0FBBA1' : theme.border,
                       },
                     ]}
                     onPress={() => setCategory(cat)}

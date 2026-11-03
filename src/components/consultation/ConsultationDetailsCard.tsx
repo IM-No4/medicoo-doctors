@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function ConsultationDetailsCard({ details }: Props) {
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
 
   if (!details) return null;
 
@@ -19,11 +19,11 @@ export default function ConsultationDetailsCard({ details }: Props) {
 
   if (!hasNotes && !hasMedicines && !hasLabTests) return null;
 
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const itemBg = isDark ? '#011A29' : '#F8FAFC';
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const itemBg = theme.background;
 
   return (
     <View style={[styles.card, { backgroundColor: cardBg, borderColor: cardBorder }]}>

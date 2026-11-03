@@ -91,7 +91,7 @@ export default function DoctorDashboardScreen() {
   const navigation = useNavigation<any>();
   const reduxProfile = useSelector((state: RootState) => state.profile);
 
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
   const { t } = useLanguage();
   const handleLogout = useLogout();
 
@@ -129,18 +129,18 @@ export default function DoctorDashboardScreen() {
   });
 
   // Standardized Theme Palette (Matching ProfileSidebar & DoctorDetailScreen)
-  const bgColor = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const sectionLabelColor = isDark ? '#94A3B8' : '#64748B';
-  const subtleBorder = isDark ? '#0A2F42' : '#F1F5F9';
-  const mutedTileBg = isDark ? '#082E41' : '#F1F5F9';
+  const bgColor = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const sectionLabelColor = theme.textSecondary;
+  const subtleBorder = theme.cardSecondary;
+  const mutedTileBg = theme.cardSecondary;
 
   // Action Needed Dynamic State
   const hasPendingRequests = pendingRequests.length > 0;
-  const actionColor = hasPendingRequests ? '#DC2626' : (isDark ? '#94A3B8' : '#475569');
+  const actionColor = hasPendingRequests ? '#DC2626' : (theme.textSecondary);
   const actionBg = hasPendingRequests
     ? isDark
       ? '#2A1111'
@@ -423,8 +423,8 @@ export default function DoctorDashboardScreen() {
             styles.statusBarCover,
             {
               height: insets.top,
-              backgroundColor: isDark ? '#011A29' : '#FFFFFF',
-              borderBottomColor: isDark ? '#082E41' : '#E2E8F0',
+              backgroundColor: theme.card,
+              borderBottomColor: theme.border,
             },
           ]}
         />
@@ -561,8 +561,8 @@ export default function DoctorDashboardScreen() {
                   style={[
                     styles.pendingUpdateStrip,
                     {
-                      backgroundColor: isDark ? '#231805' : '#FFFBEB',
-                      borderColor: isDark ? '#5C3E08' : '#FDE68A',
+                      backgroundColor: theme.warningBg,
+                      borderColor: theme.warningBorder,
                     },
                   ]}
                   onPress={() => navigation.navigate('DoctorOnboarding', { isEdit: true, readOnly: true })}
@@ -572,15 +572,15 @@ export default function DoctorDashboardScreen() {
                     <View
                       style={[
                         styles.pendingUpdateStripIcon,
-                        { backgroundColor: isDark ? '#422806' : '#FEF3C7' },
+                        { backgroundColor: theme.warningBg },
                       ]}
                     >
-                      <Clock size={13} color={isDark ? '#FBBF24' : '#D97706'} strokeWidth={2.4} />
+                      <Clock size={13} color={theme.warningText} strokeWidth={2.4} />
                     </View>
                     <Text
                       style={[
                         styles.pendingUpdateStripText,
-                        { color: isDark ? '#FDE68A' : '#92400E' },
+                        { color: theme.warningText },
                       ]}
                       numberOfLines={1}
                     >
@@ -591,12 +591,12 @@ export default function DoctorDashboardScreen() {
                     <Text
                       style={[
                         styles.pendingUpdateStripAction,
-                        { color: isDark ? '#FBBF24' : '#B45309' },
+                        { color: theme.warningText },
                       ]}
                     >
                       View
                     </Text>
-                    <ChevronRight size={14} color={isDark ? '#FBBF24' : '#B45309'} strokeWidth={2.4} />
+                    <ChevronRight size={14} color={theme.warningText} strokeWidth={2.4} />
                   </View>
                 </TouchableOpacity>
               )}
@@ -610,8 +610,8 @@ export default function DoctorDashboardScreen() {
                     style={[
                       styles.pendingUpdateStrip,
                       {
-                        backgroundColor: isExpired ? (isDark ? '#2A0E0E' : '#FEF2F2') : (isDark ? '#231805' : '#FFFBEB'),
-                        borderColor: isExpired ? (isDark ? '#7F1D1D' : '#FECACA') : (isDark ? '#5C3E08' : '#FDE68A'),
+                        backgroundColor: isExpired ? (theme.errorBg) : (theme.warningBg),
+                        borderColor: isExpired ? (theme.errorBorder) : (theme.warningBorder),
                       },
                     ]}
                     onPress={() => navigation.navigate('DoctorOnboarding', { isEdit: true })}
@@ -621,15 +621,15 @@ export default function DoctorDashboardScreen() {
                       <View
                         style={[
                           styles.pendingUpdateStripIcon,
-                          { backgroundColor: isExpired ? (isDark ? '#4C0D0D' : '#FEE2E2') : (isDark ? '#422806' : '#FEF3C7') },
+                          { backgroundColor: isExpired ? (theme.errorBg) : (theme.warningBg) },
                         ]}
                       >
-                        <AlertCircle size={13} color={isExpired ? '#EF4444' : (isDark ? '#FBBF24' : '#D97706')} strokeWidth={2.4} />
+                        <AlertCircle size={13} color={isExpired ? '#EF4444' : (theme.warningText)} strokeWidth={2.4} />
                       </View>
                       <Text
                         style={[
                           styles.pendingUpdateStripText,
-                          { color: isExpired ? (isDark ? '#FCA5A5' : '#991B1B') : (isDark ? '#FDE68A' : '#92400E') },
+                          { color: isExpired ? (theme.error) : (theme.warningText) },
                         ]}
                         numberOfLines={1}
                       >
@@ -642,12 +642,12 @@ export default function DoctorDashboardScreen() {
                       <Text
                         style={[
                           styles.pendingUpdateStripAction,
-                          { color: isExpired ? '#EF4444' : (isDark ? '#FBBF24' : '#B45309') },
+                          { color: isExpired ? '#EF4444' : (theme.warningText) },
                         ]}
                       >
                         Update
                       </Text>
-                      <ChevronRight size={14} color={isExpired ? '#EF4444' : (isDark ? '#FBBF24' : '#B45309')} strokeWidth={2.4} />
+                      <ChevronRight size={14} color={isExpired ? '#EF4444' : (theme.warningText)} strokeWidth={2.4} />
                     </View>
                   </TouchableOpacity>
                 );
@@ -669,7 +669,7 @@ export default function DoctorDashboardScreen() {
                         <View
                           style={[
                             styles.consultBadgeTag,
-                            { backgroundColor: isDark ? '#0A2F42' : '#EFF6FF' },
+                            { backgroundColor: theme.infoBg },
                           ]}
                         >
                           <View style={styles.livePulseMini} />
@@ -703,7 +703,7 @@ export default function DoctorDashboardScreen() {
                         <View
                           style={[
                             styles.patientAvatarWrap,
-                            { backgroundColor: isDark ? '#0A2F42' : '#EFF6FF' },
+                            { backgroundColor: theme.infoBg },
                           ]}
                         >
                           <Text style={styles.patientAvatarInitials}>
@@ -744,10 +744,10 @@ export default function DoctorDashboardScreen() {
                         }
                         activeOpacity={0.75}
                       >
-                        <Text style={[styles.cardActionText, { color: isDark ? '#60A5FA' : '#2563EB' }]}>
+                        <Text style={[styles.cardActionText, { color: theme.info }]}>
                           View consultation dossier
                         </Text>
-                        <ArrowRight size={16} color={isDark ? '#60A5FA' : '#2563EB'} />
+                        <ArrowRight size={16} color={theme.info} />
                       </TouchableOpacity>
                     </>
                   ) : (
@@ -756,10 +756,10 @@ export default function DoctorDashboardScreen() {
                         <View
                           style={[
                             styles.emptyIconCircle,
-                            { backgroundColor: isDark ? '#0A2F42' : '#F1F5F9' },
+                            { backgroundColor: theme.cardSecondary },
                           ]}
                         >
-                          <Calendar size={20} color={isDark ? '#94A3B8' : '#64748B'} />
+                          <Calendar size={20} color={theme.textSecondary} />
                         </View>
                         <View style={{ flex: 1 }}>
                           <Text style={[styles.patientMainName, { color: textColor, fontSize: 16 }]}>
@@ -778,10 +778,10 @@ export default function DoctorDashboardScreen() {
                         onPress={() => navigation.navigate('ManageAppointments')}
                         activeOpacity={0.7}
                       >
-                        <Text style={[styles.cardActionText, { color: isDark ? '#60A5FA' : '#2563EB' }]}>
+                        <Text style={[styles.cardActionText, { color: theme.info }]}>
                           View all appointments
                         </Text>
-                        <ArrowRight size={16} color={isDark ? '#60A5FA' : '#2563EB'} />
+                        <ArrowRight size={16} color={theme.info} />
                       </TouchableOpacity>
                     </>
                   )}
@@ -809,7 +809,7 @@ export default function DoctorDashboardScreen() {
                     <View
                       style={[
                         styles.snapshotIconWrap,
-                        { backgroundColor: isDark ? '#1E1B4B' : '#EEF2FF' },
+                        { backgroundColor: theme.infoBg },
                       ]}
                     >
                       <Calendar size={15} color="#6366F1" />
@@ -834,7 +834,7 @@ export default function DoctorDashboardScreen() {
                     <View
                       style={[
                         styles.snapshotIconWrap,
-                        { backgroundColor: isDark ? '#172554' : '#EFF6FF' },
+                        { backgroundColor: theme.infoBg },
                       ]}
                     >
                       <TrendingUp size={15} color="#2563EB" />
@@ -859,7 +859,7 @@ export default function DoctorDashboardScreen() {
                     <View
                       style={[
                         styles.snapshotIconWrap,
-                        { backgroundColor: isDark ? '#422006' : '#FEFCE8' },
+                        { backgroundColor: theme.warningBg },
                       ]}
                     >
                       <Star size={15} color="#D97706" fill="#D97706" />
@@ -898,7 +898,7 @@ export default function DoctorDashboardScreen() {
                       <View
                         style={[
                           styles.actionIconContainer,
-                          { backgroundColor: isDark ? '#450A0A' : '#FEE2E2' },
+                          { backgroundColor: theme.errorBg },
                         ]}
                       >
                         <Zap size={18} color="#DC2626" />
@@ -932,10 +932,10 @@ export default function DoctorDashboardScreen() {
                       <View
                         style={[
                           styles.actionIconContainer,
-                          { backgroundColor: isDark ? '#0A2F42' : '#F1F5F9' },
+                          { backgroundColor: theme.cardSecondary },
                         ]}
                       >
-                        <CheckCircle2 size={18} color={isDark ? '#94A3B8' : '#64748B'} />
+                        <CheckCircle2 size={18} color={theme.textSecondary} />
                       </View>
 
                       <View style={styles.actionNeededTextCol}>
@@ -974,7 +974,7 @@ export default function DoctorDashboardScreen() {
                     onPress={() => navigateTo('ManageAvailability')}
                     activeOpacity={0.7}
                   >
-                    <Text style={[styles.sectionHeaderLink, { color: isDark ? '#60A5FA' : '#2563EB' }]}>
+                    <Text style={[styles.sectionHeaderLink, { color: theme.info }]}>
                       Weekly Schedule →
                     </Text>
                   </TouchableOpacity>
@@ -1074,7 +1074,7 @@ export default function DoctorDashboardScreen() {
                       style={[
                         styles.quickPresetPill,
                         {
-                          backgroundColor: isDark ? '#0A2F42' : '#F8FAFC',
+                          backgroundColor: theme.background,
                           borderColor: cardBorder,
                         },
                       ]}
@@ -1082,7 +1082,7 @@ export default function DoctorDashboardScreen() {
                       activeOpacity={0.7}
                     >
                       <Sparkles size={13} color="#2563EB" />
-                      <Text style={[styles.quickPresetPillText, { color: isDark ? '#93C5FD' : '#2563EB' }]}>
+                      <Text style={[styles.quickPresetPillText, { color: theme.info }]}>
                         Change Shifts / Hours
                       </Text>
                     </TouchableOpacity>
@@ -1092,10 +1092,10 @@ export default function DoctorDashboardScreen() {
                       onPress={() => setTodayModalVisible(true)}
                       activeOpacity={0.7}
                     >
-                      <Text style={[styles.insightActionText, { color: isDark ? '#60A5FA' : '#2563EB' }]}>
+                      <Text style={[styles.insightActionText, { color: theme.info }]}>
                         Customize
                       </Text>
-                      <ArrowRight size={14} color={isDark ? '#60A5FA' : '#2563EB'} />
+                      <ArrowRight size={14} color={theme.info} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -1111,22 +1111,22 @@ export default function DoctorDashboardScreen() {
             style={[
               styles.footerSection,
               {
-                backgroundColor: isDark ? '#14171A' : '#E9ECEF',
-                borderTopColor: isDark ? '#22272E' : '#DEE2E6',
+                backgroundColor: theme.cardSecondary,
+                borderTopColor: theme.cardSecondary,
                 paddingBottom: 36,
               },
             ]}
           >
             <View style={styles.footerBrandRow}>
-              <ShieldCheck size={16} color={isDark ? '#8B949E' : '#6C757D'} />
-              <Text style={[styles.footerBrandTitle, { color: isDark ? '#C9D1D9' : '#495057' }]}>
+              <ShieldCheck size={16} color={theme.textSecondary} />
+              <Text style={[styles.footerBrandTitle, { color: theme.textSecondary }]}>
                 MedicooTech Private Limited
               </Text>
             </View>
-            <Text style={[styles.footerInfoLine, { color: isDark ? '#8B949E' : '#6C757D' }]}>
+            <Text style={[styles.footerInfoLine, { color: theme.textSecondary }]}>
               End-to-end encrypted clinical
             </Text>
-            <Text style={[styles.footerInfoLine, { color: isDark ? '#8B949E' : '#6C757D' }]}>
+            <Text style={[styles.footerInfoLine, { color: theme.textSecondary }]}>
               telehealth platform.
             </Text>
           </View>

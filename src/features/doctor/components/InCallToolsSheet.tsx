@@ -1,4 +1,5 @@
 import { AlertTriangle, ChevronRight, CheckCircle2, FileText, FlaskConical, Pill, X } from 'lucide-react-native';
+import { accent } from '../../../theme/accents';
 import React, { useEffect } from 'react';
 import * as NavigationBar from 'expo-navigation-bar';
 import { Modal, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -51,7 +52,7 @@ export default function InCallToolsSheet({
             description: 'Write & edit prescribed medications & dosage',
             Icon: Pill,
             iconColor: '#0FBBA1',
-            iconBg: isDark ? '#07303A' : '#E6FAF6',
+            iconBg: theme.primaryLight,
             onPress: onOpenPrescription || onOpenNotes,
         },
         {
@@ -60,7 +61,7 @@ export default function InCallToolsSheet({
             description: 'Order lab investigations, bloodwork & scans',
             Icon: FlaskConical,
             iconColor: '#8B5CF6',
-            iconBg: isDark ? '#2E1065' : '#F3E8FF',
+            iconBg: accent('violet', isDark).bg,
             onPress: onOpenLabTests || onOpenNotes,
         },
         {
@@ -69,7 +70,7 @@ export default function InCallToolsSheet({
             description: 'Record symptoms, diagnosis, advice & observations',
             Icon: FileText,
             iconColor: '#F59E0B',
-            iconBg: isDark ? '#451A03' : '#FEF3C7',
+            iconBg: theme.warningBg,
             onPress: onOpenNotes,
         },
         {
@@ -78,7 +79,7 @@ export default function InCallToolsSheet({
             description: 'View uploaded test results, history & previous documents',
             Icon: FileText,
             iconColor: '#3B82F6',
-            iconBg: isDark ? '#1E3A8A' : '#EFF6FF',
+            iconBg: theme.infoBg,
             onPress: onOpenReports,
         },
     ];
@@ -134,20 +135,20 @@ export default function InCallToolsSheet({
                                 style={[
                                     styles.actionCard,
                                     styles.emergencyCard,
-                                    { backgroundColor: isDark ? '#2A0E0E' : '#FEF2F2', borderColor: isDark ? '#7F1D1D' : '#FECACA' },
+                                    { backgroundColor: theme.errorBg, borderColor: theme.errorBorder },
                                 ]}
                                 onPress={onEmergency}
                                 activeOpacity={0.7}
                             >
-                                <View style={[styles.iconBox, { backgroundColor: isDark ? '#4C0D0D' : '#FEE2E2' }]}>
+                                <View style={[styles.iconBox, { backgroundColor: theme.errorBg }]}>
                                     <AlertTriangle size={20} color="#EF4444" />
                                 </View>
                                 <View style={styles.cardContent}>
-                                    <Text style={[styles.cardTitle, { color: isDark ? '#FCA5A5' : '#B91C1C', fontWeight: '700' }]}>
+                                    <Text style={[styles.cardTitle, { color: theme.error, fontWeight: '700' }]}>
                                         Emergency Assistance
                                     </Text>
                                     <Text
-                                        style={[styles.cardDesc, { color: isDark ? '#F87171' : '#DC2626' }]}
+                                        style={[styles.cardDesc, { color: theme.error }]}
                                         numberOfLines={1}
                                     >
                                         Emergency numbers & alert our clinical safety team
@@ -184,7 +185,7 @@ export default function InCallToolsSheet({
                                         {item.description}
                                     </Text>
                                 </View>
-                                <ChevronRight size={18} color={isDark ? '#64748B' : '#94A3B8'} />
+                                <ChevronRight size={18} color={theme.textMuted} />
                             </TouchableOpacity>
                         ))}
 
@@ -200,7 +201,7 @@ export default function InCallToolsSheet({
                                 onPress={onRequestDocs}
                                 activeOpacity={0.7}
                             >
-                                <View style={[styles.iconBox, { backgroundColor: isDark ? '#1E3A8A' : '#EFF6FF' }]}>
+                                <View style={[styles.iconBox, { backgroundColor: theme.infoBg }]}>
                                     <FileText size={20} color="#3B82F6" />
                                 </View>
                                 <View style={styles.cardContent}>
@@ -214,7 +215,7 @@ export default function InCallToolsSheet({
                                         Ask patient to upload reports or past records
                                     </Text>
                                 </View>
-                                <ChevronRight size={18} color={isDark ? '#64748B' : '#94A3B8'} />
+                                <ChevronRight size={18} color={theme.textMuted} />
                             </TouchableOpacity>
                         )}
 
@@ -223,29 +224,29 @@ export default function InCallToolsSheet({
                                 style={[
                                     styles.actionCard,
                                     {
-                                        backgroundColor: isDark ? '#451A1A' : '#FEF2F2',
-                                        borderColor: isDark ? '#7F1D1D' : '#FECACA',
+                                        backgroundColor: theme.errorBg,
+                                        borderColor: theme.errorBorder,
                                         marginTop: 4,
                                     },
                                 ]}
                                 onPress={onComplete}
                                 activeOpacity={0.7}
                             >
-                                <View style={[styles.iconBox, { backgroundColor: isDark ? '#7F1D1D' : '#FEE2E2' }]}>
+                                <View style={[styles.iconBox, { backgroundColor: theme.errorBg }]}>
                                     <CheckCircle2 size={20} color="#EF4444" />
                                 </View>
                                 <View style={styles.cardContent}>
-                                    <Text style={[styles.cardTitle, { color: isDark ? '#FCA5A5' : '#DC2626', fontWeight: '700' }]}>
+                                    <Text style={[styles.cardTitle, { color: theme.error, fontWeight: '700' }]}>
                                         Complete Consultation
                                     </Text>
                                     <Text
-                                        style={[styles.cardDesc, { color: isDark ? '#F87171' : '#B91C1C' }]}
+                                        style={[styles.cardDesc, { color: theme.error }]}
                                         numberOfLines={1}
                                     >
                                         Finalize notes and complete this appointment
                                     </Text>
                                 </View>
-                                <ChevronRight size={18} color={isDark ? '#F87171' : '#EF4444'} />
+                                <ChevronRight size={18} color={theme.error} />
                             </TouchableOpacity>
                         )}
                     </View>

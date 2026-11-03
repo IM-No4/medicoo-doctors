@@ -50,7 +50,7 @@ export default function DoctorDetailScreen() {
   const navigation = useNavigation<any>();
   const reduxProfile = useSelector((state: RootState) => state.profile);
 
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -58,13 +58,13 @@ export default function DoctorDetailScreen() {
   const [reviewsSummary, setReviewsSummary] = useState<any>(null);
   const [earningsSummary, setEarningsSummary] = useState<any>(null);
 
-  const bgColor = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
-  const iconColor = isDark ? '#94A3B8' : '#475569';
+  const bgColor = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const dividerColor = theme.cardSecondary;
+  const iconColor = theme.textSecondary;
 
   useEffect(() => {
     RNStatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content', true);
@@ -298,7 +298,7 @@ export default function DoctorDetailScreen() {
                 <View
                   style={[
                     styles.avatarCircle,
-                    { backgroundColor: isDark ? '#082E41' : '#EFF2F6' },
+                    { backgroundColor: theme.inset },
                   ]}
                 >
                   {avatarUri ? (
@@ -360,7 +360,7 @@ export default function DoctorDetailScreen() {
                 <View
                   style={[
                     styles.metricIconCircle,
-                    { backgroundColor: isDark ? '#172554' : '#EFF6FF' },
+                    { backgroundColor: theme.infoBg },
                   ]}
                 >
                   <CalendarCheck size={16} color="#2563EB" />
@@ -382,7 +382,7 @@ export default function DoctorDetailScreen() {
                 <View
                   style={[
                     styles.metricIconCircle,
-                    { backgroundColor: isDark ? '#2E2210' : '#FEF3C7' },
+                    { backgroundColor: theme.warningBg },
                   ]}
                 >
                   <Award size={16} color="#F59E0B" />
@@ -437,7 +437,7 @@ export default function DoctorDetailScreen() {
                 <View
                   style={[
                     styles.detailIconCircle,
-                    { backgroundColor: isDark ? '#172554' : '#EFF6FF' },
+                    { backgroundColor: theme.infoBg },
                   ]}
                 >
                   <FileCheck size={16} color="#2563EB" />
@@ -460,7 +460,7 @@ export default function DoctorDetailScreen() {
                 <View
                   style={[
                     styles.detailIconCircle,
-                    { backgroundColor: isDark ? '#2E1065' : '#F5F3FF' },
+                    { backgroundColor: accent('violet', isDark).bg },
                   ]}
                 >
                   <Building2 size={16} color="#7C3AED" />
@@ -483,7 +483,7 @@ export default function DoctorDetailScreen() {
                 <View
                   style={[
                     styles.detailIconCircle,
-                    { backgroundColor: isDark ? '#2E2210' : '#FEF3C7' },
+                    { backgroundColor: theme.warningBg },
                   ]}
                 >
                   <Globe size={16} color="#F59E0B" />
@@ -518,8 +518,8 @@ export default function DoctorDetailScreen() {
                   style={[
                     styles.feeCard,
                     {
-                      backgroundColor: isDark ? '#082E41' : '#F0F9FF',
-                      borderColor: isDark ? '#1E3A5F' : '#E0F2FE',
+                      backgroundColor: theme.infoBg,
+                      borderColor: theme.infoBg,
                     },
                   ]}
                 >
@@ -528,7 +528,7 @@ export default function DoctorDetailScreen() {
                     <Text
                       style={[
                         styles.feeTypeTitle,
-                        { color: isDark ? '#7DD3FC' : '#0369A1' },
+                        { color: theme.info },
                       ]}
                     >
                       Video
@@ -546,8 +546,8 @@ export default function DoctorDetailScreen() {
                   style={[
                     styles.feeCard,
                     {
-                      backgroundColor: isDark ? '#062B21' : '#ECFDF5',
-                      borderColor: isDark ? '#065F46' : '#D1FAE5',
+                      backgroundColor: theme.successBg,
+                      borderColor: theme.successBg,
                     },
                   ]}
                 >
@@ -556,7 +556,7 @@ export default function DoctorDetailScreen() {
                     <Text
                       style={[
                         styles.feeTypeTitle,
-                        { color: isDark ? '#6EE7B7' : '#047857' },
+                        { color: theme.success },
                       ]}
                     >
                       Audio
@@ -574,8 +574,8 @@ export default function DoctorDetailScreen() {
                   style={[
                     styles.feeCard,
                     {
-                      backgroundColor: isDark ? '#172554' : '#EFF6FF',
-                      borderColor: isDark ? '#1E40AF' : '#DBEAFE',
+                      backgroundColor: theme.infoBg,
+                      borderColor: theme.infoBg,
                     },
                   ]}
                 >
@@ -584,7 +584,7 @@ export default function DoctorDetailScreen() {
                     <Text
                       style={[
                         styles.feeTypeTitle,
-                        { color: isDark ? '#93C5FD' : '#1D4ED8' },
+                        { color: theme.info },
                       ]}
                     >
                       Chat
@@ -634,7 +634,7 @@ export default function DoctorDetailScreen() {
                 <View
                   style={[
                     styles.detailIconCircle,
-                    { backgroundColor: isDark ? '#082E41' : '#F1F5F9' },
+                    { backgroundColor: theme.cardSecondary },
                   ]}
                 >
                   <Mail size={16} color={iconColor} />
@@ -657,7 +657,7 @@ export default function DoctorDetailScreen() {
                 <View
                   style={[
                     styles.detailIconCircle,
-                    { backgroundColor: isDark ? '#082E41' : '#F1F5F9' },
+                    { backgroundColor: theme.cardSecondary },
                   ]}
                 >
                   <Phone size={16} color={iconColor} />

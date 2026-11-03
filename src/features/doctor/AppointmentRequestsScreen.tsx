@@ -208,7 +208,7 @@ export default function AppointmentRequestsScreen() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
   const initialTab = (route.params?.initialTab as TabKey) || 'requests';
 
   const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
@@ -240,14 +240,14 @@ export default function AppointmentRequestsScreen() {
     message: '',
   });
 
-  const bgColor = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
-  const iconColor = isDark ? '#94A3B8' : '#64748B';
-  const neutralTileBg = isDark ? '#10384D' : '#F1F5F9';
+  const bgColor = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const dividerColor = theme.cardSecondary;
+  const iconColor = theme.textSecondary;
+  const neutralTileBg = theme.cardSecondary;
   const A = { green: accent('green', isDark), blue: accent('blue', isDark), violet: accent('violet', isDark), sky: accent('sky', isDark), amber: accent('amber', isDark) };
 
   useEffect(() => {
@@ -551,7 +551,7 @@ export default function AppointmentRequestsScreen() {
         <View
           style={[
             styles.scheduleStrip,
-            { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
+            { backgroundColor: theme.background },
           ]}
         >
           <View style={styles.scheduleItem}>
@@ -586,8 +586,8 @@ export default function AppointmentRequestsScreen() {
               style={[
                 styles.declineBtn,
                 {
-                  backgroundColor: isDark ? '#2A1417' : '#FEF2F2',
-                  borderColor: isDark ? '#4C1D24' : '#FECACA',
+                  backgroundColor: theme.errorBg,
+                  borderColor: theme.errorBorder,
                 },
               ]}
               onPress={() => handleRespond(item, 'rejected')}
@@ -657,7 +657,7 @@ export default function AppointmentRequestsScreen() {
         <View
           style={[
             styles.emptyIconCircle,
-            { backgroundColor: isDark ? '#082E41' : '#FFFFFF' },
+            { backgroundColor: theme.card },
           ]}
         >
           <Inbox size={26} color={iconColor} />

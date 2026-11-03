@@ -100,7 +100,7 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 export default function DoctorEarningsScreen() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
   // Used as the bank-account verification's submitted holder name so the
   // doctor never has to type their own name - Razorpay still requires some
   // name in the request, but it only affects name_match_score, not
@@ -193,14 +193,14 @@ export default function DoctorEarningsScreen() {
 
   const earningsFilters: EarningsFilter[] = ['All', 'Credited', 'On Hold', 'Refunded'];
 
-  const bgColor = isDark ? '#011A29' : '#EFF2F6';
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
-  const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
-  const iconColor = isDark ? '#94A3B8' : '#475569';
-  const neutralTileBg = isDark ? '#10384D' : '#F1F5F9';
+  const bgColor = theme.inset;
+  const cardBg = theme.card;
+  const cardBorder = theme.card;
+  const textColor = theme.text;
+  const subTextColor = theme.textSecondary;
+  const dividerColor = theme.cardSecondary;
+  const iconColor = theme.textSecondary;
+  const neutralTileBg = theme.cardSecondary;
   const A = { green: accent('green', isDark), blue: accent('blue', isDark), violet: accent('violet', isDark), sky: accent('sky', isDark), amber: accent('amber', isDark) };
 
   useEffect(() => {
@@ -730,7 +730,7 @@ export default function DoctorEarningsScreen() {
           <View
             style={[
               styles.metricsStrip,
-              { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
+              { backgroundColor: theme.background },
             ]}
           >
             <View style={styles.metricItem}>
@@ -824,8 +824,8 @@ export default function DoctorEarningsScreen() {
               style={[
                 styles.bankCardSurface,
                 {
-                  backgroundColor: isDark ? '#011A29' : '#F8FAFC',
-                  borderColor: isDark ? '#082E41' : '#E2E8F0',
+                  backgroundColor: theme.background,
+                  borderColor: theme.border,
                 },
               ]}
             >
@@ -856,7 +856,7 @@ export default function DoctorEarningsScreen() {
                   <View
                     style={[
                       styles.verifiedBadgeRow,
-                      { backgroundColor: isDark ? '#10384D' : '#F1F5F9' },
+                      { backgroundColor: theme.cardSecondary },
                     ]}
                   >
                     <verificationBadge.Icon size={12} color={verificationBadge.color} />
@@ -897,8 +897,8 @@ export default function DoctorEarningsScreen() {
               style={[
                 styles.emptyPayoutSurface,
                 {
-                  backgroundColor: isDark ? '#011A29' : '#F8FAFC',
-                  borderColor: isDark ? '#082E41' : '#E2E8F0',
+                  backgroundColor: theme.background,
+                  borderColor: theme.border,
                 },
               ]}
             >
@@ -974,7 +974,7 @@ export default function DoctorEarningsScreen() {
             <View
               style={[
                 styles.badgePill,
-                { backgroundColor: isDark ? '#10384D' : '#F1F5F9' },
+                { backgroundColor: theme.cardSecondary },
               ]}
             >
               <Text style={[styles.badgePillText, { color: subTextColor }]}>
@@ -1180,7 +1180,7 @@ export default function DoctorEarningsScreen() {
             <View
               style={[
                 styles.badgePill,
-                { backgroundColor: isDark ? '#10384D' : '#F1F5F9' },
+                { backgroundColor: theme.cardSecondary },
               ]}
             >
               <Text style={[styles.badgePillText, { color: subTextColor }]}>
@@ -1240,8 +1240,8 @@ export default function DoctorEarningsScreen() {
                     style={[
                       styles.withdrawalCardItem,
                       {
-                        backgroundColor: isDark ? '#011A29' : '#F8FAFC',
-                        borderColor: isDark ? '#082E41' : '#E2E8F0',
+                        backgroundColor: theme.background,
+                        borderColor: theme.border,
                       },
                     ]}
                   >
@@ -1367,8 +1367,8 @@ export default function DoctorEarningsScreen() {
                           style={[
                             styles.breakdownBox,
                             {
-                              backgroundColor: isDark ? '#082E41' : '#FFFFFF',
-                              borderColor: isDark ? '#082E41' : '#E2E8F0',
+                              backgroundColor: theme.card,
+                              borderColor: theme.border,
                             },
                           ]}
                         >
@@ -1511,7 +1511,7 @@ export default function DoctorEarningsScreen() {
           <View style={[styles.fullScreenHeader, { paddingTop: insets.top + 10, borderBottomColor: dividerColor }]}>
             <TouchableOpacity
               onPress={closeSetupModal}
-              style={[styles.backBtn, { backgroundColor: isDark ? '#10384D' : '#F1F5F9' }]}
+              style={[styles.backBtn, { backgroundColor: theme.cardSecondary }]}
               activeOpacity={0.7}
             >
               <ArrowLeft size={20} color={textColor} />
@@ -1528,7 +1528,7 @@ export default function DoctorEarningsScreen() {
               : "Enter your UPI ID - we'll verify it's real before saving it."}
           </Text>
 
-          <View style={[styles.accountModeTabRow, { backgroundColor: isDark ? '#011A29' : '#F1F5F9', marginHorizontal: 20 }]}>
+          <View style={[styles.accountModeTabRow, { backgroundColor: theme.inset, marginHorizontal: 20 }]}>
             <TouchableOpacity
               style={[styles.accountModeTab, accountMode === 'bank' && styles.accountModeTabActive]}
               onPress={() => setAccountMode('bank')}
@@ -1576,7 +1576,7 @@ export default function DoctorEarningsScreen() {
                       styles.input,
                       styles.selectInput,
                       {
-                        backgroundColor: isDark ? '#011A29' : '#F8FAFC',
+                        backgroundColor: theme.background,
                         borderColor: fieldErrors.bankName ? '#EF4444' : dividerColor,
                       },
                     ]}
@@ -1610,7 +1610,7 @@ export default function DoctorEarningsScreen() {
                     style={[
                       styles.input,
                       {
-                        backgroundColor: isDark ? '#011A29' : '#F8FAFC',
+                        backgroundColor: theme.background,
                         borderColor: fieldErrors.accountNumber ? '#EF4444' : dividerColor,
                         color: textColor,
                       },
@@ -1644,7 +1644,7 @@ export default function DoctorEarningsScreen() {
                       styles.input,
                       {
                         justifyContent: 'center',
-                        backgroundColor: isBankVerified ? (isDark ? '#07303A' : '#E6FAF6') : (isDark ? '#011A29' : '#F8FAFC'),
+                        backgroundColor: isBankVerified ? (theme.primaryLight) : (theme.background),
                         borderColor: isBankVerified ? '#0FBBA1' : dividerColor,
                       },
                     ]}
@@ -1666,7 +1666,7 @@ export default function DoctorEarningsScreen() {
                     style={[
                       styles.input,
                       {
-                        backgroundColor: isBankVerified ? (isDark ? '#07303A' : '#E6FAF6') : (isDark ? '#011A29' : '#F8FAFC'),
+                        backgroundColor: isBankVerified ? (theme.primaryLight) : (theme.background),
                         borderColor: isBankVerified ? '#0FBBA1' : fieldErrors.ifsc ? '#EF4444' : dividerColor,
                         color: isBankVerified ? '#0FBBA1' : textColor,
                       },
@@ -1694,7 +1694,7 @@ export default function DoctorEarningsScreen() {
                       style={[
                         styles.input,
                         {
-                          backgroundColor: isDark ? '#011A29' : '#F8FAFC',
+                          backgroundColor: theme.background,
                           borderColor: dividerColor,
                           color: textColor,
                         },
@@ -1719,7 +1719,7 @@ export default function DoctorEarningsScreen() {
                     style={[
                       styles.input,
                       {
-                        backgroundColor: isDark ? '#011A29' : '#F8FAFC',
+                        backgroundColor: theme.background,
                         borderColor: fieldErrors.upiId ? '#EF4444' : dividerColor,
                         color: textColor,
                       },
@@ -1801,7 +1801,7 @@ export default function DoctorEarningsScreen() {
                 onPress={() => setIsWithdrawModalVisible(false)}
                 style={[
                   styles.closeBtn,
-                  { backgroundColor: isDark ? '#10384D' : '#F1F5F9' },
+                  { backgroundColor: theme.cardSecondary },
                 ]}
                 activeOpacity={0.7}
               >
@@ -1836,7 +1836,7 @@ export default function DoctorEarningsScreen() {
                   style={[
                     styles.amountInput,
                     {
-                      backgroundColor: isDark ? '#011A29' : '#F8FAFC',
+                      backgroundColor: theme.background,
                       borderColor: dividerColor,
                       color: textColor,
                     },
@@ -1854,7 +1854,7 @@ export default function DoctorEarningsScreen() {
                     key={amt}
                     style={[
                       styles.quickAmountChip,
-                      { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
+                      { backgroundColor: theme.background },
                     ]}
                     onPress={() => setWithdrawAmount(String(amt))}
                     activeOpacity={0.7}
@@ -1867,7 +1867,7 @@ export default function DoctorEarningsScreen() {
                 <TouchableOpacity
                   style={[
                     styles.quickAmountChip,
-                    { backgroundColor: isDark ? '#07303A' : '#E6FAF6' },
+                    { backgroundColor: theme.primaryLight },
                   ]}
                   onPress={() => setWithdrawAmount(String(availableAmount))}
                   activeOpacity={0.7}

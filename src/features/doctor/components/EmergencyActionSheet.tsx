@@ -62,7 +62,7 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                     <View style={[styles.handle, { backgroundColor: isDark ? 'rgba(255,255,255,0.2)' : '#CBD5E1' }]} />
 
                     <View style={styles.header}>
-                        <View style={[styles.headerIcon, { backgroundColor: isDark ? '#4C0D0D' : '#FEE2E2' }]}>
+                        <View style={[styles.headerIcon, { backgroundColor: theme.errorBg }]}>
                             <AlertTriangle size={22} color="#EF4444" />
                         </View>
                         <View style={{ flex: 1 }}>
@@ -77,7 +77,7 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                     </View>
 
                     <TouchableOpacity
-                        style={[styles.callCard, { backgroundColor: isDark ? '#2A0E0E' : '#FEF2F2', borderColor: isDark ? '#7F1D1D' : '#FECACA' }]}
+                        style={[styles.callCard, { backgroundColor: theme.errorBg, borderColor: theme.errorBorder }]}
                         onPress={() => handleCall('112')}
                         activeOpacity={0.8}
                     >
@@ -85,13 +85,13 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                             <Phone size={18} color="#FFFFFF" />
                         </View>
                         <View style={{ flex: 1 }}>
-                            <Text style={[styles.callTitle, { color: isDark ? '#FCA5A5' : '#B91C1C' }]}>National Emergency - 112</Text>
-                            <Text style={[styles.callSub, { color: isDark ? '#F87171' : '#DC2626' }]}>Tap to call</Text>
+                            <Text style={[styles.callTitle, { color: theme.error }]}>National Emergency - 112</Text>
+                            <Text style={[styles.callSub, { color: theme.error }]}>Tap to call</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={[styles.callCard, { backgroundColor: isDark ? '#2A0E0E' : '#FEF2F2', borderColor: isDark ? '#7F1D1D' : '#FECACA' }]}
+                        style={[styles.callCard, { backgroundColor: theme.errorBg, borderColor: theme.errorBorder }]}
                         onPress={() => handleCall('108')}
                         activeOpacity={0.8}
                     >
@@ -99,8 +99,8 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                             <Phone size={18} color="#FFFFFF" />
                         </View>
                         <View style={{ flex: 1 }}>
-                            <Text style={[styles.callTitle, { color: isDark ? '#FCA5A5' : '#B91C1C' }]}>Ambulance - 108</Text>
-                            <Text style={[styles.callSub, { color: isDark ? '#F87171' : '#DC2626' }]}>Tap to call</Text>
+                            <Text style={[styles.callTitle, { color: theme.error }]}>Ambulance - 108</Text>
+                            <Text style={[styles.callSub, { color: theme.error }]}>Tap to call</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -111,7 +111,7 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                         style={[
                             styles.notifyCard,
                             {
-                                backgroundColor: notified ? (isDark ? '#07303A' : '#ECFDF5') : (isDark ? theme.cardSecondary : '#F8FAFC'),
+                                backgroundColor: notified ? (theme.successBg) : (isDark ? theme.cardSecondary : '#F8FAFC'),
                                 borderColor: notified ? '#0FBBA1' : (isDark ? theme.border : '#E2E8F0'),
                             },
                         ]}
@@ -119,7 +119,7 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                         disabled={notifying || notified}
                         activeOpacity={0.8}
                     >
-                        <View style={[styles.callIconBox, { backgroundColor: notified ? '#0FBBA1' : (isDark ? '#0A2F42' : '#E2E8F0') }]}>
+                        <View style={[styles.callIconBox, { backgroundColor: notified ? '#0FBBA1' : (theme.border) }]}>
                             <ShieldAlert size={18} color={notified ? '#FFFFFF' : (isDark ? theme.textSecondary : '#64748B')} />
                         </View>
                         <View style={{ flex: 1 }}>

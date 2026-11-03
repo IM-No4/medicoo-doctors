@@ -89,7 +89,7 @@ export default function StatusModal({
   primaryActionText,
   secondaryActionText,
 }: StatusModalProps) {
-  const { isDark } = useTheme();
+  const { theme, isDark } = useTheme();
 
   useEffect(() => {
     if (status === 'success' && autoCloseDelay && visible) {
@@ -116,12 +116,12 @@ export default function StatusModal({
   if (!visible || status === 'idle') return null;
 
   const glowColor = (isDark && DARK_MODE_ACCENT_OVERRIDES[status]) || GLOW_COLORS[status];
-  const cardBg = isDark ? '#082E41' : '#FFFFFF';
-  const cardBorder = isDark ? '#10384D' : '#E2E8F0';
-  const titleColor = isDark ? '#F8FAFC' : '#012233';
-  const messageColor = isDark ? '#94A3B8' : '#64748B';
-  const secondaryBg = isDark ? '#10384D' : '#F1F5F9';
-  const secondaryTextColor = isDark ? '#CBD5E1' : '#2B4A5E';
+  const cardBg = theme.card;
+  const cardBorder = theme.border;
+  const titleColor = theme.text;
+  const messageColor = theme.textSecondary;
+  const secondaryBg = theme.cardSecondary;
+  const secondaryTextColor = theme.textSecondary;
 
   const glowStyle = Platform.select({
     ios: {
@@ -170,7 +170,7 @@ export default function StatusModal({
           <View
             style={[
               styles.iconWrapper,
-              { backgroundColor: isDark ? '#064E3B' : '#E6FAF6' },
+              { backgroundColor: theme.primaryLight },
             ]}
           >
             <CheckCircle2 size={32} color="#0FBBA1" strokeWidth={2.3} />
@@ -182,7 +182,7 @@ export default function StatusModal({
           <View
             style={[
               styles.iconWrapper,
-              { backgroundColor: isDark ? '#451A1A' : '#FEF2F2' },
+              { backgroundColor: theme.errorBg },
             ]}
           >
             <XCircle size={32} color="#EF4444" strokeWidth={2.3} />
@@ -193,7 +193,7 @@ export default function StatusModal({
           <View
             style={[
               styles.iconWrapper,
-              { backgroundColor: isDark ? '#452A0A' : '#FFFBEB' },
+              { backgroundColor: theme.warningBg },
             ]}
           >
             <AlertTriangle size={32} color="#F59E0B" strokeWidth={2.3} />
@@ -204,7 +204,7 @@ export default function StatusModal({
           <View
             style={[
               styles.iconWrapper,
-              { backgroundColor: isDark ? '#1E3A8A' : '#EFF6FF' },
+              { backgroundColor: theme.infoBg },
             ]}
           >
             <Info size={32} color="#3B82F6" strokeWidth={2.3} />
