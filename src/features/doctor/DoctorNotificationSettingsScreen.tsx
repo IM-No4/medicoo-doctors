@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 import { ArrowLeft, BellOff, Calendar, MessageCircle, Wallet } from 'lucide-react-native';
@@ -80,10 +81,10 @@ export default function DoctorNotificationSettingsScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -149,7 +150,7 @@ export default function DoctorNotificationSettingsScreen() {
   if (loading) {
     return (
       <View style={[styles.container, styles.center, { backgroundColor: bgColor }]}>
-        <ActivityIndicator size="large" color="#0FBBA1" />
+        <ActivityIndicator size="large" color={palette.primary} />
       </View>
     );
   }
@@ -191,10 +192,10 @@ export default function DoctorNotificationSettingsScreen() {
           <View
             style={[
               styles.permissionBanner,
-              { backgroundColor: isDark ? 'rgba(220, 38, 38, 0.12)' : '#FEF2F2' },
+              { backgroundColor: isDark ? palette.rgba_220_38_38_12 : palette.red50 },
             ]}
           >
-            <BellOff size={18} color="#DC2626" />
+            <BellOff size={18} color={palette.red600} />
             <View style={styles.permissionBannerTextCol}>
               <Text style={styles.permissionBannerTitle}>Notifications are turned off</Text>
               <Text style={[styles.permissionBannerSub, { color: subTextColor }]}>
@@ -209,7 +210,7 @@ export default function DoctorNotificationSettingsScreen() {
               disabled={requestingPermission}
             >
               {requestingPermission ? (
-                <ActivityIndicator size="small" color="#fff" />
+                <ActivityIndicator size="small" color={palette.white} />
               ) : (
                 <Text style={styles.permissionBannerButtonText}>
                   {notificationPermission === 'denied' ? 'Open Settings' : 'Enable'}
@@ -241,8 +242,8 @@ export default function DoctorNotificationSettingsScreen() {
                   value={notificationSettings[item.key]}
                   onValueChange={() => toggleNotificationSetting(item.key)}
                   disabled={savingKey === item.key}
-                  trackColor={{ false: theme.border, true: '#0FBBA1' }}
-                  thumbColor={Platform.OS === 'android' ? '#FFFFFF' : undefined}
+                  trackColor={{ false: theme.border, true: palette.primary }}
+                  thumbColor={Platform.OS === 'android' ? palette.white : undefined}
                 />
               </View>
             );
@@ -299,17 +300,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   permissionBannerTextCol: { flex: 1 },
-  permissionBannerTitle: { fontSize: 13, fontWeight: '700', color: '#DC2626', marginBottom: 2 },
+  permissionBannerTitle: { fontSize: 13, fontWeight: '700', color: palette.red600, marginBottom: 2 },
   permissionBannerSub: { fontSize: 12, lineHeight: 16 },
   permissionBannerButton: {
-    backgroundColor: '#DC2626',
+    backgroundColor: palette.red600,
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 10,
     minWidth: 76,
     alignItems: 'center',
   },
-  permissionBannerButtonText: { fontSize: 12, fontWeight: '700', color: '#fff' },
+  permissionBannerButtonText: { fontSize: 12, fontWeight: '700', color: palette.white },
 
   card: {
     borderRadius: 16,

@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useNavigation } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 import React, { useEffect } from 'react';
@@ -107,10 +108,10 @@ export default function DoctorPoliciesHubScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -354,7 +355,7 @@ const styles = StyleSheet.create({
     width: 3.5,
     height: 22,
     borderRadius: 2,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
   },
   sectionTitle: {
     fontSize: 14.5,
@@ -371,7 +372,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 12,
-    backgroundColor: '#ECFDF5',
+    backgroundColor: palette.emerald50,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -420,13 +421,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   badgePill: {
-    backgroundColor: '#E0F2FE',
+    backgroundColor: palette.sky100,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
   },
   badgePillText: {
-    color: '#0284C7',
+    color: palette.sky600,
     fontSize: 9.5,
     fontWeight: '700',
   },

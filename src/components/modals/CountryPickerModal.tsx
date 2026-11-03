@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { Check, Search, X } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import {
@@ -176,7 +177,7 @@ export default function CountryPickerModal({
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: palette.blackA50,
     justifyContent: 'flex-end',
   },
   modalContainer: {

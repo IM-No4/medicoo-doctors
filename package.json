@@ -63,6 +63,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "lint": "expo lint",
+    "lint:colors": "node scripts/check-colors.js",
     "update:production": "node scripts/publish-update.js"
   },
   "private": true

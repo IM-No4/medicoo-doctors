@@ -1,3 +1,4 @@
+import { palette } from '../../../theme/palette';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {
   AlertTriangle,
@@ -46,9 +47,9 @@ const PRESETS = [
     start: '09:00',
     end: '20:00',
     Icon: Zap,
-    color: '#2563EB',
-    bg: '#EFF6FF',
-    darkBg: '#172554',
+    color: palette.blue600,
+    bg: palette.blue50,
+    darkBg: palette.hex172554,
   },
   {
     id: 'morning',
@@ -57,9 +58,9 @@ const PRESETS = [
     start: '09:00',
     end: '13:00',
     Icon: Sun,
-    color: '#D97706',
-    bg: '#FEF3C7',
-    darkBg: '#422006',
+    color: palette.amber600,
+    bg: palette.amber100,
+    darkBg: palette.hex422006,
   },
   {
     id: 'afternoon',
@@ -68,9 +69,9 @@ const PRESETS = [
     start: '14:00',
     end: '18:00',
     Icon: Sparkles,
-    color: '#0284C7',
-    bg: '#F0F9FF',
-    darkBg: '#0C4A6E',
+    color: palette.sky600,
+    bg: palette.sky50,
+    darkBg: palette.sky900,
   },
   {
     id: 'evening',
@@ -79,9 +80,9 @@ const PRESETS = [
     start: '17:00',
     end: '21:00',
     Icon: Moon,
-    color: '#7C3AED',
-    bg: '#F5F3FF',
-    darkBg: '#2E1065',
+    color: palette.violet600,
+    bg: palette.violet50,
+    darkBg: palette.hex2E1065,
   },
 ];
 
@@ -189,18 +190,18 @@ export default function TodayAvailabilityModal({
     if (Platform.OS === 'android') {
       if (rendered) {
         if (isDark) {
-          NavigationBar.setBackgroundColorAsync('#082E41');
+          NavigationBar.setBackgroundColorAsync(palette.navyCard);
           NavigationBar.setButtonStyleAsync('light');
         } else {
-          NavigationBar.setBackgroundColorAsync('#FFFFFF');
+          NavigationBar.setBackgroundColorAsync(palette.white);
           NavigationBar.setButtonStyleAsync('dark');
         }
       } else {
         if (isDark) {
-          NavigationBar.setBackgroundColorAsync('#011A29');
+          NavigationBar.setBackgroundColorAsync(palette.navyDeep);
           NavigationBar.setButtonStyleAsync('light');
         } else {
-          NavigationBar.setBackgroundColorAsync('#F8FAFC');
+          NavigationBar.setBackgroundColorAsync(palette.slate50);
           NavigationBar.setButtonStyleAsync('dark');
         }
       }
@@ -324,7 +325,7 @@ export default function TodayAvailabilityModal({
         <View style={styles.headerRow}>
           <View style={{ flex: 1 }}>
             <View style={styles.titleBadgeRow}>
-              <Calendar size={14} color="#2563EB" />
+              <Calendar size={14} color={palette.blue600} />
               <Text style={styles.titleBadgeText}>
                 TODAY • {todayDayName.toUpperCase()}
               </Text>
@@ -376,8 +377,8 @@ export default function TodayAvailabilityModal({
               setEnabled(val);
               setErrorMessage(null);
             }}
-            trackColor={{ false: 'rgba(148, 163, 184, 0.4)', true: '#2563EB' }}
-            thumbColor="#FFFFFF"
+            trackColor={{ false: palette.rgba_148_163_184_40, true: palette.blue600 }}
+            thumbColor={palette.white}
           />
         </View>
 
@@ -392,7 +393,7 @@ export default function TodayAvailabilityModal({
               },
             ]}
           >
-            <AlertTriangle size={15} color="#D97706" style={{ marginTop: 2 }} />
+            <AlertTriangle size={15} color={palette.amber600} style={{ marginTop: 2 }} />
             <Text
               style={[
                 styles.warningText,
@@ -426,8 +427,8 @@ export default function TodayAvailabilityModal({
                             ? p.darkBg
                             : p.bg
                           : isDark
-                          ? '#011A29'
-                          : '#F8FAFC',
+                          ? palette.navyDeep
+                          : palette.slate50,
                         borderColor: isSelected ? p.color : cardBorder,
                       },
                     ]}
@@ -452,7 +453,7 @@ export default function TodayAvailabilityModal({
                             { backgroundColor: p.color },
                           ]}
                         >
-                          <Check size={10} color="#FFFFFF" strokeWidth={3} />
+                          <Check size={10} color={palette.white} strokeWidth={3} />
                         </View>
                       )}
                     </View>
@@ -491,7 +492,7 @@ export default function TodayAvailabilityModal({
                 activeOpacity={0.7}
               >
                 <View style={styles.timeChipLeft}>
-                  <Clock size={14} color="#2563EB" />
+                  <Clock size={14} color={palette.blue600} />
                   <View>
                     <Text style={[styles.timeChipLabel, { color: subTextColor }]}>
                       From
@@ -518,7 +519,7 @@ export default function TodayAvailabilityModal({
                 activeOpacity={0.7}
               >
                 <View style={styles.timeChipLeft}>
-                  <Clock size={14} color="#2563EB" />
+                  <Clock size={14} color={palette.blue600} />
                   <View>
                     <Text style={[styles.timeChipLabel, { color: subTextColor }]}>
                       To
@@ -557,17 +558,17 @@ export default function TodayAvailabilityModal({
           <TouchableOpacity
             style={[
               styles.saveBtn,
-              { backgroundColor: '#2563EB', opacity: saving ? 0.7 : 1 },
+              { backgroundColor: palette.blue600, opacity: saving ? 0.7 : 1 },
             ]}
             onPress={handleSave}
             disabled={saving}
             activeOpacity={0.8}
           >
             {saving ? (
-              <ActivityIndicator size="small" color="#FFFFFF" />
+              <ActivityIndicator size="small" color={palette.white} />
             ) : (
               <>
-                <Check size={16} color="#FFFFFF" strokeWidth={2.4} />
+                <Check size={16} color={palette.white} strokeWidth={2.4} />
                 <Text style={styles.saveBtnText}>Apply for Today</Text>
               </>
             )}
@@ -592,7 +593,7 @@ export default function TodayAvailabilityModal({
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: palette.blackA65,
     zIndex: 1000,
   },
   sheetContainer: {
@@ -608,7 +609,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingHorizontal: 18,
     elevation: 20,
-    shadowColor: '#000000',
+    shadowColor: palette.black,
     shadowOpacity: 0.35,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: -4 },
@@ -637,7 +638,7 @@ const styles = StyleSheet.create({
   titleBadgeText: {
     fontSize: 10.5,
     fontWeight: '800',
-    color: '#2563EB',
+    color: palette.blue600,
     letterSpacing: 0.5,
   },
   mainTitle: {
@@ -770,7 +771,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 11.5,
-    color: '#EF4444',
+    color: palette.red500,
     fontWeight: '600',
     marginBottom: 8,
     textAlign: 'center',
@@ -806,6 +807,6 @@ const styles = StyleSheet.create({
   saveBtnText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: palette.white,
   },
 });

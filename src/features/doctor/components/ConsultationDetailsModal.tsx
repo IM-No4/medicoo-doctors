@@ -1,3 +1,4 @@
+import { palette } from '../../../theme/palette';
 import {
     ActivityIndicator,
     Alert,
@@ -365,10 +366,10 @@ export default function ConsultationDetailsModal({
     useEffect(() => {
         if (Platform.OS === 'android' && visible) {
             if (isDark) {
-                NavigationBar.setBackgroundColorAsync('#011A29');
+                NavigationBar.setBackgroundColorAsync(palette.navyDeep);
                 NavigationBar.setButtonStyleAsync('light');
             } else {
-                NavigationBar.setBackgroundColorAsync('#EFF2F6');
+                NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
                 NavigationBar.setButtonStyleAsync('dark');
             }
         }
@@ -443,7 +444,7 @@ export default function ConsultationDetailsModal({
                         <View style={{ flex: 1 }}>
                             <View style={styles.badgeRow}>
                                 <View style={styles.pillBadge}>
-                                    <Pill size={13} color="#0FBBA1" />
+                                    <Pill size={13} color={palette.primary} />
                                     <Text style={styles.pillBadgeText}>E-Prescription & Clinical Care</Text>
                                 </View>
                             </View>
@@ -474,11 +475,11 @@ export default function ConsultationDetailsModal({
                                 onPress={() => setActiveTab('meds')}
                                 activeOpacity={0.8}
                             >
-                                <Pill size={15} color={activeTab === 'meds' ? '#0FBBA1' : subTextColor} />
+                                <Pill size={15} color={activeTab === 'meds' ? palette.primary : subTextColor} />
                                 <Text
                                     style={[
                                         styles.tabBtnText,
-                                        { color: activeTab === 'meds' ? '#0FBBA1' : subTextColor },
+                                        { color: activeTab === 'meds' ? palette.primary : subTextColor },
                                         activeTab === 'meds' && { fontWeight: '800' },
                                     ]}
                                 >
@@ -494,11 +495,11 @@ export default function ConsultationDetailsModal({
                                 onPress={() => setActiveTab('labs')}
                                 activeOpacity={0.8}
                             >
-                                <FlaskConical size={15} color={activeTab === 'labs' ? '#2563EB' : subTextColor} />
+                                <FlaskConical size={15} color={activeTab === 'labs' ? palette.blue600 : subTextColor} />
                                 <Text
                                     style={[
                                         styles.tabBtnText,
-                                        { color: activeTab === 'labs' ? '#2563EB' : subTextColor },
+                                        { color: activeTab === 'labs' ? palette.blue600 : subTextColor },
                                         activeTab === 'labs' && { fontWeight: '800' },
                                     ]}
                                 >
@@ -509,16 +510,16 @@ export default function ConsultationDetailsModal({
                             <TouchableOpacity
                                 style={[
                                     styles.tabBtn,
-                                    activeTab === 'notes' && [styles.tabBtnActive, { backgroundColor: isDark ? '#0A2F42' : '#F5F3FF' }],
+                                    activeTab === 'notes' && [styles.tabBtnActive, { backgroundColor: isDark ? palette.navyText : palette.violet50 }],
                                 ]}
                                 onPress={() => setActiveTab('notes')}
                                 activeOpacity={0.8}
                             >
-                                <FileText size={15} color={activeTab === 'notes' ? '#8B5CF6' : subTextColor} />
+                                <FileText size={15} color={activeTab === 'notes' ? palette.violet500 : subTextColor} />
                                 <Text
                                     style={[
                                         styles.tabBtnText,
-                                        { color: activeTab === 'notes' ? '#8B5CF6' : subTextColor },
+                                        { color: activeTab === 'notes' ? palette.violet500 : subTextColor },
                                         activeTab === 'notes' && { fontWeight: '800' },
                                     ]}
                                 >
@@ -546,7 +547,7 @@ export default function ConsultationDetailsModal({
                                             activeOpacity={0.7}
                                         >
                                             <View style={styles.addDashedIcon}>
-                                                <Plus size={18} color="#0FBBA1" strokeWidth={2.5} />
+                                                <Plus size={18} color={palette.primary} strokeWidth={2.5} />
                                             </View>
                                             <Text style={styles.addDashedTitle}>+ Prescribe Medicine</Text>
                                             <Text style={[styles.addDashedSub, { color: subTextColor }]}>
@@ -557,7 +558,7 @@ export default function ConsultationDetailsModal({
                                         {medicines.length === 0 ? (
                                             <View style={[styles.emptyStateCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
                                                 <View style={styles.emptyIconCircle}>
-                                                    <Pill size={26} color="#0FBBA1" />
+                                                    <Pill size={26} color={palette.primary} />
                                                 </View>
                                                 <Text style={[styles.emptyStateTitle, { color: textColor }]}>
                                                     No Medicines Prescribed Yet
@@ -577,7 +578,7 @@ export default function ConsultationDetailsModal({
                                                 >
                                                     <View style={styles.medCardTop}>
                                                         <View style={styles.medIconBox}>
-                                                            <Pill size={16} color="#0FBBA1" />
+                                                            <Pill size={16} color={palette.primary} />
                                                         </View>
                                                         <View style={{ flex: 1 }}>
                                                             <Text style={[styles.medName, { color: textColor }]}>
@@ -599,7 +600,7 @@ export default function ConsultationDetailsModal({
                                                             onPress={() => setMedicines(prev => prev.filter((_, i) => i !== index))}
                                                             activeOpacity={0.7}
                                                         >
-                                                            <Trash2 size={16} color="#EF4444" />
+                                                            <Trash2 size={16} color={palette.red500} />
                                                         </TouchableOpacity>
                                                     </View>
 
@@ -610,7 +611,7 @@ export default function ConsultationDetailsModal({
                                                                     key={i}
                                                                     style={[
                                                                         styles.medInstLine,
-                                                                        { color: inst.startsWith('❌') ? '#DC2626' : subTextColor },
+                                                                        { color: inst.startsWith('❌') ? palette.red600 : subTextColor },
                                                                     ]}
                                                                 >
                                                                     • {inst}
@@ -646,9 +647,9 @@ export default function ConsultationDetailsModal({
                                             activeOpacity={0.7}
                                         >
                                             <View style={[styles.addDashedIcon, { backgroundColor: theme.infoBg }]}>
-                                                <Plus size={18} color="#2563EB" strokeWidth={2.5} />
+                                                <Plus size={18} color={palette.blue600} strokeWidth={2.5} />
                                             </View>
-                                            <Text style={[styles.addDashedTitle, { color: '#2563EB' }]}>+ Order Diagnostic Lab Test</Text>
+                                            <Text style={[styles.addDashedTitle, { color: palette.blue600 }]}>+ Order Diagnostic Lab Test</Text>
                                             <Text style={[styles.addDashedSub, { color: subTextColor }]}>
                                                 Select standard blood work, imaging or diagnostic scans
                                             </Text>
@@ -657,7 +658,7 @@ export default function ConsultationDetailsModal({
                                         {/* Quick Test Chips Card */}
                                         <View style={[styles.sectionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
                                             <View style={styles.sectionHeaderRow}>
-                                                <View style={[styles.sectionAccentBar, { backgroundColor: '#2563EB' }]} />
+                                                <View style={[styles.sectionAccentBar, { backgroundColor: palette.blue600 }]} />
                                                 <Text style={[styles.sectionTitle, { color: textColor }]}>
                                                     Quick Add Common Tests
                                                 </Text>
@@ -681,14 +682,14 @@ export default function ConsultationDetailsModal({
                                                             activeOpacity={0.7}
                                                         >
                                                             {alreadyAdded ? (
-                                                                <Check size={13} color="#0FBBA1" />
+                                                                <Check size={13} color={palette.primary} />
                                                             ) : (
-                                                                <Plus size={13} color="#2563EB" />
+                                                                <Plus size={13} color={palette.blue600} />
                                                             )}
                                                             <Text
                                                                 style={[
                                                                     styles.quickTestPillText,
-                                                                    { color: alreadyAdded ? '#0FBBA1' : textColor },
+                                                                    { color: alreadyAdded ? palette.primary : textColor },
                                                                 ]}
                                                             >
                                                                 {testName}
@@ -702,7 +703,7 @@ export default function ConsultationDetailsModal({
                                         {labTests.length === 0 ? (
                                             <View style={[styles.emptyStateCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
                                                 <View style={[styles.emptyIconCircle, { backgroundColor: theme.infoBg }]}>
-                                                    <FlaskConical size={26} color="#2563EB" />
+                                                    <FlaskConical size={26} color={palette.blue600} />
                                                 </View>
                                                 <Text style={[styles.emptyStateTitle, { color: textColor }]}>
                                                     No Lab Tests Ordered Yet
@@ -722,7 +723,7 @@ export default function ConsultationDetailsModal({
                                                         ]}
                                                     >
                                                         <View style={[styles.testIconBox, { backgroundColor: theme.infoBg }]}>
-                                                            <FlaskConical size={16} color="#2563EB" />
+                                                            <FlaskConical size={16} color={palette.blue600} />
                                                         </View>
                                                         <View style={{ flex: 1 }}>
                                                             <Text style={[styles.testName, { color: textColor }]}>
@@ -739,7 +740,7 @@ export default function ConsultationDetailsModal({
                                                             onPress={() => setLabTests(prev => prev.filter((_, i) => i !== index))}
                                                             activeOpacity={0.7}
                                                         >
-                                                            <Trash2 size={16} color="#EF4444" />
+                                                            <Trash2 size={16} color={palette.red500} />
                                                         </TouchableOpacity>
                                                     </View>
                                                 ))}
@@ -806,7 +807,7 @@ export default function ConsultationDetailsModal({
 
                                 <View style={[styles.sectionCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
                                     <View style={styles.sectionHeaderRow}>
-                                        <View style={[styles.sectionAccentBar, { backgroundColor: '#8B5CF6' }]} />
+                                        <View style={[styles.sectionAccentBar, { backgroundColor: palette.violet500 }]} />
                                         <Text style={[styles.sectionTitle, { color: textColor }]}>
                                             Clinical Diagnosis & Advice
                                         </Text>
@@ -823,7 +824,7 @@ export default function ConsultationDetailsModal({
                                         onChangeText={setNotes}
                                     />
                                     <View style={styles.diagnosisTipBox}>
-                                        <Sparkles size={15} color="#0FBBA1" />
+                                        <Sparkles size={15} color={palette.primary} />
                                         <Text style={[styles.diagnosisTipText, { color: subTextColor }]}>
                                             Clinical notes and lifestyle restrictions are saved directly in the patient&apos;s digital summary.
                                         </Text>
@@ -837,8 +838,8 @@ export default function ConsultationDetailsModal({
                     <View style={[styles.footerBar, { borderTopColor: theme.cardSecondary }]}>
                         <View style={styles.summaryStrip}>
                             <Text style={[styles.summaryText, { color: subTextColor }]}>
-                                Summary: <Text style={{ color: '#0FBBA1', fontWeight: '700' }}>{medicines.length} Medicines</Text> ·{' '}
-                                <Text style={{ color: '#3B82F6', fontWeight: '700' }}>{labTests.length} Lab Tests</Text>
+                                Summary: <Text style={{ color: palette.primary, fontWeight: '700' }}>{medicines.length} Medicines</Text> ·{' '}
+                                <Text style={{ color: palette.blue500, fontWeight: '700' }}>{labTests.length} Lab Tests</Text>
                             </Text>
                         </View>
 
@@ -852,7 +853,7 @@ export default function ConsultationDetailsModal({
                                         activeOpacity={0.8}
                                     >
                                         {sendingNow ? (
-                                            <ActivityIndicator color="#FFFFFF" />
+                                            <ActivityIndicator color={palette.white} />
                                         ) : (
                                             <Text style={styles.primaryBtnText}>Send Prescription Now</Text>
                                         )}
@@ -866,7 +867,7 @@ export default function ConsultationDetailsModal({
                                     <Text
                                         style={[
                                             styles.primaryBtnText,
-                                            onSendNow && medicines.length > 0 && { color: '#0FBBA1' },
+                                            onSendNow && medicines.length > 0 && { color: palette.primary },
                                         ]}
                                     >
                                         Save Draft (Don&apos;t Send Yet)
@@ -882,7 +883,7 @@ export default function ConsultationDetailsModal({
                                     activeOpacity={0.8}
                                 >
                                     {submitting ? (
-                                        <ActivityIndicator color="#FFFFFF" />
+                                        <ActivityIndicator color={palette.white} />
                                     ) : (
                                         <Text style={styles.primaryBtnText}>{submitButtonText}</Text>
                                     )}
@@ -976,7 +977,7 @@ function AddMedicineForm({
                 <View style={styles.composerHeader}>
                     <View style={{ flex: 1 }}>
                         <View style={styles.composerHeaderBadge}>
-                            <Pill size={12} color="#0FBBA1" />
+                            <Pill size={12} color={palette.primary} />
                             <Text style={styles.composerHeaderBadgeText}>Formulary Search</Text>
                         </View>
                         <Text style={[styles.composerTitle, { color: textColor }]}>Search Medication</Text>
@@ -991,8 +992,8 @@ function AddMedicineForm({
                 </View>
 
                 {/* Search Bar Input */}
-                <View style={[styles.searchBarBox, { backgroundColor: inputBg, borderColor: query.length > 0 ? '#0FBBA1' : inputBorder }]}>
-                    <Search size={18} color={query.length > 0 ? '#0FBBA1' : subTextColor} />
+                <View style={[styles.searchBarBox, { backgroundColor: inputBg, borderColor: query.length > 0 ? palette.primary : inputBorder }]}>
+                    <Search size={18} color={query.length > 0 ? palette.primary : subTextColor} />
                     <TextInput
                         style={[styles.searchTextInput, { color: textColor }]}
                         placeholder="Type medicine name (e.g. Paracetamol, Augmentin, Facewash)..."
@@ -1002,7 +1003,7 @@ function AddMedicineForm({
                         autoFocus
                     />
                     {searching ? (
-                        <ActivityIndicator size="small" color="#0FBBA1" />
+                        <ActivityIndicator size="small" color={palette.primary} />
                     ) : query.length > 0 ? (
                         <TouchableOpacity onPress={() => setQuery('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
                             <X size={16} color={subTextColor} />
@@ -1020,7 +1021,7 @@ function AddMedicineForm({
                             activeOpacity={0.7}
                         >
                             <View style={styles.resultItemIcon}>
-                                <Pill size={16} color="#0FBBA1" />
+                                <Pill size={16} color={palette.primary} />
                             </View>
                             <View style={{ flex: 1 }}>
                                 <Text style={[styles.resultItemTitle, { color: textColor }]}>{r.productName}</Text>
@@ -1036,12 +1037,12 @@ function AddMedicineForm({
 
                     {query.trim().length >= 2 && !searching && results.length === 0 && (
                         <TouchableOpacity
-                            style={[styles.customAddPrompt, { backgroundColor: themeFor(isDark).successBg, borderColor: '#99F6E4' }]}
+                            style={[styles.customAddPrompt, { backgroundColor: themeFor(isDark).successBg, borderColor: palette.teal200 }]}
                             onPress={() => handleSelectMedicine({ sku: Math.floor(Math.random() * 900000) + 100000, productName: query.trim() })}
                             activeOpacity={0.7}
                         >
                             <View style={styles.customAddIconCircle}>
-                                <Sparkles size={16} color="#0FBBA1" />
+                                <Sparkles size={16} color={palette.primary} />
                             </View>
                             <View style={{ flex: 1 }}>
                                 <Text style={[styles.customAddPromptTitle, { color: textColor }]}>
@@ -1051,7 +1052,7 @@ function AddMedicineForm({
                                     Not found in local list? Tap to prescribe via AI Formulary
                                 </Text>
                             </View>
-                            <Plus size={18} color="#0FBBA1" />
+                            <Plus size={18} color={palette.primary} />
                         </TouchableOpacity>
                     )}
                 </View>
@@ -1064,7 +1065,7 @@ function AddMedicineForm({
             {/* Selected Medicine Pill Header */}
             <View style={styles.selectedMedHeader}>
                 <View style={styles.selectedMedIcon}>
-                    <Pill size={18} color="#FFFFFF" />
+                    <Pill size={18} color={palette.white} />
                 </View>
                 <View style={{ flex: 1 }}>
                     <Text style={styles.selectedMedName}>{selected.productName}</Text>
@@ -1259,9 +1260,9 @@ function AddLabTestForm({
                 {/* Search Box Header */}
                 <View style={styles.composerHeader}>
                     <View style={{ flex: 1 }}>
-                        <View style={[styles.composerHeaderBadge, { backgroundColor: '#EFF6FF' }]}>
-                            <FlaskConical size={12} color="#2563EB" />
-                            <Text style={[styles.composerHeaderBadgeText, { color: '#2563EB' }]}>Diagnostics & Scans</Text>
+                        <View style={[styles.composerHeaderBadge, { backgroundColor: palette.blue50 }]}>
+                            <FlaskConical size={12} color={palette.blue600} />
+                            <Text style={[styles.composerHeaderBadgeText, { color: palette.blue600 }]}>Diagnostics & Scans</Text>
                         </View>
                         <Text style={[styles.composerTitle, { color: textColor }]}>Search Diagnostic Lab Test</Text>
                         <Text style={[styles.composerSubtitle, { color: subTextColor }]}>
@@ -1278,8 +1279,8 @@ function AddLabTestForm({
                 </View>
 
                 {/* Search Bar Input */}
-                <View style={[styles.searchBarBox, { backgroundColor: inputBg, borderColor: query.length > 0 ? '#3B82F6' : inputBorder }]}>
-                    <Search size={18} color={query.length > 0 ? '#3B82F6' : subTextColor} />
+                <View style={[styles.searchBarBox, { backgroundColor: inputBg, borderColor: query.length > 0 ? palette.blue500 : inputBorder }]}>
+                    <Search size={18} color={query.length > 0 ? palette.blue500 : subTextColor} />
                     <TextInput
                         style={[styles.searchTextInput, { color: textColor }]}
                         placeholder="Search diagnostic scan or blood test..."
@@ -1289,7 +1290,7 @@ function AddLabTestForm({
                         autoFocus
                     />
                     {searching ? (
-                        <ActivityIndicator size="small" color="#3B82F6" />
+                        <ActivityIndicator size="small" color={palette.blue500} />
                     ) : query.length > 0 ? (
                         <TouchableOpacity onPress={() => setQuery('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
                             <X size={16} color={subTextColor} />
@@ -1306,8 +1307,8 @@ function AddLabTestForm({
                             onPress={() => setSelected(r.testName)}
                             activeOpacity={0.7}
                         >
-                            <View style={[styles.resultItemIcon, { backgroundColor: '#EFF6FF' }]}>
-                                <FlaskConical size={16} color="#2563EB" />
+                            <View style={[styles.resultItemIcon, { backgroundColor: palette.blue50 }]}>
+                                <FlaskConical size={16} color={palette.blue600} />
                             </View>
                             <View style={{ flex: 1 }}>
                                 <Text style={[styles.resultItemTitle, { color: textColor }]}>{r.testName}</Text>
@@ -1315,30 +1316,30 @@ function AddLabTestForm({
                                     Diagnostic Investigation
                                 </Text>
                             </View>
-                            <View style={[styles.selectArrowBadge, { backgroundColor: '#EFF6FF', borderColor: '#BAE6FD' }]}>
-                                <Text style={[styles.selectArrowText, { color: '#2563EB' }]}>+ Select</Text>
+                            <View style={[styles.selectArrowBadge, { backgroundColor: palette.blue50, borderColor: palette.sky200 }]}>
+                                <Text style={[styles.selectArrowText, { color: palette.blue600 }]}>+ Select</Text>
                             </View>
                         </TouchableOpacity>
                     ))}
 
                     {query.trim().length >= 2 && !searching && results.length === 0 && (
                         <TouchableOpacity
-                            style={[styles.customAddPrompt, { backgroundColor: themeFor(isDark).infoBg, borderColor: '#BFDBFE' }]}
+                            style={[styles.customAddPrompt, { backgroundColor: themeFor(isDark).infoBg, borderColor: palette.blue200 }]}
                             onPress={() => setSelected(query.trim())}
                             activeOpacity={0.7}
                         >
-                            <View style={[styles.customAddIconCircle, { backgroundColor: '#DBEAFE' }]}>
-                                <Plus size={16} color="#2563EB" />
+                            <View style={[styles.customAddIconCircle, { backgroundColor: palette.blue100 }]}>
+                                <Plus size={16} color={palette.blue600} />
                             </View>
                             <View style={{ flex: 1 }}>
                                 <Text style={[styles.customAddPromptTitle, { color: textColor }]}>
                                     Order &quot;{query.trim()}&quot;
                                 </Text>
-                                <Text style={[styles.customAddPromptSub, { color: '#3B82F6' }]}>
+                                <Text style={[styles.customAddPromptSub, { color: palette.blue500 }]}>
                                     Tap to add custom investigation
                                 </Text>
                             </View>
-                            <Plus size={18} color="#2563EB" />
+                            <Plus size={18} color={palette.blue600} />
                         </TouchableOpacity>
                     )}
                 </View>
@@ -1348,16 +1349,16 @@ function AddLabTestForm({
 
     return (
         <View style={[styles.composerCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
-            <View style={[styles.selectedMedHeader, { backgroundColor: '#2563EB' }]}>
+            <View style={[styles.selectedMedHeader, { backgroundColor: palette.blue600 }]}>
                 <View style={styles.selectedMedIcon}>
-                    <FlaskConical size={18} color="#FFFFFF" />
+                    <FlaskConical size={18} color={palette.white} />
                 </View>
                 <View style={{ flex: 1 }}>
                     <Text style={styles.selectedMedName}>{selected}</Text>
                     <Text style={styles.selectedMedSub}>Diagnostic Investigation</Text>
                 </View>
                 <TouchableOpacity onPress={() => setSelected(null)} style={styles.changeMedBtn} activeOpacity={0.8}>
-                    <Text style={[styles.changeMedText, { color: '#2563EB' }]}>Change</Text>
+                    <Text style={[styles.changeMedText, { color: palette.blue600 }]}>Change</Text>
                 </TouchableOpacity>
             </View>
 
@@ -1378,7 +1379,7 @@ function AddLabTestForm({
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={[styles.composerAddBtn, { backgroundColor: '#2563EB' }]}
+                    style={[styles.composerAddBtn, { backgroundColor: palette.blue600 }]}
                     onPress={() => onAdd({ testName: selected, additionalDetails: notes.trim() })}
                     activeOpacity={0.8}
                 >
@@ -1391,7 +1392,7 @@ function AddLabTestForm({
 
 const styles = StyleSheet.create({
     overlay: { flex: 1, justifyContent: 'flex-end' },
-    backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.5)' },
+    backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: palette.blackA50 },
     content: {
         borderTopLeftRadius: 28,
         borderTopRightRadius: 28,
@@ -1419,12 +1420,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 5,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         borderRadius: 14,
         paddingHorizontal: 9,
         paddingVertical: 3,
     },
-    pillBadgeText: { color: '#0FBBA1', fontSize: 11, fontWeight: '800' },
+    pillBadgeText: { color: palette.primary, fontSize: 11, fontWeight: '800' },
     headerTitle: { fontSize: 18, fontWeight: '800', letterSpacing: -0.3 },
     closeBtn: {
         width: 32,
@@ -1458,7 +1459,7 @@ const styles = StyleSheet.create({
     },
     tabBtnActive: {
         borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.06)',
+        borderColor: palette.blackA6,
     },
     tabBtnText: { fontSize: 13, fontWeight: '700' },
 
@@ -1483,7 +1484,7 @@ const styles = StyleSheet.create({
         width: 3.5,
         height: 16,
         borderRadius: 2,
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         marginRight: 8,
     },
     sectionTitle: {
@@ -1500,19 +1501,19 @@ const styles = StyleSheet.create({
         padding: 16,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(15, 187, 161, 0.04)',
+        backgroundColor: palette.rgba_15_187_161_4,
         gap: 3,
     },
     addDashedIcon: {
         width: 36,
         height: 36,
         borderRadius: 18,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 2,
     },
-    addDashedTitle: { fontSize: 14, fontWeight: '800', color: '#0FBBA1' },
+    addDashedTitle: { fontSize: 14, fontWeight: '800', color: palette.primary },
     addDashedSub: { fontSize: 11.5, fontWeight: '500' },
 
     // Empty State Card (Matching ProfileSidebar)
@@ -1528,7 +1529,7 @@ const styles = StyleSheet.create({
         width: 48,
         height: 48,
         borderRadius: 24,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 2,
@@ -1552,19 +1553,19 @@ const styles = StyleSheet.create({
         width: 36,
         height: 36,
         borderRadius: 18,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         alignItems: 'center',
         justifyContent: 'center',
     },
     medName: { fontSize: 14.5, fontWeight: '700' },
     medMetaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 },
     dosageBadge: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         borderRadius: 10,
         paddingHorizontal: 8,
         paddingVertical: 2,
     },
-    dosageBadgeText: { color: '#FFFFFF', fontSize: 11, fontWeight: '800' },
+    dosageBadgeText: { color: palette.white, fontSize: 11, fontWeight: '800' },
     medPeriodText: { fontSize: 12, fontWeight: '600' },
     deleteBtn: { width: 32, height: 32, alignItems: 'center', justifyContent: 'center' },
     medInstContainer: {
@@ -1587,8 +1588,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     quickTestPillAdded: {
-        backgroundColor: '#E6FAF6',
-        borderColor: '#CCFBF1',
+        backgroundColor: palette.primaryTint,
+        borderColor: palette.teal100,
     },
     quickTestPillText: { fontSize: 12, fontWeight: '600' },
 
@@ -1647,14 +1648,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 5,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         borderRadius: 10,
         paddingHorizontal: 8,
         paddingVertical: 3,
         alignSelf: 'flex-start',
         marginBottom: 4,
     },
-    composerHeaderBadgeText: { color: '#0FBBA1', fontSize: 11, fontWeight: '800' },
+    composerHeaderBadgeText: { color: palette.primary, fontSize: 11, fontWeight: '800' },
     composerTitle: { fontSize: 16, fontWeight: '800', letterSpacing: -0.2 },
     composerSubtitle: { fontSize: 12, marginTop: 2 },
     composerClose: {
@@ -1700,21 +1701,21 @@ const styles = StyleSheet.create({
         width: 36,
         height: 36,
         borderRadius: 18,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         alignItems: 'center',
         justifyContent: 'center',
     },
     resultItemTitle: { fontSize: 14.5, fontWeight: '700' },
     resultItemSub: { fontSize: 12, marginTop: 2 },
     selectArrowBadge: {
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#99F6E4',
+        borderColor: palette.teal200,
     },
-    selectArrowText: { color: '#0FBBA1', fontSize: 11.5, fontWeight: '700' },
+    selectArrowText: { color: palette.primary, fontSize: 11.5, fontWeight: '700' },
 
     // Custom AI Add Prompt
     customAddPrompt: {
@@ -1730,12 +1731,12 @@ const styles = StyleSheet.create({
         width: 36,
         height: 36,
         borderRadius: 18,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         alignItems: 'center',
         justifyContent: 'center',
     },
     customAddPromptTitle: { fontSize: 14, fontWeight: '800' },
-    customAddPromptSub: { fontSize: 11.5, color: '#0FBBA1', fontWeight: '500', marginTop: 1 },
+    customAddPromptSub: { fontSize: 11.5, color: palette.primary, fontWeight: '500', marginTop: 1 },
     cancelComposerBtn: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -1750,7 +1751,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 12,
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         borderRadius: 14,
         padding: 12,
     },
@@ -1758,19 +1759,19 @@ const styles = StyleSheet.create({
         width: 36,
         height: 36,
         borderRadius: 18,
-        backgroundColor: 'rgba(255,255,255,0.25)',
+        backgroundColor: palette.whiteA25,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    selectedMedName: { color: '#FFFFFF', fontSize: 15.5, fontWeight: '800' },
-    selectedMedSub: { color: 'rgba(255,255,255,0.9)', fontSize: 11.5, fontWeight: '600' },
+    selectedMedName: { color: palette.white, fontSize: 15.5, fontWeight: '800' },
+    selectedMedSub: { color: palette.whiteA90, fontSize: 11.5, fontWeight: '600' },
     changeMedBtn: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         paddingHorizontal: 12,
         paddingVertical: 5,
         borderRadius: 10,
     },
-    changeMedText: { color: '#0FBBA1', fontSize: 12, fontWeight: '800' },
+    changeMedText: { color: palette.primary, fontSize: 12, fontWeight: '800' },
 
     sectionMicroLabel: {
         fontSize: 11.5,
@@ -1788,11 +1789,11 @@ const styles = StyleSheet.create({
         paddingVertical: 7,
     },
     chipPillActive: {
-        backgroundColor: '#0FBBA1',
-        borderColor: '#0FBBA1',
+        backgroundColor: palette.primary,
+        borderColor: palette.primary,
     },
     chipPillText: { fontSize: 12.5, fontWeight: '700' },
-    chipPillTextActive: { color: '#FFFFFF' },
+    chipPillTextActive: { color: palette.white },
 
     dietaryBadge: {
         borderRadius: 12,
@@ -1801,11 +1802,11 @@ const styles = StyleSheet.create({
         paddingVertical: 7,
     },
     dietaryBadgeActive: {
-        backgroundColor: '#FEF2F2',
-        borderColor: '#EF4444',
+        backgroundColor: palette.red50,
+        borderColor: palette.red500,
     },
     dietaryBadgeText: { fontSize: 12, fontWeight: '600' },
-    dietaryBadgeTextActive: { color: '#DC2626', fontWeight: '800' },
+    dietaryBadgeTextActive: { color: palette.red600, fontWeight: '800' },
 
     customMiniInput: {
         borderRadius: 12,
@@ -1826,14 +1827,14 @@ const styles = StyleSheet.create({
     composerCancelText: { fontSize: 13.5, fontWeight: '700' },
     composerAddBtn: {
         flex: 2,
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         borderRadius: 14,
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 12,
     },
-    composerAddBtnDisabled: { backgroundColor: '#94D3C5' },
-    composerAddBtnText: { color: '#FFFFFF', fontSize: 14, fontWeight: '800' },
+    composerAddBtnDisabled: { backgroundColor: palette.hex94D3C5 },
+    composerAddBtnText: { color: palette.white, fontSize: 14, fontWeight: '800' },
 
     // Footer Bar
     footerBar: {
@@ -1844,13 +1845,13 @@ const styles = StyleSheet.create({
     summaryStrip: { alignItems: 'center' },
     summaryText: { fontSize: 12, fontWeight: '600' },
     primaryBtn: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         borderRadius: 14,
         paddingVertical: 14,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    primaryBtnText: { color: '#FFFFFF', fontSize: 15, fontWeight: '800' },
+    primaryBtnText: { color: palette.white, fontSize: 15, fontWeight: '800' },
     skipBtn: { alignItems: 'center', paddingVertical: 6 },
     skipBtnText: { fontSize: 12.5, fontWeight: '600' },
     sendNowBtn: { marginBottom: 8 },

@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import React, { useMemo, useState } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, Modal, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -105,7 +106,7 @@ export default function DoctorNameModal({ visible, needName, needEmail, onSaved,
                     {!!error && <Text style={styles.error}>{error}</Text>}
 
                     <TouchableOpacity style={[styles.primary, saving && { opacity: 0.7 }]} onPress={save} disabled={saving} activeOpacity={0.85}>
-                        {saving ? <ActivityIndicator color="#fff" /> : <Text style={styles.primaryText}>Save</Text>}
+                        {saving ? <ActivityIndicator color={palette.white} /> : <Text style={styles.primaryText}>Save</Text>}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={onLater} disabled={saving} style={styles.later}>
                         <Text style={styles.laterText}>Not now</Text>
@@ -117,7 +118,7 @@ export default function DoctorNameModal({ visible, needName, needEmail, onSaved,
 }
 
 const createStyles = (c: ThemeColors) => StyleSheet.create({
-    backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.55)', alignItems: 'center', justifyContent: 'center', padding: 24 },
+    backdrop: { flex: 1, backgroundColor: palette.blackA55, alignItems: 'center', justifyContent: 'center', padding: 24 },
     card: { width: '100%', maxWidth: 420, backgroundColor: c.card, borderRadius: 24, padding: 24, borderWidth: 1, borderColor: c.border },
     title: { fontSize: 20, fontWeight: '800', color: c.text, marginBottom: 6 },
     subtitle: { fontSize: 13.5, lineHeight: 20, color: c.textSecondary, marginBottom: 18 },
@@ -126,8 +127,8 @@ const createStyles = (c: ThemeColors) => StyleSheet.create({
     inputError: { borderColor: c.error },
     preview: { fontSize: 12, color: c.textMuted, marginTop: 8 },
     error: { fontSize: 12.5, color: c.error, marginTop: 8 },
-    primary: { marginTop: 18, height: 50, borderRadius: 14, backgroundColor: '#0FBBA1', alignItems: 'center', justifyContent: 'center' },
-    primaryText: { color: '#fff', fontSize: 15, fontWeight: '700' },
+    primary: { marginTop: 18, height: 50, borderRadius: 14, backgroundColor: palette.primary, alignItems: 'center', justifyContent: 'center' },
+    primaryText: { color: palette.white, fontSize: 15, fontWeight: '700' },
     later: { marginTop: 8, alignItems: 'center', paddingVertical: 10 },
     laterText: { fontSize: 13.5, fontWeight: '600', color: c.textSecondary },
 });

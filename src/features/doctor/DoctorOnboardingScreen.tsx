@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -168,9 +169,9 @@ export default function DoctorOnboardingScreen() {
         useCallback(() => {
             StatusBar.setBarStyle('dark-content');
             if (Platform.OS === 'android') {
-                StatusBar.setBackgroundColor('#FFFFFF');
+                StatusBar.setBackgroundColor(palette.white);
                 StatusBar.setTranslucent(false);
-                NavigationBar.setBackgroundColorAsync('#FFFFFF');
+                NavigationBar.setBackgroundColorAsync(palette.white);
                 NavigationBar.setButtonStyleAsync('dark');
             }
 
@@ -930,11 +931,11 @@ export default function DoctorOnboardingScreen() {
                                         ]}
                                     >
                                         {isDone ? (
-                                            <Check size={14} color="#FFFFFF" strokeWidth={3} />
+                                            <Check size={14} color={palette.white} strokeWidth={3} />
                                         ) : (
                                             <IconComp
                                                 size={15}
-                                                color={isCurrent ? '#0FBBA1' : '#94A3B8'}
+                                                color={isCurrent ? palette.primary : palette.slate400}
                                                 strokeWidth={isCurrent ? 2.5 : 2}
                                             />
                                         )}
@@ -987,11 +988,11 @@ export default function DoctorOnboardingScreen() {
                         Full Name <Text style={styles.reqStar}>*</Text>
                     </Text>
                     <View style={[styles.inputWithIcon, fieldErrors.name && styles.inputError]}>
-                        <User size={18} color={formData.name ? '#0FBBA1' : '#94A3B8'} />
+                        <User size={18} color={formData.name ? palette.primary : palette.slate400} />
                         <TextInput
                             style={styles.inputInside}
                             placeholder="e.g. Priya Sharma"
-                            placeholderTextColor="#94A3B8"
+                            placeholderTextColor={palette.slate400}
                             value={formData.name}
                             onChangeText={t => updateField('name', t)}
                             autoCapitalize="words"
@@ -1017,11 +1018,11 @@ export default function DoctorOnboardingScreen() {
                         Email <Text style={styles.reqStar}>*</Text>
                     </Text>
                     <View style={[styles.inputWithIcon, fieldErrors.email && styles.inputError]}>
-                        <Mail size={18} color={formData.email ? '#0FBBA1' : '#94A3B8'} />
+                        <Mail size={18} color={formData.email ? palette.primary : palette.slate400} />
                         <TextInput
                             style={styles.inputInside}
                             placeholder="you@example.com"
-                            placeholderTextColor="#94A3B8"
+                            placeholderTextColor={palette.slate400}
                             value={formData.email}
                             onChangeText={t => updateField('email', t)}
                             autoCapitalize="none"
@@ -1059,7 +1060,7 @@ export default function DoctorOnboardingScreen() {
                             />
                             <View style={styles.uploadedPhotoInfo}>
                                 <View style={styles.verifiedPill}>
-                                    <CheckCircle2 size={13} color="#0FBBA1" />
+                                    <CheckCircle2 size={13} color={palette.primary} />
                                     <Text style={styles.verifiedPillText}>Photo Attached</Text>
                                 </View>
                                 <Text style={styles.uploadedFileName} numberOfLines={1}>
@@ -1071,7 +1072,7 @@ export default function DoctorOnboardingScreen() {
                     ) : (
                         <View style={styles.uploadPlaceholder}>
                             <View style={styles.uploadIconCircle}>
-                                <UploadCloud size={24} color="#0FBBA1" />
+                                <UploadCloud size={24} color={palette.primary} />
                             </View>
                             <Text style={styles.uploadPrimaryText}>Tap to Upload Photo</Text>
                             <Text style={styles.uploadSecondaryText}>PNG, JPG or JPEG • Max 10MB</Text>
@@ -1099,12 +1100,12 @@ export default function DoctorOnboardingScreen() {
                         activeOpacity={0.7}
                     >
                         <View style={styles.selectLeft}>
-                            <Award size={18} color={fieldErrors.doctorType ? '#EF4444' : (formData.doctorType ? '#0FBBA1' : '#94A3B8')} />
+                            <Award size={18} color={fieldErrors.doctorType ? palette.red500 : (formData.doctorType ? palette.primary : palette.slate400)} />
                             <Text style={[styles.selectText, !formData.doctorType && styles.placeholderText]}>
                                 {formData.doctorType || 'e.g. MBBS, MD, MS'}
                             </Text>
                         </View>
-                        <ChevronDown size={18} color={fieldErrors.doctorType ? '#EF4444' : '#94A3B8'} />
+                        <ChevronDown size={18} color={fieldErrors.doctorType ? palette.red500 : palette.slate400} />
                     </TouchableOpacity>
                     {fieldErrors.doctorType && (
                         <Text style={styles.errorText}>{fieldErrors.doctorType}</Text>
@@ -1126,12 +1127,12 @@ export default function DoctorOnboardingScreen() {
                         activeOpacity={0.7}
                     >
                         <View style={styles.selectLeft}>
-                            <Stethoscope size={18} color={fieldErrors.specialization ? '#EF4444' : (formData.specialization ? '#0FBBA1' : '#94A3B8')} />
+                            <Stethoscope size={18} color={fieldErrors.specialization ? palette.red500 : (formData.specialization ? palette.primary : palette.slate400)} />
                             <Text style={[styles.selectText, !formData.specialization && styles.placeholderText]}>
                                 {formData.specialization || 'e.g. General Physician, Cardiologist'}
                             </Text>
                         </View>
-                        <ChevronDown size={18} color={fieldErrors.specialization ? '#EF4444' : '#94A3B8'} />
+                        <ChevronDown size={18} color={fieldErrors.specialization ? palette.red500 : palette.slate400} />
                     </TouchableOpacity>
                     {fieldErrors.specialization && (
                         <Text style={styles.errorText}>{fieldErrors.specialization}</Text>
@@ -1142,11 +1143,11 @@ export default function DoctorOnboardingScreen() {
                 <View style={styles.inputGroup}>
                     <Text style={styles.label}>Years of Experience</Text>
                     <View style={styles.inputWithIcon}>
-                        <Briefcase size={18} color={formData.experience ? '#0FBBA1' : '#94A3B8'} />
+                        <Briefcase size={18} color={formData.experience ? palette.primary : palette.slate400} />
                         <TextInput
                             style={styles.inputInside}
                             placeholder="e.g. 8"
-                            placeholderTextColor="#94A3B8"
+                            placeholderTextColor={palette.slate400}
                             keyboardType="numeric"
                             value={formData.experience}
                             onChangeText={t => updateField('experience', t)}
@@ -1170,7 +1171,7 @@ export default function DoctorOnboardingScreen() {
                         activeOpacity={0.7}
                     >
                         <View style={styles.selectLeft}>
-                            <Globe size={18} color={getSelectedLanguages().length > 0 ? '#0FBBA1' : '#94A3B8'} />
+                            <Globe size={18} color={getSelectedLanguages().length > 0 ? palette.primary : palette.slate400} />
                             <Text
                                 style={[
                                     styles.selectText,
@@ -1184,7 +1185,7 @@ export default function DoctorOnboardingScreen() {
                                     : `${getSelectedLanguages().length} language${getSelectedLanguages().length > 1 ? 's' : ''} selected • Tap to edit`}
                             </Text>
                         </View>
-                        <ChevronDown size={18} color="#94A3B8" />
+                        <ChevronDown size={18} color={palette.slate400} />
                     </TouchableOpacity>
 
                     {/* Selected Language Bubbles */}
@@ -1198,7 +1199,7 @@ export default function DoctorOnboardingScreen() {
                                             onPress={() => toggleLanguage(lang)}
                                             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                                         >
-                                            <X size={13} color="#0F766E" />
+                                            <X size={13} color={palette.teal700} />
                                         </TouchableOpacity>
                                     )}
                                 </View>
@@ -1211,11 +1212,11 @@ export default function DoctorOnboardingScreen() {
                 <View style={styles.inputGroup}>
                     <Text style={styles.label}>Current Hospital / Clinic Affiliation</Text>
                     <View style={styles.inputWithIcon}>
-                        <Building2 size={18} color={formData.hospital ? '#0FBBA1' : '#94A3B8'} />
+                        <Building2 size={18} color={formData.hospital ? palette.primary : palette.slate400} />
                         <TextInput
                             style={styles.inputInside}
                             placeholder="e.g. Apollo Hospital, Fortis"
-                            placeholderTextColor="#94A3B8"
+                            placeholderTextColor={palette.slate400}
                             value={formData.hospital}
                             onChangeText={t => updateField('hospital', t)}
                         />
@@ -1228,7 +1229,7 @@ export default function DoctorOnboardingScreen() {
                     <TextInput
                         style={[styles.input, styles.textArea]}
                         placeholder="Brief summary of your background, areas of expertise, and care philosophy..."
-                        placeholderTextColor="#94A3B8"
+                        placeholderTextColor={palette.slate400}
                         multiline
                         numberOfLines={4}
                         textAlignVertical="top"
@@ -1295,7 +1296,7 @@ export default function DoctorOnboardingScreen() {
                                 <TextInput
                                     style={styles.feeTextInput}
                                     placeholder="0"
-                                    placeholderTextColor="#94A3B8"
+                                    placeholderTextColor={palette.slate400}
                                     keyboardType="numeric"
                                     value={fees.fee ? fees.fee.toString() : ''}
                                     onChangeText={t => {
@@ -1355,7 +1356,7 @@ export default function DoctorOnboardingScreen() {
                     onLayout={handleFieldLayout('consultationFees')}
                     style={styles.errorAlertBox}
                 >
-                    <AlertCircle size={18} color="#DC2626" />
+                    <AlertCircle size={18} color={palette.red600} />
                     <Text style={styles.errorAlertText}>{fieldErrors.consultationFees}</Text>
                 </View>
             )}
@@ -1365,8 +1366,8 @@ export default function DoctorOnboardingScreen() {
                 'video',
                 'HD 1-on-1 video call consultations with patients',
                 Video,
-                '#EFF6FF',
-                '#2563EB',
+                palette.blue50,
+                palette.blue600,
                 [300, 500, 750, 1000]
             )}
 
@@ -1375,8 +1376,8 @@ export default function DoctorOnboardingScreen() {
                 'voice',
                 'Direct audio call with clinical record access',
                 Phone,
-                '#F5F3FF',
-                '#7C3AED',
+                palette.violet50,
+                palette.violet600,
                 [200, 350, 500, 750]
             )}
 
@@ -1385,13 +1386,13 @@ export default function DoctorOnboardingScreen() {
                 'chat',
                 'Async text messaging with prescription support',
                 MessageSquare,
-                '#ECFDF5',
-                '#059669',
+                palette.emerald50,
+                palette.emerald600,
                 [150, 250, 400, 600]
             )}
 
             <View style={styles.infoBanner}>
-                <Info size={16} color="#0FBBA1" />
+                <Info size={16} color={palette.primary} />
                 <Text style={styles.infoBannerText}>
                     You can modify consultation pricing and availability anytime from Doctor Settings.
                 </Text>
@@ -1405,7 +1406,7 @@ export default function DoctorOnboardingScreen() {
             {/* Section 1: NMC Registration */}
             <View style={styles.card}>
                 <View style={styles.cardTitleRow}>
-                    <ShieldCheck size={20} color="#0FBBA1" />
+                    <ShieldCheck size={20} color={palette.primary} />
                     <Text style={styles.cardHeaderTitle}>Medical Council Registration</Text>
                 </View>
 
@@ -1418,11 +1419,11 @@ export default function DoctorOnboardingScreen() {
                         NMC / MCI Registration Number <Text style={styles.reqStar}>*</Text>
                     </Text>
                     <View style={[styles.inputWithIcon, fieldErrors.nmcRegistrationNumber && styles.inputError]}>
-                        <Shield size={18} color={fieldErrors.nmcRegistrationNumber ? '#EF4444' : (formData.nmcRegistrationNumber ? '#0FBBA1' : '#94A3B8')} />
+                        <Shield size={18} color={fieldErrors.nmcRegistrationNumber ? palette.red500 : (formData.nmcRegistrationNumber ? palette.primary : palette.slate400)} />
                         <TextInput
                             style={styles.inputInside}
                             placeholder="e.g. NMC-123456"
-                            placeholderTextColor="#94A3B8"
+                            placeholderTextColor={palette.slate400}
                             value={formData.nmcRegistrationNumber}
                             autoCapitalize="characters"
                             onChangeText={t => updateField('nmcRegistrationNumber', t.toUpperCase())}
@@ -1441,12 +1442,12 @@ export default function DoctorOnboardingScreen() {
                         activeOpacity={0.7}
                     >
                         <View style={styles.selectLeft}>
-                            <Building2 size={18} color={formData.stateMedicalCouncil ? '#0FBBA1' : '#94A3B8'} />
+                            <Building2 size={18} color={formData.stateMedicalCouncil ? palette.primary : palette.slate400} />
                             <Text style={[styles.selectText, !formData.stateMedicalCouncil && styles.placeholderText]}>
                                 {formData.stateMedicalCouncil || 'Select State Medical Council'}
                             </Text>
                         </View>
-                        <ChevronDown size={18} color="#94A3B8" />
+                        <ChevronDown size={18} color={palette.slate400} />
                     </TouchableOpacity>
                 </View>
 
@@ -1456,7 +1457,7 @@ export default function DoctorOnboardingScreen() {
                         <TextInput
                             style={styles.input}
                             placeholder="State Number"
-                            placeholderTextColor="#94A3B8"
+                            placeholderTextColor={palette.slate400}
                             value={formData.stateCouncilRegistrationNumber}
                             autoCapitalize="characters"
                             onChangeText={t => updateField('stateCouncilRegistrationNumber', t.toUpperCase())}
@@ -1472,7 +1473,7 @@ export default function DoctorOnboardingScreen() {
                             <Text style={[styles.selectText, !formData.stateCouncilValidTill && styles.placeholderText]}>
                                 {formData.stateCouncilValidTill || 'DD/MM/YYYY'}
                             </Text>
-                            <Calendar size={18} color="#94A3B8" />
+                            <Calendar size={18} color={palette.slate400} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -1481,7 +1482,7 @@ export default function DoctorOnboardingScreen() {
             {/* Section 2: Identity Proof */}
             <View style={styles.card}>
                 <View style={styles.cardTitleRow}>
-                    <IdCard size={20} color="#0FBBA1" />
+                    <IdCard size={20} color={palette.primary} />
                     <Text style={styles.cardHeaderTitle}>Government Identity Proof</Text>
                 </View>
 
@@ -1499,7 +1500,7 @@ export default function DoctorOnboardingScreen() {
                         activeOpacity={0.7}
                     >
                         <View style={styles.selectLeft}>
-                            <IdCard size={18} color={fieldErrors.identityProofType ? '#EF4444' : (formData.identityProofType ? '#0FBBA1' : '#94A3B8')} />
+                            <IdCard size={18} color={fieldErrors.identityProofType ? palette.red500 : (formData.identityProofType ? palette.primary : palette.slate400)} />
                             <Text
                                 style={[
                                     styles.selectText,
@@ -1511,7 +1512,7 @@ export default function DoctorOnboardingScreen() {
                                 {formData.identityProofType || 'Select ID Type'}
                             </Text>
                         </View>
-                        <ChevronDown size={18} color={fieldErrors.identityProofType ? '#EF4444' : '#94A3B8'} />
+                        <ChevronDown size={18} color={fieldErrors.identityProofType ? palette.red500 : palette.slate400} />
                     </TouchableOpacity>
                     {fieldErrors.identityProofType && (
                         <Text style={styles.errorText}>{fieldErrors.identityProofType}</Text>
@@ -1530,7 +1531,7 @@ export default function DoctorOnboardingScreen() {
                     <TextInput
                         style={[styles.input, fieldErrors.identityProofNumber && styles.inputError]}
                         placeholder="Enter Document / Card Number"
-                        placeholderTextColor="#94A3B8"
+                        placeholderTextColor={palette.slate400}
                         value={formData.identityProofNumber}
                         autoCapitalize="characters"
                         onChangeText={t => updateField('identityProofNumber', t.toUpperCase())}
@@ -1551,7 +1552,7 @@ export default function DoctorOnboardingScreen() {
                         <Text style={[styles.selectText, !formData.identityProofValidTill && styles.placeholderText]}>
                             {formData.identityProofValidTill || 'DD/MM/YYYY'}
                         </Text>
-                        <Calendar size={18} color="#94A3B8" />
+                        <Calendar size={18} color={palette.slate400} />
                     </TouchableOpacity>
                 </View>
 
@@ -1570,7 +1571,7 @@ export default function DoctorOnboardingScreen() {
                     >
                         {formData.identityProofDocument ? (
                             <View style={styles.uploadSuccessRow}>
-                                <CheckCircle2 size={22} color="#0FBBA1" />
+                                <CheckCircle2 size={22} color={palette.primary} />
                                 <View style={styles.uploadSuccessTextWrapper}>
                                     <Text style={styles.uploadSuccessTitle}>ID Proof Attached</Text>
                                     <Text style={styles.uploadSuccessFileName} numberOfLines={1}>
@@ -1581,8 +1582,8 @@ export default function DoctorOnboardingScreen() {
                             </View>
                         ) : (
                             <View style={styles.uploadPlaceholder}>
-                                <UploadCloud size={24} color={fieldErrors.identityProofDocument ? '#EF4444' : '#0FBBA1'} />
-                                <Text style={[styles.uploadPrimaryText, fieldErrors.identityProofDocument && { color: '#EF4444' }]}>
+                                <UploadCloud size={24} color={fieldErrors.identityProofDocument ? palette.red500 : palette.primary} />
+                                <Text style={[styles.uploadPrimaryText, fieldErrors.identityProofDocument && { color: palette.red500 }]}>
                                     Upload ID Proof Document *
                                 </Text>
                                 <Text style={styles.uploadSecondaryText}>PDF, JPG or PNG format</Text>
@@ -1598,7 +1599,7 @@ export default function DoctorOnboardingScreen() {
             {/* Section 3: CME Certificate */}
             <View style={styles.card}>
                 <View style={styles.cardTitleRow}>
-                    <FileBadge size={20} color="#0FBBA1" />
+                    <FileBadge size={20} color={palette.primary} />
                     <Text style={styles.cardHeaderTitle}>CME / Training Certificate</Text>
                 </View>
 
@@ -1613,7 +1614,7 @@ export default function DoctorOnboardingScreen() {
                             <Text style={[styles.selectText, !formData.cmeIssuedAt && styles.placeholderText]}>
                                 {formData.cmeIssuedAt || 'DD/MM/YYYY'}
                             </Text>
-                            <Calendar size={18} color="#94A3B8" />
+                            <Calendar size={18} color={palette.slate400} />
                         </TouchableOpacity>
                     </View>
                     <View style={[styles.inputGroup, { flex: 1, marginLeft: 8 }]}>
@@ -1626,7 +1627,7 @@ export default function DoctorOnboardingScreen() {
                             <Text style={[styles.selectText, !formData.cmeValidTill && styles.placeholderText]}>
                                 {formData.cmeValidTill || 'DD/MM/YYYY'}
                             </Text>
-                            <Calendar size={18} color="#94A3B8" />
+                            <Calendar size={18} color={palette.slate400} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -1646,7 +1647,7 @@ export default function DoctorOnboardingScreen() {
                     >
                         {formData.cmeCertificate ? (
                             <View style={styles.uploadSuccessRow}>
-                                <CheckCircle2 size={22} color="#0FBBA1" />
+                                <CheckCircle2 size={22} color={palette.primary} />
                                 <View style={styles.uploadSuccessTextWrapper}>
                                     <Text style={styles.uploadSuccessTitle}>CME Certificate Attached</Text>
                                     <Text style={styles.uploadSuccessFileName} numberOfLines={1}>
@@ -1657,8 +1658,8 @@ export default function DoctorOnboardingScreen() {
                             </View>
                         ) : (
                             <View style={styles.uploadPlaceholder}>
-                                <UploadCloud size={24} color={fieldErrors.cmeCertificate ? '#EF4444' : '#0FBBA1'} />
-                                <Text style={[styles.uploadPrimaryText, fieldErrors.cmeCertificate && { color: '#EF4444' }]}>
+                                <UploadCloud size={24} color={fieldErrors.cmeCertificate ? palette.red500 : palette.primary} />
+                                <Text style={[styles.uploadPrimaryText, fieldErrors.cmeCertificate && { color: palette.red500 }]}>
                                     Upload CME Certificate *
                                 </Text>
                                 <Text style={styles.uploadSecondaryText}>PDF, JPG or PNG format</Text>
@@ -1674,7 +1675,7 @@ export default function DoctorOnboardingScreen() {
             {/* Section 4: Malpractice Declaration */}
             <View style={styles.card}>
                 <View style={styles.cardTitleRow}>
-                    <ShieldAlert size={20} color="#F59E0B" />
+                    <ShieldAlert size={20} color={palette.amber500} />
                     <Text style={styles.cardHeaderTitle}>Malpractice & Legal History</Text>
                 </View>
 
@@ -1687,7 +1688,7 @@ export default function DoctorOnboardingScreen() {
                     activeOpacity={0.8}
                 >
                     <View style={[styles.checkbox, formData.hasMalpracticeHistory && styles.checkboxActive]}>
-                        {formData.hasMalpracticeHistory && <Check size={14} color="#FFFFFF" strokeWidth={3} />}
+                        {formData.hasMalpracticeHistory && <Check size={14} color={palette.white} strokeWidth={3} />}
                     </View>
                     <Text style={styles.checkboxLabel}>
                         Have you ever been involved in a medical malpractice suit or had your license suspended?
@@ -1710,7 +1711,7 @@ export default function DoctorOnboardingScreen() {
                                 fieldErrors.malpracticeNotes && styles.inputError,
                             ]}
                             placeholder="Provide details regarding the case, dates, jurisdiction and resolution..."
-                            placeholderTextColor="#94A3B8"
+                            placeholderTextColor={palette.slate400}
                             value={formData.malpracticeNotes}
                             onChangeText={t => updateField('malpracticeNotes', t)}
                             multiline
@@ -1726,14 +1727,14 @@ export default function DoctorOnboardingScreen() {
             {/* Section 5: Additional Certificates */}
             <View style={styles.card}>
                 <View style={styles.cardTitleRow}>
-                    <FileText size={20} color="#0FBBA1" />
+                    <FileText size={20} color={palette.primary} />
                     <Text style={styles.cardHeaderTitle}>Additional Degrees & Certifications</Text>
                 </View>
 
                 {formData.certificates.map((doc, index) => (
                     <View key={index} style={styles.docItemCard}>
                         <View style={styles.docItemIconCircle}>
-                            <FileCheck size={18} color="#0FBBA1" />
+                            <FileCheck size={18} color={palette.primary} />
                         </View>
                         <View style={styles.docInfo}>
                             <Text style={styles.docType}>{doc.type || 'Certificate'}</Text>
@@ -1749,7 +1750,7 @@ export default function DoctorOnboardingScreen() {
                             style={styles.deleteButton}
                             activeOpacity={0.7}
                         >
-                            <Trash2 size={18} color="#EF4444" />
+                            <Trash2 size={18} color={palette.red500} />
                         </TouchableOpacity>
                     </View>
                 ))}
@@ -1770,7 +1771,7 @@ export default function DoctorOnboardingScreen() {
                                 <Text style={[styles.selectText, !tempDoc.type && styles.placeholderText]}>
                                     {tempDoc.type || 'Select Certificate Type'}
                                 </Text>
-                                <ChevronDown size={18} color="#94A3B8" />
+                                <ChevronDown size={18} color={palette.slate400} />
                             </TouchableOpacity>
                         </View>
 
@@ -1779,7 +1780,7 @@ export default function DoctorOnboardingScreen() {
                             <TextInput
                                 style={styles.input}
                                 placeholder="e.g. DEG-78901"
-                                placeholderTextColor="#94A3B8"
+                                placeholderTextColor={palette.slate400}
                                 value={tempDoc.number}
                                 autoCapitalize="characters"
                                 onChangeText={t => setTempDoc(prev => ({ ...prev, number: t.toUpperCase() }))}
@@ -1796,7 +1797,7 @@ export default function DoctorOnboardingScreen() {
                                 <Text style={[styles.selectText, !tempDoc.expiry && styles.placeholderText]}>
                                     {tempDoc.expiry || 'DD/MM/YYYY'}
                                 </Text>
-                                <Calendar size={18} color="#94A3B8" />
+                                <Calendar size={18} color={palette.slate400} />
                             </TouchableOpacity>
                         </View>
 
@@ -1807,7 +1808,7 @@ export default function DoctorOnboardingScreen() {
                         >
                             {tempDoc.file ? (
                                 <View style={styles.uploadSuccessRow}>
-                                    <CheckCircle2 size={22} color="#0FBBA1" />
+                                    <CheckCircle2 size={22} color={palette.primary} />
                                     <View style={styles.uploadSuccessTextWrapper}>
                                         <Text style={styles.uploadSuccessTitle}>File Attached</Text>
                                         <Text style={styles.uploadSuccessFileName} numberOfLines={1}>
@@ -1817,7 +1818,7 @@ export default function DoctorOnboardingScreen() {
                                 </View>
                             ) : (
                                 <View style={styles.uploadPlaceholder}>
-                                    <UploadCloud size={24} color="#0FBBA1" />
+                                    <UploadCloud size={24} color={palette.primary} />
                                     <Text style={styles.uploadPrimaryText}>Select Certificate File *</Text>
                                     <Text style={styles.uploadSecondaryText}>JPG, PNG or PDF</Text>
                                 </View>
@@ -1847,7 +1848,7 @@ export default function DoctorOnboardingScreen() {
                         onPress={() => setIsAddingDoc(true)}
                         activeOpacity={0.7}
                     >
-                        <Plus size={18} color="#0FBBA1" />
+                        <Plus size={18} color={palette.primary} />
                         <Text style={styles.addNewDocText}>Add Additional Certificate</Text>
                     </TouchableOpacity>
                 )}
@@ -1865,7 +1866,7 @@ export default function DoctorOnboardingScreen() {
                         <Image source={{ uri: formData.uniformPhoto.uri }} style={styles.reviewAvatarImage} />
                     ) : (
                         <View style={styles.reviewAvatarPlaceholder}>
-                            <User size={32} color="#0FBBA1" />
+                            <User size={32} color={palette.primary} />
                         </View>
                     )}
                     <View style={styles.reviewDoctorMeta}>
@@ -1914,7 +1915,7 @@ export default function DoctorOnboardingScreen() {
 
                 <View style={styles.reviewRow}>
                     <Text style={styles.reviewFieldLabel}>Malpractice Status</Text>
-                    <Text style={[styles.reviewFieldValue, { color: formData.hasMalpracticeHistory ? '#EF4444' : '#10B981' }]}>
+                    <Text style={[styles.reviewFieldValue, { color: formData.hasMalpracticeHistory ? palette.red500 : palette.emerald500 }]}>
                         {formData.hasMalpracticeHistory ? 'Declared' : 'No History'}
                     </Text>
                 </View>
@@ -1931,7 +1932,7 @@ export default function DoctorOnboardingScreen() {
                         if (typeof details === 'object' && details.isEnabled) {
                             return (
                                 <View key={mode} style={styles.serviceRateBadge}>
-                                    <Check size={14} color="#0FBBA1" strokeWidth={2.5} />
+                                    <Check size={14} color={palette.primary} strokeWidth={2.5} />
                                     <Text style={styles.serviceRateText}>
                                         {mode.toUpperCase()}: <Text style={styles.serviceRateBold}>₹{details.fee}</Text>
                                     </Text>
@@ -1967,10 +1968,10 @@ export default function DoctorOnboardingScreen() {
                         formData.telemedicineConsent && styles.checkboxActive,
                         fieldErrors.telemedicineConsent && styles.checkboxError,
                     ]}>
-                        {formData.telemedicineConsent && <Check size={14} color="#FFFFFF" strokeWidth={3} />}
+                        {formData.telemedicineConsent && <Check size={14} color={palette.white} strokeWidth={3} />}
                     </View>
                     <View style={{ flex: 1 }}>
-                        <Text style={[styles.consentTitle, fieldErrors.telemedicineConsent && { color: '#B91C1C' }]}>
+                        <Text style={[styles.consentTitle, fieldErrors.telemedicineConsent && { color: palette.red700 }]}>
                             Telemedicine Guidelines Compliance *
                         </Text>
                         <Text style={styles.consentDescription}>
@@ -1986,7 +1987,7 @@ export default function DoctorOnboardingScreen() {
             </View>
 
             <View style={styles.securityNote}>
-                <ShieldCheck size={16} color="#0FBBA1" style={{ marginTop: 2 }} />
+                <ShieldCheck size={16} color={palette.primary} style={{ marginTop: 2 }} />
                 <Text style={styles.securityNoteText}>
                     Your credentials are encrypted & verified by the Medicoo Medical Compliance Board within 24-48 hours.
                 </Text>
@@ -2017,7 +2018,7 @@ export default function DoctorOnboardingScreen() {
                             style={styles.headerIconButton}
                             activeOpacity={0.7}
                         >
-                            <ChevronLeft size={22} color="#012233" />
+                            <ChevronLeft size={22} color={palette.navy} />
                         </TouchableOpacity>
                     ) : (
                         <View style={styles.headerSpacer} />
@@ -2057,7 +2058,7 @@ export default function DoctorOnboardingScreen() {
                     <View style={styles.etaCard}>
                         <View style={styles.etaHeaderRow}>
                             <View style={styles.etaIconCircle}>
-                                <Hourglass size={20} color="#0F766E" />
+                                <Hourglass size={20} color={palette.teal700} />
                             </View>
                             <View style={{ flex: 1 }}>
                                 <Text style={styles.etaLabel}>Estimated Verification Turnaround</Text>
@@ -2108,7 +2109,7 @@ export default function DoctorOnboardingScreen() {
 
                     {/* Compliance Security Note */}
                     <View style={[styles.securityNote, { marginTop: 10 }]}>
-                        <ShieldCheck size={16} color="#0FBBA1" style={{ marginTop: 2 }} />
+                        <ShieldCheck size={16} color={palette.primary} style={{ marginTop: 2 }} />
                         <Text style={styles.securityNoteText}>
                             National Medical Commission (NMC) & Telemedicine Practice Guidelines compliant.
                         </Text>
@@ -2158,7 +2159,7 @@ export default function DoctorOnboardingScreen() {
                         style={styles.headerIconButton}
                         activeOpacity={0.7}
                     >
-                        <ChevronLeft size={22} color="#012233" />
+                        <ChevronLeft size={22} color={palette.navy} />
                     </TouchableOpacity>
                 ) : (
                     <View style={styles.headerSpacer} />
@@ -2181,7 +2182,7 @@ export default function DoctorOnboardingScreen() {
                         style={styles.headerLogoutButton}
                         activeOpacity={0.7}
                     >
-                        <Text style={[styles.headerLogoutText, { color: '#0FBBA1' }]}>Dashboard</Text>
+                        <Text style={[styles.headerLogoutText, { color: palette.primary }]}>Dashboard</Text>
                     </TouchableOpacity>
                 ) : (
                     <TouchableOpacity
@@ -2197,7 +2198,7 @@ export default function DoctorOnboardingScreen() {
             {/* Status Banners if applicable */}
             {approvalStatus === 'pending' && (
                 <View style={styles.bannerPending}>
-                    <Clock size={16} color="#2563EB" />
+                    <Clock size={16} color={palette.blue600} />
                     <Text style={styles.bannerPendingText}>
                         {hasApprovedProfile
                             ? 'Your requested profile update is currently under review by compliance. Your current live profile remains active for consultations.'
@@ -2207,7 +2208,7 @@ export default function DoctorOnboardingScreen() {
             )}
             {approvalStatus === 'rejected' && (
                 <View style={styles.bannerRejected}>
-                    <AlertCircle size={16} color="#DC2626" />
+                    <AlertCircle size={16} color={palette.red600} />
                     <Text style={styles.bannerRejectedText}>
                         Application Update Required: {rejectionReason || 'Please review and update your documents.'}
                     </Text>
@@ -2215,7 +2216,7 @@ export default function DoctorOnboardingScreen() {
             )}
             {approvalStatus === 'approved' && !isReadOnly && (
                 <View style={styles.bannerWarning}>
-                    <Info size={16} color="#D97706" />
+                    <Info size={16} color={palette.amber600} />
                     <Text style={styles.bannerWarningText}>
                         Profile is verified. Any edited information will require re-verification.
                     </Text>
@@ -2244,7 +2245,7 @@ export default function DoctorOnboardingScreen() {
                 {isReadOnly ? (
                     <View style={{ gap: 10, width: '100%' }}>
                         <View style={styles.readOnlyContainer}>
-                            <Clock size={18} color="#0FBBA1" />
+                            <Clock size={18} color={palette.primary} />
                             <Text style={styles.readOnlyText}>
                                 {hasApprovedProfile
                                     ? 'Your requested profile updates are under review by compliance. Editing is disabled until review is completed.'
@@ -2305,11 +2306,11 @@ export default function DoctorOnboardingScreen() {
                             activeOpacity={0.8}
                         >
                             {loading ? (
-                                <ActivityIndicator color="#FFFFFF" size="small" />
+                                <ActivityIndicator color={palette.white} size="small" />
                             ) : (
                                 <View style={styles.btnRow}>
                                     <Text style={styles.btnPrimaryText}>Submit Application</Text>
-                                    <Check size={18} color="#FFFFFF" strokeWidth={2.5} style={{ marginLeft: 6 }} />
+                                    <Check size={18} color={palette.white} strokeWidth={2.5} style={{ marginLeft: 6 }} />
                                 </View>
                             )}
                         </TouchableOpacity>
@@ -2323,13 +2324,13 @@ export default function DoctorOnboardingScreen() {
                             activeOpacity={0.8}
                         >
                             {loading ? (
-                                <ActivityIndicator color="#FFFFFF" size="small" />
+                                <ActivityIndicator color={palette.white} size="small" />
                             ) : (
                                 <View style={styles.btnRow}>
                                     <Text style={styles.btnPrimaryText}>
                                         {currentStep === OnboardingStep.DOCUMENTS ? 'Proceed to Review' : 'Next Step'}
                                     </Text>
-                                    <ArrowRight size={18} color="#FFFFFF" strokeWidth={2.5} style={{ marginLeft: 6 }} />
+                                    <ArrowRight size={18} color={palette.white} strokeWidth={2.5} style={{ marginLeft: 6 }} />
                                 </View>
                             )}
                         </TouchableOpacity>
@@ -2351,7 +2352,7 @@ export default function DoctorOnboardingScreen() {
                             <View style={styles.modalHeader}>
                                 <Text style={styles.modalTitle}>{selectionModal?.title}</Text>
                                 <TouchableOpacity onPress={closeSelection} style={styles.modalCloseBtn}>
-                                    <X size={20} color="#64748B" />
+                                    <X size={20} color={palette.slate500} />
                                 </TouchableOpacity>
                             </View>
                             <ScrollView style={{ maxHeight: 380 }} showsVerticalScrollIndicator={false}>
@@ -2369,7 +2370,7 @@ export default function DoctorOnboardingScreen() {
                                             </Text>
                                             {isSelected && (
                                                 <View style={styles.selectedCheckCircle}>
-                                                    <Check size={14} color="#FFFFFF" strokeWidth={3} />
+                                                    <Check size={14} color={palette.white} strokeWidth={3} />
                                                 </View>
                                             )}
                                         </TouchableOpacity>
@@ -2407,7 +2408,7 @@ export default function DoctorOnboardingScreen() {
                                     onPress={() => setLanguageModalVisible(false)}
                                     style={styles.modalCloseBtn}
                                 >
-                                    <X size={20} color="#64748B" />
+                                    <X size={20} color={palette.slate500} />
                                 </TouchableOpacity>
                             </View>
 
@@ -2430,7 +2431,7 @@ export default function DoctorOnboardingScreen() {
                                                     isSelected && styles.langCheckboxActive
                                                 ]}
                                             >
-                                                {isSelected && <Check size={14} color="#FFFFFF" strokeWidth={3} />}
+                                                {isSelected && <Check size={14} color={palette.white} strokeWidth={3} />}
                                             </View>
                                         </TouchableOpacity>
                                     );
@@ -2489,7 +2490,7 @@ export default function DoctorOnboardingScreen() {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
     },
 
     // --- Header ---
@@ -2499,19 +2500,19 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 18,
         paddingBottom: 12,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderBottomWidth: 1,
-        borderBottomColor: '#F1F5F9',
+        borderBottomColor: palette.slate100,
     },
     headerIconButton: {
         width: 40,
         height: 40,
         borderRadius: 12,
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
     },
     headerCenter: {
         flex: 1,
@@ -2522,13 +2523,13 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 17,
         fontWeight: '700',
-        color: '#012233',
+        color: palette.navy,
         letterSpacing: -0.2,
     },
     headerSub: {
         fontSize: 12,
         fontWeight: '500',
-        color: '#64748B',
+        color: palette.slate500,
         marginTop: 1,
     },
     headerSpacer: {
@@ -2545,16 +2546,16 @@ const styles = StyleSheet.create({
     headerLogoutText: {
         fontSize: 13,
         fontWeight: '600',
-        color: '#EF4444',
+        color: palette.red500,
     },
 
     // --- Stepper ---
     stepperContainer: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         paddingHorizontal: 20,
         paddingVertical: 14,
         borderBottomWidth: 1,
-        borderBottomColor: '#F1F5F9',
+        borderBottomColor: palette.slate100,
     },
     stepperRow: {
         flexDirection: 'row',
@@ -2569,38 +2570,38 @@ const styles = StyleSheet.create({
         width: 34,
         height: 34,
         borderRadius: 17,
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
         borderWidth: 1.5,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 4,
     },
     stepCircleActive: {
-        backgroundColor: '#E6FAF6',
-        borderColor: '#0FBBA1',
+        backgroundColor: palette.primaryTint,
+        borderColor: palette.primary,
         borderWidth: 2,
-        shadowColor: '#0FBBA1',
+        shadowColor: palette.primary,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 3,
     },
     stepCircleDone: {
-        backgroundColor: '#0FBBA1',
-        borderColor: '#0FBBA1',
+        backgroundColor: palette.primary,
+        borderColor: palette.primary,
     },
     stepLabel: {
         fontSize: 11,
         fontWeight: '500',
-        color: '#94A3B8',
+        color: palette.slate400,
     },
     stepLabelActive: {
-        color: '#0FBBA1',
+        color: palette.primary,
         fontWeight: '700',
     },
     stepLabelDone: {
-        color: '#012233',
+        color: palette.navy,
         fontWeight: '600',
     },
     stepLineWrapper: {
@@ -2611,17 +2612,17 @@ const styles = StyleSheet.create({
     },
     stepLine: {
         height: 2,
-        backgroundColor: '#E2E8F0',
+        backgroundColor: palette.slate200,
         borderRadius: 1,
     },
     stepLineDone: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
     },
 
     // --- Content Area ---
     scrollArea: {
         flex: 1,
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
     },
     contentContainer: {
         padding: 16,
@@ -2630,12 +2631,12 @@ const styles = StyleSheet.create({
     stepContainer: {},
 
     card: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderRadius: 18,
         padding: 18,
         marginBottom: 16,
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
     },
     cardTitleRow: {
         flexDirection: 'row',
@@ -2646,12 +2647,12 @@ const styles = StyleSheet.create({
     cardHeaderTitle: {
         fontSize: 16,
         fontWeight: '700',
-        color: '#012233',
+        color: palette.navy,
         letterSpacing: -0.2,
     },
     cardHeaderSub: {
         fontSize: 12,
-        color: '#64748B',
+        color: palette.slate500,
         marginTop: 2,
         marginBottom: 14,
     },
@@ -2663,29 +2664,29 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 13,
         fontWeight: '600',
-        color: '#2B4A5E',
+        color: palette.navyMuted,
         marginBottom: 7,
     },
     reqStar: {
-        color: '#EF4444',
+        color: palette.red500,
     },
     input: {
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
         borderWidth: 1.5,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
         borderRadius: 12,
         paddingHorizontal: 14,
         paddingVertical: 12,
         fontSize: 14,
         fontWeight: '500',
-        color: '#012233',
+        color: palette.navy,
     },
     inputWithIcon: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
         borderWidth: 1.5,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
         borderRadius: 12,
         paddingHorizontal: 14,
     },
@@ -2695,15 +2696,15 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         fontSize: 14,
         fontWeight: '500',
-        color: '#012233',
+        color: palette.navy,
     },
     selectInput: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
         borderWidth: 1.5,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
         borderRadius: 12,
         paddingHorizontal: 14,
         paddingVertical: 13,
@@ -2717,10 +2718,10 @@ const styles = StyleSheet.create({
     selectText: {
         fontSize: 14,
         fontWeight: '500',
-        color: '#012233',
+        color: palette.navy,
     },
     placeholderText: {
-        color: '#94A3B8',
+        color: palette.slate400,
         fontWeight: '400',
     },
     textArea: {
@@ -2735,18 +2736,18 @@ const styles = StyleSheet.create({
     // --- Upload Dropzone Boxes ---
     photoUploadBox: {
         borderWidth: 1.5,
-        borderColor: '#CBD5E1',
+        borderColor: palette.slate300,
         borderStyle: 'dashed',
         borderRadius: 16,
         padding: 16,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
     },
     photoUploadBoxActive: {
         borderStyle: 'solid',
-        borderColor: '#0FBBA1',
-        backgroundColor: '#F0FDF9',
+        borderColor: palette.primary,
+        backgroundColor: palette.primaryWash,
     },
     uploadedPhotoRow: {
         flexDirection: 'row',
@@ -2759,7 +2760,7 @@ const styles = StyleSheet.create({
         height: 60,
         borderRadius: 30,
         borderWidth: 2,
-        borderColor: '#0FBBA1',
+        borderColor: palette.primary,
     },
     uploadedPhotoInfo: {
         flex: 1,
@@ -2773,17 +2774,17 @@ const styles = StyleSheet.create({
     verifiedPillText: {
         fontSize: 12,
         fontWeight: '700',
-        color: '#0FBBA1',
+        color: palette.primary,
     },
     uploadedFileName: {
         fontSize: 13,
         fontWeight: '500',
-        color: '#012233',
+        color: palette.navy,
     },
     changeFilePrompt: {
         fontSize: 11,
         fontWeight: '600',
-        color: '#64748B',
+        color: palette.slate500,
         marginTop: 2,
     },
     uploadPlaceholder: {
@@ -2795,7 +2796,7 @@ const styles = StyleSheet.create({
         width: 48,
         height: 48,
         borderRadius: 24,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 8,
@@ -2803,30 +2804,30 @@ const styles = StyleSheet.create({
     uploadPrimaryText: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#012233',
+        color: palette.navy,
         marginBottom: 2,
     },
     uploadSecondaryText: {
         fontSize: 12,
-        color: '#94A3B8',
+        color: palette.slate400,
     },
 
     // Document Upload Box
     uploadBox: {
         borderWidth: 1.5,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
         borderStyle: 'dashed',
         borderRadius: 14,
         padding: 16,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
         marginTop: 6,
     },
     uploadBoxActive: {
         borderStyle: 'solid',
-        borderColor: '#0FBBA1',
-        backgroundColor: '#F0FDF9',
+        borderColor: palette.primary,
+        backgroundColor: palette.primaryWash,
     },
     uploadSuccessRow: {
         flexDirection: 'row',
@@ -2840,35 +2841,35 @@ const styles = StyleSheet.create({
     uploadSuccessTitle: {
         fontSize: 13,
         fontWeight: '700',
-        color: '#0FBBA1',
+        color: palette.primary,
     },
     uploadSuccessFileName: {
         fontSize: 12,
-        color: '#2B4A5E',
+        color: palette.navyMuted,
         marginTop: 1,
     },
     changeActionText: {
         fontSize: 12,
         fontWeight: '700',
-        color: '#0FBBA1',
+        color: palette.primary,
         paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 6,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
     },
 
     // --- Modality / Fees Step ---
     modernFeeCard: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderRadius: 18,
         padding: 18,
         marginBottom: 14,
         borderWidth: 1.5,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
     },
     modernFeeCardActive: {
-        borderColor: '#0FBBA1',
-        backgroundColor: '#FFFFFF',
+        borderColor: palette.primary,
+        backgroundColor: palette.white,
     },
     feeHeaderRow: {
         flexDirection: 'row',
@@ -2888,30 +2889,30 @@ const styles = StyleSheet.create({
     feeTitleText: {
         fontSize: 15,
         fontWeight: '700',
-        color: '#012233',
+        color: palette.navy,
     },
     feeSubtitleText: {
         fontSize: 12,
-        color: '#64748B',
+        color: palette.slate500,
         marginTop: 2,
     },
     modernToggle: {
         width: 46,
         height: 26,
         borderRadius: 13,
-        backgroundColor: '#E2E8F0',
+        backgroundColor: palette.slate200,
         padding: 3,
         justifyContent: 'center',
     },
     modernToggleActive: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
     },
     toggleKnob: {
         width: 20,
         height: 20,
         borderRadius: 10,
-        backgroundColor: '#FFFFFF',
-        shadowColor: '#000',
+        backgroundColor: palette.white,
+        shadowColor: palette.black,
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.15,
         shadowRadius: 2,
@@ -2924,7 +2925,7 @@ const styles = StyleSheet.create({
         marginTop: 16,
         paddingTop: 16,
         borderTopWidth: 1,
-        borderTopColor: '#F1F5F9',
+        borderTopColor: palette.slate100,
     },
     feeInputRow: {
         flexDirection: 'row',
@@ -2935,14 +2936,14 @@ const styles = StyleSheet.create({
     feeInputLabel: {
         fontSize: 13,
         fontWeight: '600',
-        color: '#2B4A5E',
+        color: palette.navyMuted,
     },
     feeInputBox: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
         borderWidth: 1.5,
-        borderColor: '#CBD5E1',
+        borderColor: palette.slate300,
         borderRadius: 10,
         paddingHorizontal: 10,
         paddingVertical: 6,
@@ -2950,20 +2951,20 @@ const styles = StyleSheet.create({
     currencySymbol: {
         fontSize: 16,
         fontWeight: '700',
-        color: '#0FBBA1',
+        color: palette.primary,
         marginRight: 4,
     },
     feeTextInput: {
         width: 65,
         fontSize: 16,
         fontWeight: '700',
-        color: '#012233',
+        color: palette.navy,
         paddingVertical: 0,
     },
     perSessionText: {
         fontSize: 11,
         fontWeight: '500',
-        color: '#94A3B8',
+        color: palette.slate400,
     },
     quickPillsRow: {
         flexDirection: 'row',
@@ -2973,7 +2974,7 @@ const styles = StyleSheet.create({
     quickPillLabel: {
         fontSize: 11,
         fontWeight: '600',
-        color: '#64748B',
+        color: palette.slate500,
     },
     quickPillsScroll: {
         flexDirection: 'row',
@@ -2983,31 +2984,31 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         paddingVertical: 5,
         borderRadius: 20,
-        backgroundColor: '#F1F5F9',
+        backgroundColor: palette.slate100,
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
     },
     quickPillActive: {
-        backgroundColor: '#E6FAF6',
-        borderColor: '#0FBBA1',
+        backgroundColor: palette.primaryTint,
+        borderColor: palette.primary,
     },
     quickPillText: {
         fontSize: 12,
         fontWeight: '600',
-        color: '#475569',
+        color: palette.slate600,
     },
     quickPillTextActive: {
-        color: '#0FBBA1',
+        color: palette.primary,
         fontWeight: '700',
     },
     infoBanner: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F0FDF9',
+        backgroundColor: palette.primaryWash,
         borderRadius: 14,
         padding: 14,
         borderWidth: 1,
-        borderColor: '#CCFBF1',
+        borderColor: palette.teal100,
         gap: 10,
         marginTop: 4,
     },
@@ -3015,7 +3016,7 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 12,
         fontWeight: '500',
-        color: '#0F766E',
+        color: palette.teal700,
         lineHeight: 17,
     },
 
@@ -3025,35 +3026,35 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         padding: 12,
         borderRadius: 12,
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
         gap: 10,
     },
     malpracticeCheckboxRowActive: {
-        backgroundColor: '#FEF2F2',
-        borderColor: '#FCA5A5',
+        backgroundColor: palette.red50,
+        borderColor: palette.red300,
     },
     checkbox: {
         width: 22,
         height: 22,
         borderRadius: 6,
         borderWidth: 2,
-        borderColor: '#CBD5E1',
-        backgroundColor: '#FFFFFF',
+        borderColor: palette.slate300,
+        backgroundColor: palette.white,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 1,
     },
     checkboxActive: {
-        backgroundColor: '#0FBBA1',
-        borderColor: '#0FBBA1',
+        backgroundColor: palette.primary,
+        borderColor: palette.primary,
     },
     checkboxLabel: {
         flex: 1,
         fontSize: 13,
         fontWeight: '500',
-        color: '#2B4A5E',
+        color: palette.navyMuted,
         lineHeight: 18,
     },
 
@@ -3061,19 +3062,19 @@ const styles = StyleSheet.create({
     docItemCard: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
         padding: 12,
         borderRadius: 14,
         marginBottom: 10,
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
         gap: 10,
     },
     docItemIconCircle: {
         width: 36,
         height: 36,
         borderRadius: 18,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -3083,16 +3084,16 @@ const styles = StyleSheet.create({
     docType: {
         fontSize: 13,
         fontWeight: '700',
-        color: '#012233',
+        color: palette.navy,
     },
     docDetails: {
         fontSize: 11,
-        color: '#64748B',
+        color: palette.slate500,
         marginTop: 1,
     },
     fileName: {
         fontSize: 11,
-        color: '#0FBBA1',
+        color: palette.primary,
         fontWeight: '500',
         marginTop: 1,
     },
@@ -3106,29 +3107,29 @@ const styles = StyleSheet.create({
         padding: 14,
         borderRadius: 14,
         borderWidth: 1.5,
-        borderColor: '#0FBBA1',
+        borderColor: palette.primary,
         borderStyle: 'dashed',
-        backgroundColor: '#F0FDF9',
+        backgroundColor: palette.primaryWash,
         gap: 8,
         marginTop: 4,
     },
     addNewDocText: {
         fontSize: 14,
         fontWeight: '700',
-        color: '#0FBBA1',
+        color: palette.primary,
     },
     addDocForm: {
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
         padding: 16,
         borderRadius: 16,
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
         marginTop: 8,
     },
     formTitle: {
         fontSize: 15,
         fontWeight: '700',
-        color: '#012233',
+        color: palette.navy,
         marginBottom: 14,
     },
     formActions: {
@@ -3139,12 +3140,12 @@ const styles = StyleSheet.create({
 
     // --- Review Step Cards ---
     reviewHeroCard: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderRadius: 18,
         padding: 18,
         marginBottom: 16,
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
     },
     reviewAvatarSection: {
         flexDirection: 'row',
@@ -3156,17 +3157,17 @@ const styles = StyleSheet.create({
         height: 68,
         borderRadius: 34,
         borderWidth: 2,
-        borderColor: '#0FBBA1',
+        borderColor: palette.primary,
     },
     reviewAvatarPlaceholder: {
         width: 68,
         height: 68,
         borderRadius: 34,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1.5,
-        borderColor: '#0FBBA1',
+        borderColor: palette.primary,
     },
     reviewDoctorMeta: {
         flex: 1,
@@ -3174,18 +3175,18 @@ const styles = StyleSheet.create({
     reviewDoctorBadge: {
         fontSize: 18,
         fontWeight: '800',
-        color: '#012233',
+        color: palette.navy,
         letterSpacing: -0.2,
     },
     reviewDoctorSpecialty: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#0FBBA1',
+        color: palette.primary,
         marginTop: 2,
     },
     reviewDoctorSub: {
         fontSize: 12,
-        color: '#64748B',
+        color: palette.slate500,
         marginTop: 3,
     },
     reviewRow: {
@@ -3196,19 +3197,19 @@ const styles = StyleSheet.create({
     },
     reviewFieldLabel: {
         fontSize: 13,
-        color: '#64748B',
+        color: palette.slate500,
         fontWeight: '500',
     },
     reviewFieldValue: {
         fontSize: 13,
         fontWeight: '700',
-        color: '#012233',
+        color: palette.navy,
         maxWidth: '55%',
         textAlign: 'right',
     },
     reviewDivider: {
         height: 1,
-        backgroundColor: '#F1F5F9',
+        backgroundColor: palette.slate100,
     },
     reviewServicesGrid: {
         flexDirection: 'row',
@@ -3218,9 +3219,9 @@ const styles = StyleSheet.create({
     serviceRateBadge: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F0FDF9',
+        backgroundColor: palette.primaryWash,
         borderWidth: 1,
-        borderColor: '#CCFBF1',
+        borderColor: palette.teal100,
         paddingHorizontal: 12,
         paddingVertical: 8,
         borderRadius: 12,
@@ -3228,19 +3229,19 @@ const styles = StyleSheet.create({
     },
     serviceRateText: {
         fontSize: 12,
-        color: '#2B4A5E',
+        color: palette.navyMuted,
         fontWeight: '600',
     },
     serviceRateBold: {
-        color: '#0FBBA1',
+        color: palette.primary,
         fontWeight: '800',
     },
     consentCard: {
-        backgroundColor: '#F0FDF9',
+        backgroundColor: palette.primaryWash,
         borderRadius: 16,
         padding: 16,
         borderWidth: 1.5,
-        borderColor: '#99F6E4',
+        borderColor: palette.teal200,
         marginBottom: 16,
     },
     consentCheckboxRow: {
@@ -3251,13 +3252,13 @@ const styles = StyleSheet.create({
     consentTitle: {
         fontSize: 14,
         fontWeight: '700',
-        color: '#0F766E',
+        color: palette.teal700,
         marginBottom: 3,
     },
     consentDescription: {
         fontSize: 12,
         fontWeight: '400',
-        color: '#115E59',
+        color: palette.teal800,
         lineHeight: 18,
     },
     securityNote: {
@@ -3270,19 +3271,19 @@ const styles = StyleSheet.create({
     },
     securityNoteText: {
         fontSize: 11,
-        color: '#64748B',
+        color: palette.slate500,
         lineHeight: 16,
         flex: 1,
     },
 
     // --- Floating Bottom Bar ---
     bottomActionBar: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         paddingHorizontal: 18,
         paddingTop: 14,
         borderTopWidth: 1,
-        borderTopColor: '#F1F5F9',
-        shadowColor: '#000',
+        borderTopColor: palette.slate100,
+        shadowColor: palette.black,
         shadowOffset: { width: 0, height: -3 },
         shadowOpacity: 0.05,
         shadowRadius: 6,
@@ -3301,38 +3302,38 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         borderRadius: 14,
         borderWidth: 1.5,
-        borderColor: '#E2E8F0',
-        backgroundColor: '#F8FAFC',
+        borderColor: palette.slate200,
+        backgroundColor: palette.slate50,
         gap: 2,
     },
     btnBackText: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#2B4A5E',
+        color: palette.navyMuted,
     },
     btnPrimary: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         paddingVertical: 14,
         paddingHorizontal: 20,
         borderRadius: 14,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#0FBBA1',
+        shadowColor: palette.primary,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 8,
         elevation: 4,
     },
     btnPrimaryText: {
-        color: '#FFFFFF',
+        color: palette.white,
         fontSize: 15,
         fontWeight: '700',
         letterSpacing: 0.2,
     },
     btnOutline: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderWidth: 1.5,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
         paddingVertical: 14,
         paddingHorizontal: 16,
         borderRadius: 14,
@@ -3340,7 +3341,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     btnOutlineText: {
-        color: '#2B4A5E',
+        color: palette.navyMuted,
         fontSize: 14,
         fontWeight: '600',
     },
@@ -3352,18 +3353,18 @@ const styles = StyleSheet.create({
     readOnlyContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F0FDF9',
+        backgroundColor: palette.primaryWash,
         padding: 14,
         borderRadius: 14,
         borderWidth: 1,
-        borderColor: '#CCFBF1',
+        borderColor: palette.teal100,
         gap: 10,
     },
     readOnlyText: {
         flex: 1,
         fontSize: 12,
         fontWeight: '500',
-        color: '#0F766E',
+        color: palette.teal700,
         lineHeight: 17,
     },
 
@@ -3371,60 +3372,60 @@ const styles = StyleSheet.create({
     bannerPending: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#FFFBEB',
+        backgroundColor: palette.amber50,
         paddingVertical: 10,
         paddingHorizontal: 16,
         gap: 8,
         borderBottomWidth: 1,
-        borderBottomColor: '#FEF3C7',
+        borderBottomColor: palette.amber100,
     },
     bannerPendingText: {
         flex: 1,
         fontSize: 12,
         fontWeight: '500',
-        color: '#B45309',
+        color: palette.amber700,
     },
     bannerRejected: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#FEF2F2',
+        backgroundColor: palette.red50,
         paddingVertical: 10,
         paddingHorizontal: 16,
         gap: 8,
         borderBottomWidth: 1,
-        borderBottomColor: '#FEE2E2',
+        borderBottomColor: palette.red100,
     },
     bannerRejectedText: {
         flex: 1,
         fontSize: 12,
         fontWeight: '500',
-        color: '#B91C1C',
+        color: palette.red700,
     },
     bannerWarning: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#FFFBEB',
+        backgroundColor: palette.amber50,
         paddingVertical: 10,
         paddingHorizontal: 16,
         gap: 8,
         borderBottomWidth: 1,
-        borderBottomColor: '#FEF3C7',
+        borderBottomColor: palette.amber100,
     },
     bannerWarningText: {
         flex: 1,
         fontSize: 12,
         fontWeight: '500',
-        color: '#B45309',
+        color: palette.amber700,
     },
 
     // --- Selection Modal ---
     modalOverlay: {
         flex: 1,
-        backgroundColor: 'rgba(15, 23, 42, 0.6)',
+        backgroundColor: palette.rgba_15_23_42_60,
         justifyContent: 'flex-end',
     },
     modalContent: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
         paddingHorizontal: 20,
@@ -3434,7 +3435,7 @@ const styles = StyleSheet.create({
         width: 36,
         height: 4,
         borderRadius: 2,
-        backgroundColor: '#E2E8F0',
+        backgroundColor: palette.slate200,
         alignSelf: 'center',
         marginBottom: 12,
     },
@@ -3444,19 +3445,19 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingBottom: 14,
         borderBottomWidth: 1,
-        borderBottomColor: '#F1F5F9',
+        borderBottomColor: palette.slate100,
         marginBottom: 8,
     },
     modalTitle: {
         fontSize: 17,
         fontWeight: '700',
-        color: '#012233',
+        color: palette.navy,
     },
     modalCloseBtn: {
         width: 32,
         height: 32,
         borderRadius: 16,
-        backgroundColor: '#F1F5F9',
+        backgroundColor: palette.slate100,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -3470,22 +3471,22 @@ const styles = StyleSheet.create({
         marginVertical: 2,
     },
     optionItemSelected: {
-        backgroundColor: '#F0FDF9',
+        backgroundColor: palette.primaryWash,
     },
     optionText: {
         fontSize: 15,
         fontWeight: '500',
-        color: '#2B4A5E',
+        color: palette.navyMuted,
     },
     selectedOptionText: {
-        color: '#0FBBA1',
+        color: palette.primary,
         fontWeight: '700',
     },
     selectedCheckCircle: {
         width: 22,
         height: 22,
         borderRadius: 11,
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -3500,9 +3501,9 @@ const styles = StyleSheet.create({
     selectedLangChip: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         borderWidth: 1,
-        borderColor: '#99F6E4',
+        borderColor: palette.teal200,
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 20,
@@ -3511,11 +3512,11 @@ const styles = StyleSheet.create({
     selectedLangChipText: {
         fontSize: 12,
         fontWeight: '600',
-        color: '#0F766E',
+        color: palette.teal700,
     },
     modalSubTitle: {
         fontSize: 12,
-        color: '#64748B',
+        color: palette.slate500,
         fontWeight: '500',
         marginTop: 2,
     },
@@ -3524,48 +3525,48 @@ const styles = StyleSheet.create({
         height: 22,
         borderRadius: 6,
         borderWidth: 1.5,
-        borderColor: '#CBD5E1',
-        backgroundColor: '#FFFFFF',
+        borderColor: palette.slate300,
+        backgroundColor: palette.white,
         alignItems: 'center',
         justifyContent: 'center',
     },
     langCheckboxActive: {
-        backgroundColor: '#0FBBA1',
-        borderColor: '#0FBBA1',
+        backgroundColor: palette.primary,
+        borderColor: palette.primary,
     },
 
     // --- Validation Error Highlights ---
     inputError: {
-        borderColor: '#EF4444',
-        backgroundColor: '#FEF2F2',
+        borderColor: palette.red500,
+        backgroundColor: palette.red50,
     },
     uploadBoxError: {
-        borderColor: '#EF4444',
-        backgroundColor: '#FEF2F2',
+        borderColor: palette.red500,
+        backgroundColor: palette.red50,
     },
     consentCardError: {
-        borderColor: '#EF4444',
-        backgroundColor: '#FEF2F2',
+        borderColor: palette.red500,
+        backgroundColor: palette.red50,
     },
     checkboxError: {
-        borderColor: '#EF4444',
+        borderColor: palette.red500,
     },
     feeCardError: {
-        borderColor: '#EF4444',
-        backgroundColor: '#FEF2F2',
+        borderColor: palette.red500,
+        backgroundColor: palette.red50,
     },
     errorText: {
         fontSize: 12,
         fontWeight: '600',
-        color: '#EF4444',
+        color: palette.red500,
         marginTop: 5,
     },
     errorAlertBox: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#FEF2F2',
+        backgroundColor: palette.red50,
         borderWidth: 1.5,
-        borderColor: '#FECACA',
+        borderColor: palette.red200,
         borderRadius: 14,
         padding: 14,
         marginBottom: 14,
@@ -3575,25 +3576,25 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 13,
         fontWeight: '600',
-        color: '#DC2626',
+        color: palette.red600,
         lineHeight: 18,
     },
 
     // --- Pending Verification Screen Styles ---
     pendingHeroCard: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderRadius: 20,
         padding: 22,
         alignItems: 'center',
         marginBottom: 16,
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
     },
     pendingIconOuterCircle: {
         width: 76,
         height: 76,
         borderRadius: 38,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 14,
@@ -3602,37 +3603,37 @@ const styles = StyleSheet.create({
         width: 56,
         height: 56,
         borderRadius: 28,
-        backgroundColor: '#CCFBF1',
+        backgroundColor: palette.teal100,
         alignItems: 'center',
         justifyContent: 'center',
     },
     pendingBadge: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#FFFBEB',
+        backgroundColor: palette.amber50,
         paddingHorizontal: 12,
         paddingVertical: 5,
         borderRadius: 20,
         gap: 6,
         marginBottom: 12,
         borderWidth: 1,
-        borderColor: '#FDE68A',
+        borderColor: palette.amber200,
     },
     pendingBadgeDot: {
         width: 8,
         height: 8,
         borderRadius: 4,
-        backgroundColor: '#F59E0B',
+        backgroundColor: palette.amber500,
     },
     pendingBadgeText: {
         fontSize: 12,
         fontWeight: '700',
-        color: '#B45309',
+        color: palette.amber700,
     },
     pendingHeroTitle: {
         fontSize: 20,
         fontWeight: '800',
-        color: '#012233',
+        color: palette.navy,
         textAlign: 'center',
         marginBottom: 8,
         letterSpacing: -0.3,
@@ -3640,18 +3641,18 @@ const styles = StyleSheet.create({
     pendingHeroSub: {
         fontSize: 13,
         fontWeight: '400',
-        color: '#64748B',
+        color: palette.slate500,
         textAlign: 'center',
         lineHeight: 20,
         paddingHorizontal: 8,
     },
     etaCard: {
-        backgroundColor: '#F0FDF9',
+        backgroundColor: palette.primaryWash,
         borderRadius: 18,
         padding: 18,
         marginBottom: 16,
         borderWidth: 1,
-        borderColor: '#99F6E4',
+        borderColor: palette.teal200,
     },
     etaHeaderRow: {
         flexDirection: 'row',
@@ -3662,29 +3663,29 @@ const styles = StyleSheet.create({
         width: 44,
         height: 44,
         borderRadius: 12,
-        backgroundColor: '#CCFBF1',
+        backgroundColor: palette.teal100,
         alignItems: 'center',
         justifyContent: 'center',
     },
     etaLabel: {
         fontSize: 12,
         fontWeight: '600',
-        color: '#0F766E',
+        color: palette.teal700,
     },
     etaTimeText: {
         fontSize: 20,
         fontWeight: '800',
-        color: '#0F766E',
+        color: palette.teal700,
         marginTop: 1,
     },
     etaDivider: {
         height: 1,
-        backgroundColor: '#CCFBF1',
+        backgroundColor: palette.teal100,
         marginVertical: 12,
     },
     etaDescription: {
         fontSize: 12,
-        color: '#115E59',
+        color: palette.teal800,
         lineHeight: 18,
         fontWeight: '400',
     },
@@ -3704,29 +3705,29 @@ const styles = StyleSheet.create({
         width: 26,
         height: 26,
         borderRadius: 13,
-        backgroundColor: '#F1F5F9',
+        backgroundColor: palette.slate100,
         borderWidth: 1.5,
-        borderColor: '#CBD5E1',
+        borderColor: palette.slate300,
         alignItems: 'center',
         justifyContent: 'center',
     },
     timelineNodeDone: {
-        backgroundColor: '#0FBBA1',
-        borderColor: '#0FBBA1',
+        backgroundColor: palette.primary,
+        borderColor: palette.primary,
     },
     timelineNodeActive: {
-        backgroundColor: '#E6FAF6',
-        borderColor: '#0FBBA1',
+        backgroundColor: palette.primaryTint,
+        borderColor: palette.primary,
         borderWidth: 2,
     },
     timelineTrack: {
         width: 2,
         flex: 1,
-        backgroundColor: '#E2E8F0',
+        backgroundColor: palette.slate200,
         marginVertical: 3,
     },
     timelineTrackDone: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
     },
     timelineContent: {
         flex: 1,
@@ -3741,18 +3742,18 @@ const styles = StyleSheet.create({
     timelineTitle: {
         fontSize: 14,
         fontWeight: '700',
-        color: '#012233',
+        color: palette.navy,
     },
     timelineTitlePending: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#94A3B8',
+        color: palette.slate400,
     },
     timelineStatusDone: {
         fontSize: 11,
         fontWeight: '700',
-        color: '#0FBBA1',
-        backgroundColor: '#E6FAF6',
+        color: palette.primary,
+        backgroundColor: palette.primaryTint,
         paddingHorizontal: 8,
         paddingVertical: 2,
         borderRadius: 10,
@@ -3760,8 +3761,8 @@ const styles = StyleSheet.create({
     timelineStatusActive: {
         fontSize: 11,
         fontWeight: '700',
-        color: '#2563EB',
-        backgroundColor: '#EFF6FF',
+        color: palette.blue600,
+        backgroundColor: palette.blue50,
         paddingHorizontal: 8,
         paddingVertical: 2,
         borderRadius: 10,
@@ -3769,15 +3770,15 @@ const styles = StyleSheet.create({
     timelineStatusPending: {
         fontSize: 11,
         fontWeight: '500',
-        color: '#94A3B8',
+        color: palette.slate400,
     },
     timelineSub: {
         fontSize: 12,
-        color: '#64748B',
+        color: palette.slate500,
         marginTop: 1,
     },
     refreshStatusBtn: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         borderRadius: 16,
         paddingVertical: 15,
         alignItems: 'center',
@@ -3785,7 +3786,7 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     refreshStatusBtnText: {
-        color: '#FFFFFF',
+        color: palette.white,
         fontSize: 15,
         fontWeight: '700',
         letterSpacing: 0.2,

@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -190,10 +191,10 @@ export default function DoctorSupportScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -602,7 +603,7 @@ const styles = StyleSheet.create({
     width: 3.5,
     height: 30,
     borderRadius: 2,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
   },
   sectionTitleCol: {
     flex: 1,
@@ -658,13 +659,13 @@ const styles = StyleSheet.create({
 
   // ═══ Ticket / Form Styles ═══
   toggleFormBtn: {
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 7,
   },
   toggleFormBtnText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 11.5,
     fontWeight: '700',
   },
@@ -754,14 +755,14 @@ const styles = StyleSheet.create({
     flex: 2,
     height: 42,
     borderRadius: 10,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
   },
   submitBtnText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 13,
     fontWeight: '700',
   },
@@ -809,13 +810,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   statusPillResolved: {
-    backgroundColor: '#ECFDF5',
+    backgroundColor: palette.emerald50,
   },
   statusPillEscalated: {
-    backgroundColor: '#FEF2F2',
+    backgroundColor: palette.red50,
   },
   statusPillReview: {
-    backgroundColor: '#FFFBEB',
+    backgroundColor: palette.amber50,
   },
   statusPillText: {
     fontSize: 10,

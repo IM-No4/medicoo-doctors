@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import {
@@ -306,7 +307,7 @@ export default function DoctorSettingsScreen() {
     if (loading) {
         return (
             <View style={[styles.container, styles.center, { backgroundColor: theme.background }]}>
-                <ActivityIndicator size="large" color="#0FBBA1" />
+                <ActivityIndicator size="large" color={palette.primary} />
             </View>
         );
     }
@@ -352,9 +353,9 @@ export default function DoctorSettingsScreen() {
                                 styles.card,
                                 {
                                     backgroundColor: isOnline
-                                        ? (isDark ? 'rgba(5, 150, 105, 0.15)' : '#ECFDF5')
+                                        ? (isDark ? palette.rgba_5_150_105_15 : palette.emerald50)
                                         : theme.card,
-                                    borderColor: isOnline ? '#059669' : theme.border,
+                                    borderColor: isOnline ? palette.emerald600 : theme.border,
                                     borderWidth: 1,
                                 },
                             ]}
@@ -362,8 +363,8 @@ export default function DoctorSettingsScreen() {
                             <View style={styles.statusRow}>
                                 <View style={styles.statusInfo}>
                                     <View style={styles.statusHeader}>
-                                        {isOnline ? <Sun size={24} color="#059669" /> : <Moon size={24} color={theme.textMuted} />}
-                                        <Text style={[styles.statusTitle, { color: isOnline ? '#059669' : theme.text }]}>
+                                        {isOnline ? <Sun size={24} color={palette.emerald600} /> : <Moon size={24} color={theme.textMuted} />}
+                                        <Text style={[styles.statusTitle, { color: isOnline ? palette.emerald600 : theme.text }]}>
                                             {isOnline ? 'You are Online' : 'You are Offline'}
                                         </Text>
                                     </View>
@@ -376,8 +377,8 @@ export default function DoctorSettingsScreen() {
                                 <Switch
                                     value={isOnline}
                                     onValueChange={setIsOnline}
-                                    trackColor={{ false: theme.inputBorder, true: '#A7F3D0' }}
-                                    thumbColor={isOnline ? '#0FBBA1' : theme.textMuted}
+                                    trackColor={{ false: theme.inputBorder, true: palette.emerald200 }}
+                                    thumbColor={isOnline ? palette.primary : theme.textMuted}
                                 />
                             </View>
                         </View>
@@ -404,9 +405,9 @@ export default function DoctorSettingsScreen() {
                                                 styles.themeOptionBtn,
                                                 {
                                                     backgroundColor: isSelected
-                                                        ? '#0FBBA1'
+                                                        ? palette.primary
                                                         : (theme.inset),
-                                                    borderColor: isSelected ? '#0FBBA1' : theme.border,
+                                                    borderColor: isSelected ? palette.primary : theme.border,
                                                 },
                                             ]}
                                             onPress={() => setThemeMode(opt.mode)}
@@ -414,13 +415,13 @@ export default function DoctorSettingsScreen() {
                                         >
                                             <IconComponent
                                                 size={16}
-                                                color={isSelected ? '#FFFFFF' : theme.textSecondary}
+                                                color={isSelected ? palette.white : theme.textSecondary}
                                             />
                                             <Text
                                                 style={[
                                                     styles.themeOptionText,
                                                     {
-                                                        color: isSelected ? '#FFFFFF' : theme.text,
+                                                        color: isSelected ? palette.white : theme.text,
                                                         fontWeight: isSelected ? '700' : '500',
                                                     },
                                                 ]}
@@ -504,8 +505,8 @@ export default function DoctorSettingsScreen() {
                                             <Switch
                                                 value={item.isEnabled}
                                                 onValueChange={() => toggleFeeEnabled(t)}
-                                                trackColor={{ false: theme.inputBorder, true: '#BBF7D0' }}
-                                                thumbColor={item.isEnabled ? '#0FBBA1' : '#fff'}
+                                                trackColor={{ false: theme.inputBorder, true: palette.green200 }}
+                                                thumbColor={item.isEnabled ? palette.primary : palette.white}
                                             />
                                         </View>
                                     </View>
@@ -519,10 +520,10 @@ export default function DoctorSettingsScreen() {
                             <View
                                 style={[
                                     styles.permissionBanner,
-                                    { backgroundColor: isDark ? 'rgba(220, 38, 38, 0.12)' : '#FEF2F2' },
+                                    { backgroundColor: isDark ? palette.rgba_220_38_38_12 : palette.red50 },
                                 ]}
                             >
-                                <BellOff size={18} color="#DC2626" />
+                                <BellOff size={18} color={palette.red600} />
                                 <View style={styles.permissionBannerText}>
                                     <Text style={styles.permissionBannerTitle}>Notifications are turned off</Text>
                                     <Text style={[styles.feeSub, { color: theme.textSecondary }]}>
@@ -537,7 +538,7 @@ export default function DoctorSettingsScreen() {
                                     disabled={requestingPermission}
                                 >
                                     {requestingPermission ? (
-                                        <ActivityIndicator size="small" color="#fff" />
+                                        <ActivityIndicator size="small" color={palette.white} />
                                     ) : (
                                         <Text style={styles.permissionBannerButtonText}>
                                             {notificationPermission === 'denied' ? 'Open Settings' : 'Enable'}
@@ -566,8 +567,8 @@ export default function DoctorSettingsScreen() {
                                     <Switch
                                         value={notificationSettings[item.key]}
                                         onValueChange={() => toggleNotificationSetting(item.key)}
-                                        trackColor={{ false: theme.inputBorder, true: '#BBF7D0' }}
-                                        thumbColor={notificationSettings[item.key] ? '#0FBBA1' : '#fff'}
+                                        trackColor={{ false: theme.inputBorder, true: palette.green200 }}
+                                        thumbColor={notificationSettings[item.key] ? palette.primary : palette.white}
                                     />
                                 </View>
                             ))}
@@ -661,29 +662,29 @@ export default function DoctorSettingsScreen() {
                                     if (update.storeUrl) Linking.openURL(update.storeUrl).catch(() => {});
                                 }}
                             >
-                                <ArrowUpCircle size={22} color="#0FBBA1" />
+                                <ArrowUpCircle size={22} color={palette.primary} />
                                 <View style={styles.updateCardTextWrap}>
                                     <Text style={styles.updateCardTitle}>Update Available</Text>
                                     <Text style={styles.updateCardSubtitle}>
                                         A newer version is available{update.latestVersion ? ` (${update.latestVersion})` : ''}.
                                     </Text>
                                 </View>
-                                <ChevronRight size={18} color="#0FBBA1" />
+                                <ChevronRight size={18} color={palette.primary} />
                             </TouchableOpacity>
                         )}
 
-                        <TouchableOpacity style={[styles.logoutRow, { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.12)' : '#FEE2E2' }]} onPress={handleLogout}>
+                        <TouchableOpacity style={[styles.logoutRow, { backgroundColor: isDark ? palette.rgba_239_68_68_12 : palette.red100 }]} onPress={handleLogout}>
                             <Text style={styles.logoutText}>Log Out</Text>
                         </TouchableOpacity>
 
                         {/* Danger Zone */}
                         <Text style={[styles.sectionTitle, { color: theme.textMuted, marginTop: 24 }]}>Danger Zone</Text>
-                        <View style={[styles.card, { backgroundColor: theme.card, borderColor: '#FCA5A5', borderWidth: 1 }]}>
+                        <View style={[styles.card, { backgroundColor: theme.card, borderColor: palette.red300, borderWidth: 1 }]}>
                             {deletionStatus.pending ? (
                                 <View style={styles.dangerZoneBody}>
                                     <View style={styles.dangerZoneHeader}>
-                                        <AlertTriangle size={18} color="#DC2626" />
-                                        <Text style={[styles.dangerZoneTitle, { color: '#DC2626' }]}>Deletion Scheduled</Text>
+                                        <AlertTriangle size={18} color={palette.red600} />
+                                        <Text style={[styles.dangerZoneTitle, { color: palette.red600 }]}>Deletion Scheduled</Text>
                                     </View>
                                     <Text style={[styles.feeSub, { color: theme.textSecondary, marginBottom: 12 }]}>
                                         Your account will be deleted on{' '}
@@ -693,12 +694,12 @@ export default function DoctorSettingsScreen() {
                                         . Log back in before then to keep your account.
                                     </Text>
                                     <TouchableOpacity
-                                        style={[styles.saveButton, { backgroundColor: '#0FBBA1', height: 44 }, deletionActionLoading && { opacity: 0.7 }]}
+                                        style={[styles.saveButton, { backgroundColor: palette.primary, height: 44 }, deletionActionLoading && { opacity: 0.7 }]}
                                         onPress={handleCancelAccountDeletion}
                                         disabled={deletionActionLoading}
                                     >
                                         {deletionActionLoading ? (
-                                            <ActivityIndicator color="#fff" />
+                                            <ActivityIndicator color={palette.white} />
                                         ) : (
                                             <Text style={styles.saveButtonText}>Cancel Deletion</Text>
                                         )}
@@ -707,19 +708,19 @@ export default function DoctorSettingsScreen() {
                             ) : (
                                 <View style={styles.dangerZoneBody}>
                                     <View style={styles.dangerZoneHeader}>
-                                        <AlertTriangle size={18} color="#DC2626" />
-                                        <Text style={[styles.dangerZoneTitle, { color: '#DC2626' }]}>Delete Account</Text>
+                                        <AlertTriangle size={18} color={palette.red600} />
+                                        <Text style={[styles.dangerZoneTitle, { color: palette.red600 }]}>Delete Account</Text>
                                     </View>
                                     <Text style={[styles.feeSub, { color: theme.textSecondary, marginBottom: 12 }]}>
                                         Permanently delete your doctor account and profile after a 30-day grace period. Past consultation and prescription records are retained as required by healthcare record-keeping rules.
                                     </Text>
                                     <TouchableOpacity
-                                        style={[styles.saveButton, { backgroundColor: '#DC2626', height: 44 }, deletionActionLoading && { opacity: 0.7 }]}
+                                        style={[styles.saveButton, { backgroundColor: palette.red600, height: 44 }, deletionActionLoading && { opacity: 0.7 }]}
                                         onPress={handleRequestAccountDeletion}
                                         disabled={deletionActionLoading}
                                     >
                                         {deletionActionLoading ? (
-                                            <ActivityIndicator color="#fff" />
+                                            <ActivityIndicator color={palette.white} />
                                         ) : (
                                             <Text style={styles.saveButtonText}>Delete My Account</Text>
                                         )}
@@ -740,7 +741,7 @@ export default function DoctorSettingsScreen() {
                             disabled={saving}
                         >
                             {saving ? (
-                                <ActivityIndicator color="#fff" />
+                                <ActivityIndicator color={palette.white} />
                             ) : (
                                 <Text style={styles.saveButtonText}>Save Changes</Text>
                             )}
@@ -770,7 +771,7 @@ export default function DoctorSettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#F9FAFB' },
+    container: { flex: 1, backgroundColor: palette.gray50 },
     center: { justifyContent: 'center', alignItems: 'center' },
     header: {
         flexDirection: 'row',
@@ -778,15 +779,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 24,
         paddingBottom: 16,
-        backgroundColor: '#fff',
+        backgroundColor: palette.white,
         borderBottomWidth: 1,
         ...Platform.select({
-            ios: { shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 6, shadowOffset: { width: 0, height: 2 } },
+            ios: { shadowColor: palette.black, shadowOpacity: 0.04, shadowRadius: 6, shadowOffset: { width: 0, height: 2 } },
             android: { elevation: 2 },
         }),
     },
     backButton: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center', marginLeft: -8 },
-    headerTitle: { fontSize: 18, fontWeight: '700', color: '#111827' },
+    headerTitle: { fontSize: 18, fontWeight: '700', color: palette.gray900 },
 
     content: {
         padding: 20,
@@ -794,11 +795,11 @@ const styles = StyleSheet.create({
     },
 
     card: {
-        backgroundColor: '#fff',
+        backgroundColor: palette.white,
         borderRadius: 16,
         padding: 6,
         marginBottom: 24,
-        shadowColor: '#000',
+        shadowColor: palette.black,
         shadowOpacity: 0.03,
         shadowRadius: 10,
         elevation: 2,
@@ -866,16 +867,16 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     permissionBannerText: { flex: 1 },
-    permissionBannerTitle: { fontSize: 13, fontWeight: '700', color: '#DC2626', marginBottom: 2 },
+    permissionBannerTitle: { fontSize: 13, fontWeight: '700', color: palette.red600, marginBottom: 2 },
     permissionBannerButton: {
-        backgroundColor: '#DC2626',
+        backgroundColor: palette.red600,
         paddingHorizontal: 12,
         paddingVertical: 8,
         borderRadius: 10,
         minWidth: 72,
         alignItems: 'center',
     },
-    permissionBannerButtonText: { fontSize: 12, fontWeight: '700', color: '#fff' },
+    permissionBannerButtonText: { fontSize: 12, fontWeight: '700', color: palette.white },
 
     // Fees
     feeRow: {
@@ -933,7 +934,7 @@ const styles = StyleSheet.create({
     logoutText: {
         fontSize: 15,
         fontWeight: '700',
-        color: '#DC2626',
+        color: palette.red600,
     },
 
     dangerZoneBody: {
@@ -957,13 +958,13 @@ const styles = StyleSheet.create({
         marginTop: 8,
         padding: 14,
         borderRadius: 14,
-        backgroundColor: '#ECFDF9',
+        backgroundColor: palette.hexECFDF9,
         borderWidth: 1,
-        borderColor: '#CBF5EB',
+        borderColor: palette.hexCBF5EB,
     },
     updateCardTextWrap: { flex: 1 },
-    updateCardTitle: { fontSize: 14, fontWeight: '700', color: '#0C8E78' },
-    updateCardSubtitle: { fontSize: 12, color: '#4B9A8C', marginTop: 2 },
+    updateCardTitle: { fontSize: 14, fontWeight: '700', color: palette.hex0C8E78 },
+    updateCardSubtitle: { fontSize: 12, color: palette.hex4B9A8C, marginTop: 2 },
 
     footer: {
         position: 'absolute',
@@ -975,16 +976,16 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
     },
     saveButton: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         height: 50,
         borderRadius: 12,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#0FBBA1',
+        shadowColor: palette.primary,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 8,
         elevation: 4
     },
-    saveButtonText: { fontSize: 16, fontWeight: '600', color: '#fff' }
+    saveButtonText: { fontSize: 16, fontWeight: '600', color: palette.white }
 });

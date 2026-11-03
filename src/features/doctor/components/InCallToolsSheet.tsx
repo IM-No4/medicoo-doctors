@@ -1,3 +1,4 @@
+import { palette } from '../../../theme/palette';
 import { AlertTriangle, ChevronRight, CheckCircle2, FileText, FlaskConical, Pill, X } from 'lucide-react-native';
 import { accent } from '../../../theme/accents';
 import React, { useEffect } from 'react';
@@ -36,10 +37,10 @@ export default function InCallToolsSheet({
     useEffect(() => {
         if (Platform.OS === 'android' && visible) {
             if (isDark) {
-                NavigationBar.setBackgroundColorAsync('#011A29');
+                NavigationBar.setBackgroundColorAsync(palette.navyDeep);
                 NavigationBar.setButtonStyleAsync('light');
             } else {
-                NavigationBar.setBackgroundColorAsync('#FFFFFF');
+                NavigationBar.setBackgroundColorAsync(palette.white);
                 NavigationBar.setButtonStyleAsync('dark');
             }
         }
@@ -51,7 +52,7 @@ export default function InCallToolsSheet({
             title: 'Prescription',
             description: 'Write & edit prescribed medications & dosage',
             Icon: Pill,
-            iconColor: '#0FBBA1',
+            iconColor: palette.primary,
             iconBg: theme.primaryLight,
             onPress: onOpenPrescription || onOpenNotes,
         },
@@ -60,7 +61,7 @@ export default function InCallToolsSheet({
             title: 'Diagnostic Lab Tests',
             description: 'Order lab investigations, bloodwork & scans',
             Icon: FlaskConical,
-            iconColor: '#8B5CF6',
+            iconColor: palette.violet500,
             iconBg: accent('violet', isDark).bg,
             onPress: onOpenLabTests || onOpenNotes,
         },
@@ -69,7 +70,7 @@ export default function InCallToolsSheet({
             title: 'Clinical Notes & Diagnosis',
             description: 'Record symptoms, diagnosis, advice & observations',
             Icon: FileText,
-            iconColor: '#F59E0B',
+            iconColor: palette.amber500,
             iconBg: theme.warningBg,
             onPress: onOpenNotes,
         },
@@ -78,7 +79,7 @@ export default function InCallToolsSheet({
             title: 'Patient Reports & Records',
             description: 'View uploaded test results, history & previous documents',
             Icon: FileText,
-            iconColor: '#3B82F6',
+            iconColor: palette.blue500,
             iconBg: theme.infoBg,
             onPress: onOpenReports,
         },
@@ -92,8 +93,8 @@ export default function InCallToolsSheet({
                     style={[
                         styles.content,
                         {
-                            backgroundColor: isDark ? theme.card : '#FFFFFF',
-                            borderTopColor: isDark ? theme.border : '#E2E8F0',
+                            backgroundColor: isDark ? theme.card : palette.white,
+                            borderTopColor: isDark ? theme.border : palette.slate200,
                             paddingBottom: Math.max(insets.bottom, 16) + 12,
                         },
                     ]}
@@ -102,17 +103,17 @@ export default function InCallToolsSheet({
                     <View
                         style={[
                             styles.handle,
-                            { backgroundColor: isDark ? 'rgba(255,255,255,0.2)' : '#CBD5E1' },
+                            { backgroundColor: isDark ? palette.whiteA20 : palette.slate300 },
                         ]}
                     />
 
                     {/* Header */}
                     <View style={styles.header}>
                         <View style={styles.headerTextGroup}>
-                            <Text style={[styles.title, { color: isDark ? theme.text : '#012233' }]}>
+                            <Text style={[styles.title, { color: isDark ? theme.text : palette.navy }]}>
                                 Consultation Actions
                             </Text>
-                            <Text style={[styles.subtitle, { color: isDark ? theme.textSecondary : '#64748B' }]}>
+                            <Text style={[styles.subtitle, { color: isDark ? theme.textSecondary : palette.slate500 }]}>
                                 Clinical tools & patient records for this session
                             </Text>
                         </View>
@@ -120,11 +121,11 @@ export default function InCallToolsSheet({
                             onPress={onClose}
                             style={[
                                 styles.closeBtn,
-                                { backgroundColor: isDark ? theme.cardSecondary : '#F1F5F9' },
+                                { backgroundColor: isDark ? theme.cardSecondary : palette.slate100 },
                             ]}
                             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                         >
-                            <X size={18} color={isDark ? theme.textSecondary : '#64748B'} />
+                            <X size={18} color={isDark ? theme.textSecondary : palette.slate500} />
                         </TouchableOpacity>
                     </View>
 
@@ -141,7 +142,7 @@ export default function InCallToolsSheet({
                                 activeOpacity={0.7}
                             >
                                 <View style={[styles.iconBox, { backgroundColor: theme.errorBg }]}>
-                                    <AlertTriangle size={20} color="#EF4444" />
+                                    <AlertTriangle size={20} color={palette.red500} />
                                 </View>
                                 <View style={styles.cardContent}>
                                     <Text style={[styles.cardTitle, { color: theme.error, fontWeight: '700' }]}>
@@ -154,7 +155,7 @@ export default function InCallToolsSheet({
                                         Emergency numbers & alert our clinical safety team
                                     </Text>
                                 </View>
-                                <ChevronRight size={18} color="#EF4444" />
+                                <ChevronRight size={18} color={palette.red500} />
                             </TouchableOpacity>
                         )}
 
@@ -164,8 +165,8 @@ export default function InCallToolsSheet({
                                 style={[
                                     styles.actionCard,
                                     {
-                                        backgroundColor: isDark ? theme.cardSecondary : '#F8FAFC',
-                                        borderColor: isDark ? theme.border : '#E2E8F0',
+                                        backgroundColor: isDark ? theme.cardSecondary : palette.slate50,
+                                        borderColor: isDark ? theme.border : palette.slate200,
                                     },
                                 ]}
                                 onPress={item.onPress}
@@ -175,11 +176,11 @@ export default function InCallToolsSheet({
                                     <item.Icon size={20} color={item.iconColor} />
                                 </View>
                                 <View style={styles.cardContent}>
-                                    <Text style={[styles.cardTitle, { color: isDark ? theme.text : '#012233' }]}>
+                                    <Text style={[styles.cardTitle, { color: isDark ? theme.text : palette.navy }]}>
                                         {item.title}
                                     </Text>
                                     <Text
-                                        style={[styles.cardDesc, { color: isDark ? theme.textSecondary : '#64748B' }]}
+                                        style={[styles.cardDesc, { color: isDark ? theme.textSecondary : palette.slate500 }]}
                                         numberOfLines={1}
                                     >
                                         {item.description}
@@ -194,22 +195,22 @@ export default function InCallToolsSheet({
                                 style={[
                                     styles.actionCard,
                                     {
-                                        backgroundColor: isDark ? theme.cardSecondary : '#F8FAFC',
-                                        borderColor: isDark ? theme.border : '#E2E8F0',
+                                        backgroundColor: isDark ? theme.cardSecondary : palette.slate50,
+                                        borderColor: isDark ? theme.border : palette.slate200,
                                     },
                                 ]}
                                 onPress={onRequestDocs}
                                 activeOpacity={0.7}
                             >
                                 <View style={[styles.iconBox, { backgroundColor: theme.infoBg }]}>
-                                    <FileText size={20} color="#3B82F6" />
+                                    <FileText size={20} color={palette.blue500} />
                                 </View>
                                 <View style={styles.cardContent}>
-                                    <Text style={[styles.cardTitle, { color: isDark ? theme.text : '#012233' }]}>
+                                    <Text style={[styles.cardTitle, { color: isDark ? theme.text : palette.navy }]}>
                                         Request Documents
                                     </Text>
                                     <Text
-                                        style={[styles.cardDesc, { color: isDark ? theme.textSecondary : '#64748B' }]}
+                                        style={[styles.cardDesc, { color: isDark ? theme.textSecondary : palette.slate500 }]}
                                         numberOfLines={1}
                                     >
                                         Ask patient to upload reports or past records
@@ -233,7 +234,7 @@ export default function InCallToolsSheet({
                                 activeOpacity={0.7}
                             >
                                 <View style={[styles.iconBox, { backgroundColor: theme.errorBg }]}>
-                                    <CheckCircle2 size={20} color="#EF4444" />
+                                    <CheckCircle2 size={20} color={palette.red500} />
                                 </View>
                                 <View style={styles.cardContent}>
                                     <Text style={[styles.cardTitle, { color: theme.error, fontWeight: '700' }]}>
@@ -258,14 +259,14 @@ export default function InCallToolsSheet({
 
 const styles = StyleSheet.create({
     overlay: { flex: 1, justifyContent: 'flex-end' },
-    backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.5)' },
+    backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: palette.blackA50 },
     content: {
         borderTopLeftRadius: 28,
         borderTopRightRadius: 28,
         borderTopWidth: 1,
         paddingHorizontal: 20,
         paddingTop: 12,
-        shadowColor: '#000',
+        shadowColor: palette.black,
         shadowOffset: { width: 0, height: -4 },
         shadowOpacity: 0.15,
         shadowRadius: 12,

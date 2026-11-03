@@ -1,3 +1,4 @@
+import { palette } from '../../../theme/palette';
 import { CalendarClock } from 'lucide-react-native';
 import { themeFor } from '../../../theme/colors';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -72,7 +73,7 @@ export default function AutoPayoutCard({
     load();
   }, [load]);
 
-  const accent = '#0FBBA1';
+  const accent = palette.primary;
   const chipBg = themeFor(isDark).cardSecondary;
   const border = themeFor(isDark).border;
 
@@ -134,13 +135,13 @@ export default function AutoPayoutCard({
     styles.chip,
     { backgroundColor: selected ? accent : chipBg, borderColor: selected ? accent : border },
   ];
-  const chipText = (selected: boolean) => [styles.chipText, { color: selected ? '#FFFFFF' : textColor }];
+  const chipText = (selected: boolean) => [styles.chipText, { color: selected ? palette.white : textColor }];
 
   return (
     <View style={[styles.card, { backgroundColor: cardBg, borderColor: cardBorder }]}>
       <View style={styles.headerRow}>
         <View style={styles.titleRow}>
-          <CalendarClock size={16} color={isDark ? "#60A5FA" : "#3B82F6"} />
+          <CalendarClock size={16} color={isDark ? palette.blue400 : palette.blue500} />
           <Text style={[styles.title, { color: textColor }]}>Automatic payout request</Text>
         </View>
         <Switch
@@ -148,7 +149,7 @@ export default function AutoPayoutCard({
           onValueChange={(enabled) => setDraft({ ...draft, enabled })}
           disabled={!hasPayoutMethod || saving}
           trackColor={{ false: themeFor(isDark).border, true: accent }}
-          thumbColor="#FFFFFF"
+          thumbColor={palette.white}
         />
       </View>
 
@@ -204,7 +205,7 @@ export default function AutoPayoutCard({
           </View>
 
           <Text style={[styles.label, { color: subTextColor }]}>Only if my balance is at least</Text>
-          <View style={[styles.inputBox, { backgroundColor: chipBg, borderColor: minValid ? border : '#EF4444' }]}>
+          <View style={[styles.inputBox, { backgroundColor: chipBg, borderColor: minValid ? border : palette.red500 }]}>
             <Text style={[styles.rupee, { color: textColor }]}>₹</Text>
             <TextInput
               value={minText}
@@ -237,7 +238,7 @@ export default function AutoPayoutCard({
           disabled={saving}
           activeOpacity={0.85}
         >
-          {saving ? <ActivityIndicator color="#FFFFFF" /> : <Text style={styles.saveText}>Save</Text>}
+          {saving ? <ActivityIndicator color={palette.white} /> : <Text style={styles.saveText}>Save</Text>}
         </TouchableOpacity>
       ) : null}
     </View>
@@ -259,11 +260,11 @@ const styles = StyleSheet.create({
   inputBox: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: 12, paddingHorizontal: 14 },
   rupee: { fontSize: 16, fontWeight: '700', marginRight: 6 },
   input: { flex: 1, fontSize: 16, fontWeight: '600', paddingVertical: 10 },
-  error: { color: '#EF4444', fontSize: 12, marginTop: 6 },
+  error: { color: palette.red500, fontSize: 12, marginTop: 6 },
   status: { fontSize: 13, fontWeight: '700', marginTop: 14 },
   statusSub: { fontSize: 12, marginTop: 4, lineHeight: 17 },
-  saveBtn: { marginTop: 16, backgroundColor: '#0FBBA1', borderRadius: 14, paddingVertical: 13, alignItems: 'center' },
-  saveText: { color: '#FFFFFF', fontWeight: '700', fontSize: 14.5 },
+  saveBtn: { marginTop: 16, backgroundColor: palette.primary, borderRadius: 14, paddingVertical: 13, alignItems: 'center' },
+  saveText: { color: palette.white, fontWeight: '700', fontSize: 14.5 },
   retry: { marginTop: 10 },
-  retryText: { color: '#0FBBA1', fontWeight: '700', fontSize: 13 },
+  retryText: { color: palette.primary, fontWeight: '700', fontSize: 13 },
 });

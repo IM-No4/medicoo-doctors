@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { ArrowLeft } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
@@ -67,7 +68,7 @@ export default function LegalDocumentModal({ visible, documentType, onClose }: P
             <View style={styles.container}>
                 <View style={[styles.header, { paddingTop: insets.top }]}>
                     <TouchableOpacity onPress={onClose} style={styles.backButton}>
-                        <ArrowLeft size={24} color="#fff" />
+                        <ArrowLeft size={24} color={palette.white} />
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>{title || FALLBACK_TITLES[documentType]}</Text>
                     <View style={{ width: 40 }} />
@@ -75,7 +76,7 @@ export default function LegalDocumentModal({ visible, documentType, onClose }: P
 
                 {loading ? (
                     <View style={styles.center}>
-                        <ActivityIndicator size="large" color="#0FBBA1" />
+                        <ActivityIndicator size="large" color={palette.primary} />
                     </View>
                 ) : error ? (
                     <View style={styles.center}>
@@ -114,10 +115,10 @@ export default function LegalDocumentModal({ visible, documentType, onClose }: P
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F9FAFB',
+        backgroundColor: palette.gray50,
     },
     header: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 18,
         fontWeight: '600',
-        color: '#fff',
+        color: palette.white,
     },
     center: {
         flex: 1,
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     },
     lastUpdated: {
         fontSize: 12,
-        color: '#6B7280',
+        color: palette.gray500,
         marginBottom: 24,
         fontStyle: 'italic',
     },
@@ -153,14 +154,14 @@ const styles = StyleSheet.create({
     sectionHeading: {
         fontSize: 16,
         fontWeight: '700',
-        color: '#111827',
+        color: palette.gray900,
         marginBottom: 8,
         letterSpacing: 0.5,
     },
     sectionBody: {
         fontSize: 14,
         lineHeight: 24,
-        color: '#4B5563',
+        color: palette.gray600,
         textAlign: 'justify',
     },
 });

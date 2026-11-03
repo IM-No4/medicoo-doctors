@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { VideoOff } from 'lucide-react-native';
 import React, { useRef } from 'react';
 import {
@@ -134,7 +135,7 @@ export default function FloatingCallOverlay() {
                             />
                         ) : (
                             <View style={styles.miniCameraOff}>
-                                <VideoOff size={13} color="#94A3B8" />
+                                <VideoOff size={13} color={palette.slate400} />
                             </View>
                         )}
                     </View>
@@ -198,7 +199,7 @@ export default function FloatingCallOverlay() {
                             />
                         ) : (
                             <View style={styles.miniCameraOff}>
-                                <VideoOff size={13} color="#94A3B8" />
+                                <VideoOff size={13} color={palette.slate400} />
                             </View>
                         )}
                     </View>
@@ -232,7 +233,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         zIndex: 99999,
-        backgroundColor: '#012233',
+        backgroundColor: palette.navy,
     },
     floatingContainer: {
         position: 'absolute',
@@ -240,9 +241,9 @@ const styles = StyleSheet.create({
         borderRadius: 18,
         overflow: 'hidden',
         borderWidth: 1.5,
-        borderColor: 'rgba(255,255,255,0.35)',
-        backgroundColor: '#012233',
-        shadowColor: '#000',
+        borderColor: palette.whiteA35,
+        backgroundColor: palette.navy,
+        shadowColor: palette.black,
         shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.4,
         shadowRadius: 10,
@@ -251,7 +252,7 @@ const styles = StyleSheet.create({
     videoCardInner: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#012233',
+        backgroundColor: palette.navy,
     },
     fullVideo: {
         width: '100%',
@@ -260,7 +261,7 @@ const styles = StyleSheet.create({
     waitingRemoteBox: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#0A2F42',
+        backgroundColor: palette.navyText,
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 8,
@@ -269,19 +270,19 @@ const styles = StyleSheet.create({
         width: 44,
         height: 44,
         borderRadius: 22,
-        backgroundColor: '#2B4A5E',
+        backgroundColor: palette.navyMuted,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 6,
     },
     waitingText: {
-        color: '#F8FAFC',
+        color: palette.slate50,
         fontSize: 12,
         fontWeight: '700',
         textAlign: 'center',
     },
     waitingSubText: {
-        color: '#0FBBA1',
+        color: palette.primary,
         fontSize: 10,
         fontWeight: '600',
         marginTop: 2,
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 6,
         left: 6,
-        backgroundColor: 'rgba(0,0,0,0.75)',
+        backgroundColor: palette.blackA75,
         paddingHorizontal: 7,
         paddingVertical: 3,
         borderRadius: 10,
@@ -303,10 +304,10 @@ const styles = StyleSheet.create({
         width: 6,
         height: 6,
         borderRadius: 3,
-        backgroundColor: '#10B981',
+        backgroundColor: palette.emerald500,
     },
     timerBadgeText: {
-        color: '#fff',
+        color: palette.white,
         fontSize: 10,
         fontWeight: '700',
     },
@@ -319,10 +320,10 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         overflow: 'hidden',
         borderWidth: 1.5,
-        borderColor: 'rgba(255,255,255,0.7)',
-        backgroundColor: '#0A2F42',
+        borderColor: palette.whiteA70,
+        backgroundColor: palette.navyText,
         zIndex: 25,
-        shadowColor: '#000',
+        shadowColor: palette.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 4,
@@ -335,14 +336,14 @@ const styles = StyleSheet.create({
     miniCameraOff: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#0A2F42',
+        backgroundColor: palette.navyText,
         alignItems: 'center',
         justifyContent: 'center',
     },
     audioCardInner: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#0A2F42',
+        backgroundColor: palette.navyText,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 12,
@@ -351,13 +352,13 @@ const styles = StyleSheet.create({
         width: 42,
         height: 42,
         borderRadius: 21,
-        backgroundColor: '#2B4A5E',
+        backgroundColor: palette.navyMuted,
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 10,
     },
     avatarLetter: {
-        color: '#F8FAFC',
+        color: palette.slate50,
         fontSize: 18,
         fontWeight: '700',
     },
@@ -368,21 +369,21 @@ const styles = StyleSheet.create({
         width: 11,
         height: 11,
         borderRadius: 5.5,
-        backgroundColor: '#10B981',
+        backgroundColor: palette.emerald500,
         borderWidth: 2,
-        borderColor: '#0A2F42',
+        borderColor: palette.navyText,
     },
     audioCardInfo: {
         flex: 1,
     },
     patientNameText: {
-        color: '#F8FAFC',
+        color: palette.slate50,
         fontSize: 13,
         fontWeight: '700',
         marginBottom: 2,
     },
     timerTextMain: {
-        color: '#0FBBA1',
+        color: palette.primary,
         fontSize: 12,
         fontWeight: '600',
     },

@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { Check, Search, X } from 'lucide-react-native';
 import { themeFor } from '../../theme/colors';
 import React, { useMemo, useState } from 'react';
@@ -95,7 +96,7 @@ export default function BankPickerModal({
 
               {loading ? (
                 <View style={styles.centerState}>
-                  <ActivityIndicator color="#0FBBA1" />
+                  <ActivityIndicator color={palette.primary} />
                 </View>
               ) : (
                 <FlatList
@@ -124,13 +125,13 @@ export default function BankPickerModal({
                         <Text
                           style={[
                             styles.bankName,
-                            { color: isSelected ? '#0FBBA1' : textColor, fontWeight: isSelected ? '700' : '500' },
+                            { color: isSelected ? palette.primary : textColor, fontWeight: isSelected ? '700' : '500' },
                           ]}
                           numberOfLines={1}
                         >
                           {item}
                         </Text>
-                        {isSelected && <Check size={18} color="#0FBBA1" />}
+                        {isSelected && <Check size={18} color={palette.primary} />}
                       </TouchableOpacity>
                     );
                   }}
@@ -152,7 +153,7 @@ export default function BankPickerModal({
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: palette.blackA50,
     justifyContent: 'flex-end',
   },
   modalContainer: {

@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
@@ -131,10 +132,10 @@ export default function ManageAvailabilityScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -354,7 +355,7 @@ export default function ManageAvailabilityScreen() {
                             styles.dayStatusSubText,
                             {
                               color: isEnabled
-                                ? '#0FBBA1'
+                                ? palette.primary
                                 : subTextColor,
                             },
                           ]}
@@ -372,9 +373,9 @@ export default function ManageAvailabilityScreen() {
                         onValueChange={() => toggleDay(day)}
                         trackColor={{
                           false: theme.border,
-                          true: '#0FBBA1',
+                          true: palette.primary,
                         }}
-                        thumbColor="#FFFFFF"
+                        thumbColor={palette.white}
                       />
                     </View>
 
@@ -393,7 +394,7 @@ export default function ManageAvailabilityScreen() {
                           }
                           activeOpacity={0.7}
                         >
-                          <Clock size={14} color="#3B82F6" />
+                          <Clock size={14} color={palette.blue500} />
                           <Text
                             style={[styles.timeSlotText, { color: textColor }]}
                           >
@@ -416,7 +417,7 @@ export default function ManageAvailabilityScreen() {
                           onPress={() => setPickerFor({ day, field: 'end' })}
                           activeOpacity={0.7}
                         >
-                          <Clock size={14} color="#3B82F6" />
+                          <Clock size={14} color={palette.blue500} />
                           <Text
                             style={[styles.timeSlotText, { color: textColor }]}
                           >
@@ -451,7 +452,7 @@ export default function ManageAvailabilityScreen() {
               <View
                 style={[
                   styles.sectionAccentBar,
-                  { backgroundColor: '#F59E0B' },
+                  { backgroundColor: palette.amber500 },
                 ]}
               />
               <Text style={[styles.sectionTitle, { color: textColor }]}>
@@ -525,10 +526,10 @@ export default function ManageAvailabilityScreen() {
             activeOpacity={0.85}
           >
             {saving ? (
-              <ActivityIndicator size="small" color="#FFFFFF" />
+              <ActivityIndicator size="small" color={palette.white} />
             ) : (
               <>
-                <Check size={18} color="#FFFFFF" strokeWidth={2.5} />
+                <Check size={18} color={palette.white} strokeWidth={2.5} />
                 <Text style={styles.primarySaveBtnText}>Save Schedule</Text>
               </>
             )}
@@ -605,7 +606,7 @@ const styles = StyleSheet.create({
   primarySaveBtn: {
     height: 52,
     borderRadius: 16,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -614,7 +615,7 @@ const styles = StyleSheet.create({
   primarySaveBtnText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: palette.white,
   },
 
   // ═══ 2. Section Soft Cards ═══
@@ -635,7 +636,7 @@ const styles = StyleSheet.create({
     width: 3.5,
     height: 16,
     borderRadius: 2,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     marginRight: 8,
   },
   sectionTitle: {

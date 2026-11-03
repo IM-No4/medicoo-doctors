@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import * as NavigationBar from 'expo-navigation-bar';
 import React, { useEffect, useState } from 'react';
 import {
@@ -44,8 +45,8 @@ const slides = [
   },
 ];
 
-const BUTTON_COLOR = '#0FBBA1'; // Medicoo brand teal
-const DOT_COLOR = '#F5A623';
+const BUTTON_COLOR = palette.primary; // Medicoo brand teal
+const DOT_COLOR = palette.hexF5A623;
 
 export default function IntroScreen({ onFinish }: { onFinish: () => void }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -147,7 +148,7 @@ export default function IntroScreen({ onFinish }: { onFinish: () => void }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: palette.white,
   },
   heroImage: {
     position: 'absolute',
@@ -161,13 +162,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
     textAlign: 'center',
     marginBottom: 6,
   },
   description: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.85)',
+    color: palette.whiteA85,
     textAlign: 'center',
   },
   bottomPanel: {
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
   continueButtonText: {
     fontSize: 16,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
   },
   dotsContainer: {
     flexDirection: 'row',
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
   },
   skipText: {
     fontSize: 14,
-    color: '#6B7280',
+    color: palette.gray500,
     fontWeight: '600',
   },
   skipTextHidden: {

@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Clock, ShieldCheck, Wrench } from 'lucide-react-native';
 import React, { useEffect, useRef, useState } from 'react';
@@ -47,7 +48,7 @@ export default function MaintenanceScreen() {
 
             <View style={styles.illustration}>
                 <LinearGradient
-                    colors={['#E6FBF7', '#F9FAFB']}
+                    colors={[palette.hexE6FBF7, palette.gray50]}
                     style={styles.haloCircle}
                 />
                 <Animated.View style={[styles.dashRing, { transform: [{ rotate: spinDeg }] }]}>
@@ -63,14 +64,14 @@ export default function MaintenanceScreen() {
                 </Animated.View>
 
                 <View style={styles.iconCircle}>
-                    <Wrench size={36} color="#0FBBA1" />
+                    <Wrench size={36} color={palette.primary} />
                 </View>
 
                 <View style={[styles.badge, styles.badgeClock]}>
-                    <Clock size={16} color="#B45309" />
+                    <Clock size={16} color={palette.amber700} />
                 </View>
                 <View style={[styles.badge, styles.badgeShield]}>
-                    <ShieldCheck size={16} color="#0FBBA1" />
+                    <ShieldCheck size={16} color={palette.primary} />
                 </View>
             </View>
 
@@ -81,7 +82,7 @@ export default function MaintenanceScreen() {
 
             <TouchableOpacity style={styles.primaryButton} activeOpacity={0.85} onPress={handleRetry} disabled={retrying}>
                 {retrying ? (
-                    <ActivityIndicator color="#FFFFFF" size="small" />
+                    <ActivityIndicator color={palette.white} size="small" />
                 ) : (
                     <Text style={styles.primaryButtonText}>Try Again</Text>
                 )}
@@ -93,7 +94,7 @@ export default function MaintenanceScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F9FAFB',
+        backgroundColor: palette.gray50,
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 32,
@@ -123,16 +124,16 @@ const styles = StyleSheet.create({
         width: 4,
         height: 10,
         borderRadius: 2,
-        backgroundColor: '#B9ECE3',
+        backgroundColor: palette.hexB9ECE3,
     },
     iconCircle: {
         width: 88,
         height: 88,
         borderRadius: 44,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#000',
+        shadowColor: palette.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.08,
         shadowRadius: 10,
@@ -143,10 +144,10 @@ const styles = StyleSheet.create({
         width: 32,
         height: 32,
         borderRadius: 16,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#000',
+        shadowColor: palette.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 6,
@@ -163,14 +164,14 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: '700',
-        color: '#111827',
+        color: palette.gray900,
         marginBottom: 10,
         textAlign: 'center',
     },
     message: {
         fontSize: 14,
         lineHeight: 21,
-        color: '#6B7280',
+        color: palette.gray500,
         textAlign: 'center',
         marginBottom: 36,
     },
@@ -178,14 +179,14 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         gap: 8,
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         borderRadius: 16,
         paddingVertical: 16,
         alignItems: 'center',
         justifyContent: 'center',
     },
     primaryButtonText: {
-        color: '#FFFFFF',
+        color: palette.white,
         fontSize: 16,
         fontWeight: '700',
     },

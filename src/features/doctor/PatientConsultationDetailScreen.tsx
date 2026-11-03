@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 import {
@@ -95,51 +96,51 @@ const STATUS_CONFIG: Record<
 > = {
   pending: {
     label: 'Pending',
-    lightBg: '#FEF3C7',
-    darkBg: '#2E2210',
-    fg: '#D97706',
+    lightBg: palette.amber100,
+    darkBg: palette.hex2E2210,
+    fg: palette.amber600,
     icon: Clock,
   },
   approved: {
     label: 'Confirmed',
-    lightBg: '#E6FAF6',
-    darkBg: '#07303A',
-    fg: '#0FBBA1',
+    lightBg: palette.primaryTint,
+    darkBg: palette.navyMint,
+    fg: palette.primary,
     icon: CheckCircle2,
   },
   rejected: {
     label: 'Declined',
-    lightBg: '#FEF2F2',
-    darkBg: '#2A1417',
-    fg: '#EF4444',
+    lightBg: palette.red50,
+    darkBg: palette.hex2A1417,
+    fg: palette.red500,
     icon: XCircle,
   },
   cancelled: {
     label: 'Cancelled',
-    lightBg: '#F1F5F9',
-    darkBg: '#0A2F42',
-    fg: '#64748B',
+    lightBg: palette.slate100,
+    darkBg: palette.navyText,
+    fg: palette.slate500,
     icon: AlertCircle,
   },
   completed: {
     label: 'Completed',
-    lightBg: '#EFF6FF',
-    darkBg: '#172554',
-    fg: '#3B82F6',
+    lightBg: palette.blue50,
+    darkBg: palette.hex172554,
+    fg: palette.blue500,
     icon: FileCheck2,
   },
   expired: {
     label: 'Expired',
-    lightBg: '#F1F5F9',
-    darkBg: '#0A2F42',
-    fg: '#64748B',
+    lightBg: palette.slate100,
+    darkBg: palette.navyText,
+    fg: palette.slate500,
     icon: Clock,
   },
   no_show: {
     label: 'Missed',
-    lightBg: '#FEF2F2',
-    darkBg: '#2A1417',
-    fg: '#EF4444',
+    lightBg: palette.red50,
+    darkBg: palette.hex2A1417,
+    fg: palette.red500,
     icon: AlertTriangle,
   },
 };
@@ -156,23 +157,23 @@ const CONSULTATION_TYPE_META: Record<
 > = {
   chat: {
     label: 'Chat Consultation',
-    color: '#3B82F6',
-    lightBg: '#EFF6FF',
-    darkBg: '#172554',
+    color: palette.blue500,
+    lightBg: palette.blue50,
+    darkBg: palette.hex172554,
     Icon: MessageCircle,
   },
   voice: {
     label: 'Voice Call',
-    color: '#0FBBA1',
-    lightBg: '#E6FAF6',
-    darkBg: '#07303A',
+    color: palette.primary,
+    lightBg: palette.primaryTint,
+    darkBg: palette.navyMint,
     Icon: Phone,
   },
   video: {
     label: 'Video Consultation',
-    color: '#0FBBA1',
-    lightBg: '#E6FAF6',
-    darkBg: '#07303A',
+    color: palette.primary,
+    lightBg: palette.primaryTint,
+    darkBg: palette.navyMint,
     Icon: Video,
   },
 };
@@ -343,10 +344,10 @@ export default function PatientConsultationDetailScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -867,7 +868,7 @@ export default function PatientConsultationDetailScreen() {
               ]}
             >
               <View style={styles.demoLabelRow}>
-                <Droplet size={12} color="#EF4444" />
+                <Droplet size={12} color={palette.red500} />
                 <Text style={[styles.demoLabel, { color: subTextColor }]}>Blood</Text>
               </View>
               <Text style={[styles.demoValue, { color: textColor }]}>
@@ -897,7 +898,7 @@ export default function PatientConsultationDetailScreen() {
               ]}
             >
               <View style={styles.demoLabelRow}>
-                <User size={12} color="#2563EB" />
+                <User size={12} color={palette.blue600} />
                 <Text style={[styles.demoLabel, { color: subTextColor }]}>Height</Text>
               </View>
               <Text style={[styles.demoValue, { color: textColor }]}>
@@ -912,7 +913,7 @@ export default function PatientConsultationDetailScreen() {
               ]}
             >
               <View style={styles.demoLabelRow}>
-                <Activity size={12} color="#8B5CF6" />
+                <Activity size={12} color={palette.violet500} />
                 <Text style={[styles.demoLabel, { color: subTextColor }]}>BMI</Text>
               </View>
               <Text style={[styles.demoValue, { color: textColor }]}>
@@ -925,7 +926,7 @@ export default function PatientConsultationDetailScreen() {
           <View style={styles.medicalHistorySection}>
             <View style={styles.historyGroup}>
               <View style={styles.historyGroupHeader}>
-                <ShieldAlert size={13} color="#EF4444" />
+                <ShieldAlert size={13} color={palette.red500} />
                 <Text style={[styles.historyGroupLabel, { color: subTextColor }]}>
                   Allergies:
                 </Text>
@@ -936,7 +937,7 @@ export default function PatientConsultationDetailScreen() {
                       color:
                         patientData.allergies[0] === 'None reported'
                           ? subTextColor
-                          : '#DC2626',
+                          : palette.red600,
                     },
                   ]}
                 >
@@ -947,7 +948,7 @@ export default function PatientConsultationDetailScreen() {
 
             <View style={styles.historyGroup}>
               <View style={styles.historyGroupHeader}>
-                <ShieldCheck size={13} color="#7C3AED" />
+                <ShieldCheck size={13} color={palette.violet600} />
                 <Text style={[styles.historyGroupLabel, { color: subTextColor }]}>
                   Chronic Conditions:
                 </Text>
@@ -958,7 +959,7 @@ export default function PatientConsultationDetailScreen() {
                       color:
                         patientData.chronicConditions[0] === 'None reported'
                           ? subTextColor
-                          : '#7C3AED',
+                          : palette.violet600,
                     },
                   ]}
                 >
@@ -1248,7 +1249,7 @@ export default function PatientConsultationDetailScreen() {
                           ]}
                         >
                           <View style={styles.noticeHeader}>
-                            <Clock size={16} color="#64748B" />
+                            <Clock size={16} color={palette.slate500} />
                             <Text style={[styles.noticeTitle, { color: theme.textSecondary }]}>
                               Expired
                             </Text>
@@ -1308,7 +1309,7 @@ export default function PatientConsultationDetailScreen() {
                           ]}
                         >
                           <View style={styles.noticeHeader}>
-                            <XCircle size={16} color="#EF4444" />
+                            <XCircle size={16} color={palette.red500} />
                             <Text
                               style={[
                                 styles.noticeTitle,
@@ -1353,10 +1354,10 @@ export default function PatientConsultationDetailScreen() {
                                   styles.refundStatusTitle,
                                   {
                                     color: isRefunded
-                                      ? '#0FBBA1'
+                                      ? palette.primary
                                       : isDark
-                                      ? '#CBD5E1'
-                                      : '#2B4A5E',
+                                      ? palette.slate300
+                                      : palette.navyMuted,
                                   },
                                 ]}
                               >
@@ -1395,7 +1396,7 @@ export default function PatientConsultationDetailScreen() {
                                 },
                               ]}
                             >
-                              <Clock size={13} color="#D97706" />
+                              <Clock size={13} color={palette.amber600} />
                               <Text style={styles.countdownStripText}>
                                 Response required within {formatCountdown(session.responseDeadline)}
                               </Text>
@@ -1423,7 +1424,7 @@ export default function PatientConsultationDetailScreen() {
                               disabled={busy}
                               activeOpacity={0.7}
                             >
-                              <X size={15} color="#EF4444" />
+                              <X size={15} color={palette.red500} />
                               <Text style={styles.inlineDeclineText}>Decline</Text>
                             </TouchableOpacity>
 
@@ -1433,7 +1434,7 @@ export default function PatientConsultationDetailScreen() {
                               disabled={busy}
                               activeOpacity={0.8}
                             >
-                              <Check size={15} color="#FFFFFF" strokeWidth={2.5} />
+                              <Check size={15} color={palette.white} strokeWidth={2.5} />
                               <Text style={styles.inlineAcceptText}>Accept Request</Text>
                             </TouchableOpacity>
                           </View>
@@ -1450,22 +1451,22 @@ export default function PatientConsultationDetailScreen() {
                               {
                                 backgroundColor: isPaid
                                   ? isDark
-                                    ? '#07303A'
-                                    : '#E6FAF6'
+                                    ? palette.navyMint
+                                    : palette.primaryTint
                                   : isDark
-                                  ? '#2E2210'
-                                  : '#FEF3C7',
+                                  ? palette.hex2E2210
+                                  : palette.amber100,
                               },
                             ]}
                           >
                             <CreditCard
                               size={14}
-                              color={isPaid ? '#0FBBA1' : '#D97706'}
+                              color={isPaid ? palette.primary : palette.amber600}
                             />
                             <Text
                               style={[
                                 styles.paymentStripText,
-                                { color: isPaid ? '#0FBBA1' : '#D97706' },
+                                { color: isPaid ? palette.primary : palette.amber600 },
                               ]}
                             >
                               {isPaid
@@ -1486,7 +1487,7 @@ export default function PatientConsultationDetailScreen() {
                               ]}
                             >
                               <View style={styles.pastHeaderRow}>
-                                <Clock size={14} color="#3B82F6" />
+                                <Clock size={14} color={palette.blue500} />
                                 <Text
                                   style={[
                                     styles.rescheduleTitle,
@@ -1524,7 +1525,7 @@ export default function PatientConsultationDetailScreen() {
                                   disabled={busy}
                                   activeOpacity={0.7}
                                 >
-                                  <X size={14} color="#EF4444" />
+                                  <X size={14} color={palette.red500} />
                                   <Text style={styles.declineBtnText}>Decline</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
@@ -1533,7 +1534,7 @@ export default function PatientConsultationDetailScreen() {
                                   disabled={busy}
                                   activeOpacity={0.8}
                                 >
-                                  <Check size={14} color="#FFFFFF" strokeWidth={2.5} />
+                                  <Check size={14} color={palette.white} strokeWidth={2.5} />
                                   <Text style={styles.acceptBtnText}>Accept</Text>
                                 </TouchableOpacity>
                               </View>
@@ -1558,7 +1559,7 @@ export default function PatientConsultationDetailScreen() {
                                 },
                               ]}
                             >
-                              <Clock size={14} color="#D97706" />
+                              <Clock size={14} color={palette.amber600} />
                               <Text
                                 style={[
                                   styles.sessionStatusNoticeText,
@@ -1578,7 +1579,7 @@ export default function PatientConsultationDetailScreen() {
                                 },
                               ]}
                             >
-                              <CalendarClock size={14} color="#3B82F6" />
+                              <CalendarClock size={14} color={palette.blue500} />
                               <Text
                                 style={[
                                   styles.sessionStatusNoticeText,
@@ -1620,7 +1621,7 @@ export default function PatientConsultationDetailScreen() {
                                   onPress={() => handleOpenRxModal(session)}
                                   activeOpacity={0.7}
                                 >
-                                  <CheckCircle2 size={14} color="#6366F1" />
+                                  <CheckCircle2 size={14} color={palette.indigo500} />
                                   <Text style={styles.completeActionBtnText}>
                                     Complete Session
                                   </Text>
@@ -1659,7 +1660,7 @@ export default function PatientConsultationDetailScreen() {
                                   ]}
                                 >
                                   <View style={styles.vitalHeaderRow}>
-                                    <Heart size={12} color="#EF4444" />
+                                    <Heart size={12} color={palette.red500} />
                                     <Text style={[styles.vitalLabel, { color: subTextColor }]}>BP</Text>
                                   </View>
                                   <Text style={[styles.vitalValue, { color: textColor }]}>
@@ -1689,7 +1690,7 @@ export default function PatientConsultationDetailScreen() {
                                   ]}
                                 >
                                   <View style={styles.vitalHeaderRow}>
-                                    <Droplet size={12} color="#F59E0B" />
+                                    <Droplet size={12} color={palette.amber500} />
                                     <Text style={[styles.vitalLabel, { color: subTextColor }]}>Glucose</Text>
                                   </View>
                                   <Text style={[styles.vitalValue, { color: textColor }]}>
@@ -1704,7 +1705,7 @@ export default function PatientConsultationDetailScreen() {
                                   ]}
                                 >
                                   <View style={styles.vitalHeaderRow}>
-                                    <Thermometer size={12} color="#3B82F6" />
+                                    <Thermometer size={12} color={palette.blue500} />
                                     <Text style={[styles.vitalLabel, { color: subTextColor }]}>SpO2 / Temp</Text>
                                   </View>
                                   <Text style={[styles.vitalValue, { color: textColor }]}>
@@ -1846,7 +1847,7 @@ export default function PatientConsultationDetailScreen() {
         >
           {formatCountdown(appointment?.responseDeadline) && (
             <View style={styles.deadlineNotice}>
-              <Clock size={13} color="#D97706" />
+              <Clock size={13} color={palette.amber600} />
               <Text style={styles.deadlineNoticeText}>
                 Respond within {formatCountdown(appointment?.responseDeadline)} or this request will expire.
               </Text>
@@ -1865,7 +1866,7 @@ export default function PatientConsultationDetailScreen() {
               disabled={busy}
               activeOpacity={0.7}
             >
-              <X size={16} color="#EF4444" />
+              <X size={16} color={palette.red500} />
               <Text style={styles.declineBtnText}>Decline</Text>
             </TouchableOpacity>
 
@@ -1875,7 +1876,7 @@ export default function PatientConsultationDetailScreen() {
               disabled={busy}
               activeOpacity={0.8}
             >
-              <Check size={16} color="#FFFFFF" strokeWidth={2.5} />
+              <Check size={16} color={palette.white} strokeWidth={2.5} />
               <Text style={styles.acceptBtnText}>Accept</Text>
             </TouchableOpacity>
           </View>
@@ -1930,7 +1931,7 @@ export default function PatientConsultationDetailScreen() {
               {isCallInProgress ? (
                 <View style={styles.activeCallBtnContent}>
                   <View style={styles.pulseDotActive} />
-                  <Phone size={16} color="#FFFFFF" />
+                  <Phone size={16} color={palette.white} />
                   <Text style={styles.primaryCallBtnText}>Return to Call</Text>
                 </View>
               ) : (
@@ -2027,13 +2028,13 @@ export default function PatientConsultationDetailScreen() {
             styles.busyOverlay,
             {
               backgroundColor: isDark
-                ? 'rgba(8,14,23,0.7)'
-                : 'rgba(255,255,255,0.7)',
+                ? palette.rgba_8_14_23_70
+                : palette.whiteA70,
             },
           ]}
           pointerEvents="none"
         >
-          <ActivityIndicator color="#0FBBA1" size="large" />
+          <ActivityIndicator color={palette.primary} size="large" />
         </View>
       )}
     </View>
@@ -2093,8 +2094,8 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '800',
   },
-  bookedByPill: { alignSelf: 'flex-start', marginTop: 6, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8, backgroundColor: 'rgba(16,185,129,0.12)' },
-  bookedByText: { fontSize: 11, fontWeight: '700', color: '#64748B' },
+  bookedByPill: { alignSelf: 'flex-start', marginTop: 6, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8, backgroundColor: palette.rgba_16_185_129_12 },
+  bookedByText: { fontSize: 11, fontWeight: '700', color: palette.slate500 },
   patientNameLarge: {
     fontSize: 17,
     fontWeight: '800',
@@ -2182,7 +2183,7 @@ const styles = StyleSheet.create({
   viewAllReportsLink: {
     fontSize: 12.5,
     fontWeight: '700',
-    color: '#64748B',
+    color: palette.slate500,
   },
   docsLoadingRow: {
     flexDirection: 'row',
@@ -2209,7 +2210,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 8,
-    backgroundColor: 'rgba(100, 116, 139, 0.14)',
+    backgroundColor: palette.rgba_100_116_139_14,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -2315,7 +2316,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   currentPill: {
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingHorizontal: 6,
     paddingVertical: 1.5,
     borderRadius: 6,
@@ -2323,7 +2324,7 @@ const styles = StyleSheet.create({
   currentPillText: {
     fontSize: 9.5,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
   },
   timelineTimeText: {
     fontSize: 11.5,
@@ -2432,7 +2433,7 @@ const styles = StyleSheet.create({
   countdownStripText: {
     fontSize: 11.5,
     fontWeight: '700',
-    color: '#D97706',
+    color: palette.amber600,
   },
   sessionActionRow: {
     flexDirection: 'row',
@@ -2452,14 +2453,14 @@ const styles = StyleSheet.create({
   inlineDeclineText: {
     fontSize: 12.5,
     fontWeight: '700',
-    color: '#EF4444',
+    color: palette.red500,
   },
   inlineAcceptBtn: {
     flex: 2,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingVertical: 9,
     borderRadius: 10,
     gap: 4,
@@ -2467,7 +2468,7 @@ const styles = StyleSheet.create({
   inlineAcceptText: {
     fontSize: 12.5,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
   },
 
   // Approved Box
@@ -2493,21 +2494,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingVertical: 12,
     borderRadius: 12,
     gap: 8,
   },
   primaryJoinBtnDisabled: {
-    backgroundColor: '#94A3B8',
+    backgroundColor: palette.slate400,
   },
   primaryJoinBtnText: {
     fontSize: 13.5,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
   },
   primaryJoinBtnTextDisabled: {
-    color: '#F1F5F9',
+    color: palette.slate100,
   },
   upcomingSecondaryRow: {
     flexDirection: 'row',
@@ -2540,7 +2541,7 @@ const styles = StyleSheet.create({
   completeActionBtnText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#6366F1',
+    color: palette.indigo500,
   },
   sessionStatusNotice: {
     flexDirection: 'row',
@@ -2611,12 +2612,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
-    backgroundColor: 'rgba(100, 116, 139, 0.14)',
+    backgroundColor: palette.rgba_100_116_139_14,
   },
   editRxText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#64748B',
+    color: palette.slate500,
   },
   rxContentCol: {
     gap: 8,
@@ -2674,7 +2675,7 @@ const styles = StyleSheet.create({
   addRxLink: {
     fontSize: 11.5,
     fontWeight: '700',
-    color: '#64748B',
+    color: palette.slate500,
   },
 
   // Reschedule Callout
@@ -2714,7 +2715,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingVertical: 6,
     borderRadius: 8,
     gap: 4,
@@ -2740,7 +2741,7 @@ const styles = StyleSheet.create({
   deadlineNoticeText: {
     fontSize: 11.5,
     fontWeight: '700',
-    color: '#D97706',
+    color: palette.amber600,
   },
   footerButtonRow: {
     flexDirection: 'row',
@@ -2759,14 +2760,14 @@ const styles = StyleSheet.create({
   declineBtnText: {
     fontSize: 13.5,
     fontWeight: '700',
-    color: '#EF4444',
+    color: palette.red500,
   },
   acceptBtn: {
     flex: 2,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingVertical: 13,
     borderRadius: 14,
     gap: 6,
@@ -2774,7 +2775,7 @@ const styles = StyleSheet.create({
   acceptBtnText: {
     fontSize: 13.5,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
   },
   secondaryBtn: {
     flex: 1,
@@ -2789,21 +2790,21 @@ const styles = StyleSheet.create({
   secondaryBtnText: {
     fontSize: 13.5,
     fontWeight: '700',
-    color: '#0EA5E9',
+    color: palette.sky500,
   },
   primaryCallBtn: {
     flex: 2,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingVertical: 13,
     borderRadius: 14,
   },
   primaryCallBtnDisabled: {
-    backgroundColor: '#94A3B8',
+    backgroundColor: palette.slate400,
   },
   primaryCallBtnActive: {
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     flex: 1,
   },
   activeCallBtnContent: {
@@ -2816,15 +2817,15 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: palette.white,
   },
   primaryCallBtnText: {
     fontSize: 13.5,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
   },
   primaryCallBtnTextDisabled: {
-    color: '#F1F5F9',
+    color: palette.slate100,
   },
 
   divider: {

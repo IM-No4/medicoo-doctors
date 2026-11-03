@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useNavigation } from '@react-navigation/native';
 import { AlertTriangle, ArrowLeft, CalendarClock, ShieldCheck, UserX } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -143,7 +144,7 @@ export default function DeleteAccountScreen() {
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#0FBBA1" />
+          <ActivityIndicator size="large" color={palette.primary} />
         </View>
       ) : (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -191,7 +192,7 @@ export default function DeleteAccountScreen() {
                 <View style={[styles.card, { backgroundColor: cardBg, borderColor: cardBorder }]}>
                   <Text style={[styles.cardTitle, { color: textColor }]}>Confirm</Text>
                   <Text style={[styles.rowBody, { color: subText, marginTop: 4 }]}>
-                    Type <Text style={{ color: '#EF4444', fontWeight: '800' }}>{CONFIRM_WORD}</Text> to continue.
+                    Type <Text style={{ color: palette.red500, fontWeight: '800' }}>{CONFIRM_WORD}</Text> to continue.
                   </Text>
                   <TextInput
                     value={typed}
@@ -200,7 +201,7 @@ export default function DeleteAccountScreen() {
                     autoCorrect={false}
                     placeholder={CONFIRM_WORD}
                     placeholderTextColor={subText}
-                    style={[styles.input, { color: textColor, backgroundColor: inputBg, borderColor: confirmed ? '#EF4444' : inputBorder }]}
+                    style={[styles.input, { color: textColor, backgroundColor: inputBg, borderColor: confirmed ? palette.red500 : inputBorder }]}
                   />
                 </View>
               </>
@@ -208,7 +209,7 @@ export default function DeleteAccountScreen() {
 
             {error ? (
               <View style={[styles.errorBox, { backgroundColor: redBg }]}>
-                <AlertTriangle size={16} color="#EF4444" />
+                <AlertTriangle size={16} color={palette.red500} />
                 <Text style={styles.errorText}>{error}</Text>
               </View>
             ) : null}
@@ -216,17 +217,17 @@ export default function DeleteAccountScreen() {
 
           <View style={[styles.footer, { backgroundColor: cardBg, borderTopColor: divider, paddingBottom: insets.bottom + 12 }]}>
             {pending ? (
-              <TouchableOpacity style={[styles.primary, { backgroundColor: '#0FBBA1' }, busy && { opacity: 0.6 }]} onPress={keepAccount} disabled={busy} activeOpacity={0.85}>
-                {busy ? <ActivityIndicator color="#FFFFFF" /> : <Text style={styles.primaryText}>Keep my account</Text>}
+              <TouchableOpacity style={[styles.primary, { backgroundColor: palette.primary }, busy && { opacity: 0.6 }]} onPress={keepAccount} disabled={busy} activeOpacity={0.85}>
+                {busy ? <ActivityIndicator color={palette.white} /> : <Text style={styles.primaryText}>Keep my account</Text>}
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
-                style={[styles.primary, { backgroundColor: '#EF4444' }, (!confirmed || busy) && { opacity: 0.4 }]}
+                style={[styles.primary, { backgroundColor: palette.red500 }, (!confirmed || busy) && { opacity: 0.4 }]}
                 onPress={requestDeletion}
                 disabled={!confirmed || busy}
                 activeOpacity={0.85}
               >
-                {busy ? <ActivityIndicator color="#FFFFFF" /> : <Text style={styles.primaryText}>Delete my account</Text>}
+                {busy ? <ActivityIndicator color={palette.white} /> : <Text style={styles.primaryText}>Delete my account</Text>}
               </TouchableOpacity>
             )}
           </View>
@@ -256,9 +257,9 @@ const styles = StyleSheet.create({
   input: { marginTop: 12, borderWidth: 1.5, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12, fontSize: 16, fontWeight: '700', letterSpacing: 2 },
 
   errorBox: { flexDirection: 'row', gap: 10, alignItems: 'flex-start', borderRadius: 14, padding: 14, marginBottom: 14 },
-  errorText: { flex: 1, color: '#EF4444', fontSize: 13, lineHeight: 19 },
+  errorText: { flex: 1, color: palette.red500, fontSize: 13, lineHeight: 19 },
 
   footer: { paddingHorizontal: 16, paddingTop: 12, borderTopWidth: StyleSheet.hairlineWidth },
   primary: { borderRadius: 14, paddingVertical: 15, alignItems: 'center' },
-  primaryText: { color: '#FFFFFF', fontSize: 15, fontWeight: '800' },
+  primaryText: { color: palette.white, fontSize: 15, fontWeight: '800' },
 });

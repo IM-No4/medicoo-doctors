@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as NavigationBar from 'expo-navigation-bar';
@@ -93,10 +94,10 @@ export default function DoctorReferralScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -197,17 +198,17 @@ export default function DoctorReferralScreen() {
       >
         {/* ═══ 1. Hero Luxury Gradient Card ═══ */}
         <LinearGradient
-          colors={['#0F766E', '#0FBBA1']}
+          colors={[palette.teal700, palette.primary]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.heroCard}
         >
           <View style={styles.heroTopRow}>
             <View style={styles.heroIconCircle}>
-              <UserPlus size={22} color="#FFFFFF" />
+              <UserPlus size={22} color={palette.white} />
             </View>
             <View style={styles.heroBadge}>
-              <Sparkles size={12} color="#5EEAD4" />
+              <Sparkles size={12} color={palette.teal300} />
               <Text style={styles.heroBadgeText}>DOCTOR NETWORK</Text>
             </View>
           </View>
@@ -263,7 +264,7 @@ export default function DoctorReferralScreen() {
             ]}
           >
             {loading ? (
-              <ActivityIndicator size="small" color="#0FBBA1" />
+              <ActivityIndicator size="small" color={palette.primary} />
             ) : (
               <Text style={[styles.codeText, { color: textColor }]}>{referralCode || '—'}</Text>
             )}
@@ -271,7 +272,7 @@ export default function DoctorReferralScreen() {
             <TouchableOpacity
               style={[
                 styles.copyBtn,
-                copied && { backgroundColor: '#059669' },
+                copied && { backgroundColor: palette.emerald600 },
                 !referralCode && { opacity: 0.5 },
               ]}
               onPress={handleCopyCode}
@@ -280,12 +281,12 @@ export default function DoctorReferralScreen() {
             >
               {copied ? (
                 <>
-                  <Check size={14} color="#FFFFFF" />
+                  <Check size={14} color={palette.white} />
                   <Text style={styles.copyBtnText}>Copied</Text>
                 </>
               ) : (
                 <>
-                  <Copy size={14} color="#FFFFFF" />
+                  <Copy size={14} color={palette.white} />
                   <Text style={styles.copyBtnText}>Copy</Text>
                 </>
               )}
@@ -299,7 +300,7 @@ export default function DoctorReferralScreen() {
             activeOpacity={0.8}
             disabled={!referralCode}
           >
-            <Share2 size={16} color="#FFFFFF" />
+            <Share2 size={16} color={palette.white} />
             <Text style={styles.shareBtnText}>Share Invitation Link</Text>
           </TouchableOpacity>
 
@@ -328,7 +329,7 @@ export default function DoctorReferralScreen() {
                 disabled={!redeemCode.trim() || redeeming}
               >
                 {redeeming ? (
-                  <ActivityIndicator size="small" color="#FFFFFF" />
+                  <ActivityIndicator size="small" color={palette.white} />
                 ) : (
                   <Text style={styles.redeemBtnText}>Redeem</Text>
                 )}
@@ -340,7 +341,7 @@ export default function DoctorReferralScreen() {
               onPress={() => setShowRedeemField(true)}
               activeOpacity={0.7}
             >
-              <Gift size={14} color="#8B5CF6" />
+              <Gift size={14} color={palette.violet500} />
               <Text style={styles.redeemToggleText}>Have a colleague&apos;s code? Redeem it</Text>
             </TouchableOpacity>
           )}
@@ -364,7 +365,7 @@ export default function DoctorReferralScreen() {
             {/* Item 1 */}
             <View style={styles.stepItemRow}>
               <View style={[styles.stepNumCircle, { backgroundColor: theme.successBg }]}>
-                <Users size={16} color="#059669" />
+                <Users size={16} color={palette.emerald600} />
               </View>
               <View style={styles.stepTextCol}>
                 <Text style={[styles.stepTitle, { color: textColor }]}>
@@ -381,7 +382,7 @@ export default function DoctorReferralScreen() {
             {/* Item 2 */}
             <View style={styles.stepItemRow}>
               <View style={[styles.stepNumCircle, { backgroundColor: theme.infoBg }]}>
-                <Stethoscope size={16} color="#0284C7" />
+                <Stethoscope size={16} color={palette.sky600} />
               </View>
               <View style={styles.stepTextCol}>
                 <Text style={[styles.stepTitle, { color: textColor }]}>
@@ -398,7 +399,7 @@ export default function DoctorReferralScreen() {
             {/* Item 3 */}
             <View style={styles.stepItemRow}>
               <View style={[styles.stepNumCircle, { backgroundColor: theme.warningBg }]}>
-                <Globe size={16} color="#D97706" />
+                <Globe size={16} color={palette.amber600} />
               </View>
               <View style={styles.stepTextCol}>
                 <Text style={[styles.stepTitle, { color: textColor }]}>
@@ -428,7 +429,7 @@ export default function DoctorReferralScreen() {
 
           {loading ? (
             <View style={styles.listLoadingBox}>
-              <ActivityIndicator size="small" color="#0FBBA1" />
+              <ActivityIndicator size="small" color={palette.primary} />
             </View>
           ) : colleagues.length === 0 ? (
             <View style={styles.emptyColleaguesBox}>
@@ -454,10 +455,10 @@ export default function DoctorReferralScreen() {
                       <View
                         style={[
                           styles.doctorAvatarBox,
-                          { backgroundColor: isActive ? '#ECFDF5' : '#FFFBEB' },
+                          { backgroundColor: isActive ? palette.emerald50 : palette.amber50 },
                         ]}
                       >
-                        <Stethoscope size={18} color={isActive ? '#059669' : '#D97706'} />
+                        <Stethoscope size={18} color={isActive ? palette.emerald600 : palette.amber600} />
                       </View>
 
                       <View style={styles.referralInfoCol}>
@@ -479,7 +480,7 @@ export default function DoctorReferralScreen() {
                           <Text
                             style={[
                               styles.statusBadgeText,
-                              { color: isActive ? '#059669' : '#D97706' },
+                              { color: isActive ? palette.emerald600 : palette.amber600 },
                             ]}
                           >
                             {item.status}
@@ -548,7 +549,7 @@ const styles = StyleSheet.create({
   heroCard: {
     borderRadius: 18,
     padding: 16,
-    shadowColor: '#0FBBA1',
+    shadowColor: palette.primary,
     shadowOpacity: 0.15,
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 12,
@@ -564,33 +565,33 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: palette.whiteA20,
     alignItems: 'center',
     justifyContent: 'center',
   },
   heroBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.22)',
+    backgroundColor: palette.whiteA22,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
     gap: 4,
   },
   heroBadgeText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 0.5,
   },
   heroTitle: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 18,
     fontWeight: '800',
     marginBottom: 4,
   },
   heroSubtitle: {
-    color: 'rgba(255, 255, 255, 0.88)',
+    color: palette.whiteA88,
     fontSize: 12.5,
     lineHeight: 18,
     fontWeight: '500',
@@ -599,7 +600,7 @@ const styles = StyleSheet.create({
   heroStatsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    backgroundColor: palette.blackA15,
     paddingVertical: 10,
     paddingHorizontal: 14,
     borderRadius: 12,
@@ -610,19 +611,19 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   heroStatValue: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 16,
     fontWeight: '800',
   },
   heroStatLabel: {
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: palette.whiteA80,
     fontSize: 11,
     fontWeight: '600',
   },
   heroStatDivider: {
     width: 1,
     height: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: palette.whiteA25,
   },
 
   // ═══ Section Card ═══
@@ -641,7 +642,7 @@ const styles = StyleSheet.create({
     width: 3.5,
     height: 22,
     borderRadius: 2,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
   },
   sectionTitle: {
     fontSize: 14.5,
@@ -668,14 +669,14 @@ const styles = StyleSheet.create({
   copyBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
     gap: 5,
   },
   copyBtnText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 12,
     fontWeight: '700',
   },
@@ -683,13 +684,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingVertical: 12,
     borderRadius: 12,
     gap: 8,
   },
   shareBtnText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 13.5,
     fontWeight: '700',
   },
@@ -703,7 +704,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   redeemToggleText: {
-    color: '#0FBBA1',
+    color: palette.primary,
     fontSize: 12.5,
     fontWeight: '700',
   },
@@ -724,13 +725,13 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   redeemBtn: {
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingHorizontal: 16,
     paddingVertical: 11,
     borderRadius: 12,
   },
   redeemBtnText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 12.5,
     fontWeight: '700',
   },
@@ -827,10 +828,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   statusBadgeDone: {
-    backgroundColor: '#ECFDF5',
+    backgroundColor: palette.emerald50,
   },
   statusBadgePending: {
-    backgroundColor: '#FFFBEB',
+    backgroundColor: palette.amber50,
   },
   statusBadgeText: {
     fontSize: 10,

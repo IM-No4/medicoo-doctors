@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import {
   Activity,
   Bone,
@@ -27,12 +28,12 @@ export interface DocumentTypeMeta {
 }
 
 export const DOCUMENT_TYPES: DocumentTypeMeta[] = [
-  { value: 'prescription', label: 'Prescription', folderLabel: 'Prescriptions', icon: FileText, color: '#059669', bg: '#D1FAE5' },
-  { value: 'lab_report', label: 'Lab Report', folderLabel: 'Lab Reports', icon: FlaskConical, color: '#8B5CF6', bg: '#EDE4FF' },
-  { value: 'scan', label: 'Scan', folderLabel: 'Scans', icon: ImageIcon, color: '#2563EB', bg: '#DBEAFE' },
-  { value: 'xray', label: 'X-Ray', folderLabel: 'X-Rays', icon: Bone, color: '#DB2777', bg: '#FCE7F3' },
-  { value: 'diagnostic_report', label: 'Diagnostic Report', folderLabel: 'Diagnostic Reports', icon: Activity, color: '#EA580C', bg: '#FFEDD5' },
-  { value: 'other', label: 'Other', folderLabel: 'Other', icon: File, color: '#D97706', bg: '#FEF3C7' },
+  { value: 'prescription', label: 'Prescription', folderLabel: 'Prescriptions', icon: FileText, color: palette.emerald600, bg: palette.emerald100 },
+  { value: 'lab_report', label: 'Lab Report', folderLabel: 'Lab Reports', icon: FlaskConical, color: palette.violet500, bg: palette.hexEDE4FF },
+  { value: 'scan', label: 'Scan', folderLabel: 'Scans', icon: ImageIcon, color: palette.blue600, bg: palette.blue100 },
+  { value: 'xray', label: 'X-Ray', folderLabel: 'X-Rays', icon: Bone, color: palette.hexDB2777, bg: palette.hexFCE7F3 },
+  { value: 'diagnostic_report', label: 'Diagnostic Report', folderLabel: 'Diagnostic Reports', icon: Activity, color: palette.orange600, bg: palette.orange100 },
+  { value: 'other', label: 'Other', folderLabel: 'Other', icon: File, color: palette.amber600, bg: palette.amber100 },
 ];
 
 const OTHER_TYPE = DOCUMENT_TYPES[DOCUMENT_TYPES.length - 1];

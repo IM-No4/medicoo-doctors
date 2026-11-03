@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { ArrowUpCircle } from 'lucide-react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, AppState, AppStateStatus, Linking, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -43,7 +44,7 @@ export default function MandatoryUpdateScreen() {
             <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
 
             <View style={styles.iconCircle}>
-                <ArrowUpCircle size={44} color="#0FBBA1" />
+                <ArrowUpCircle size={44} color={palette.primary} />
             </View>
 
             <Text style={styles.title}>Update Required</Text>
@@ -66,7 +67,7 @@ export default function MandatoryUpdateScreen() {
 
             {checking && (
                 <View style={styles.checkingRow}>
-                    <ActivityIndicator size="small" color="#9CA3AF" />
+                    <ActivityIndicator size="small" color={palette.gray400} />
                     <Text style={styles.checkingText}>Checking your version...</Text>
                 </View>
             )}
@@ -77,7 +78,7 @@ export default function MandatoryUpdateScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F9FAFB',
+        backgroundColor: palette.gray50,
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 32,
@@ -86,11 +87,11 @@ const styles = StyleSheet.create({
         width: 88,
         height: 88,
         borderRadius: 44,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 24,
-        shadowColor: '#000',
+        shadowColor: palette.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.06,
         shadowRadius: 8,
@@ -99,25 +100,25 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: '700',
-        color: '#111827',
+        color: palette.gray900,
         marginBottom: 10,
         textAlign: 'center',
     },
     message: {
         fontSize: 14,
         lineHeight: 21,
-        color: '#6B7280',
+        color: palette.gray500,
         textAlign: 'center',
         marginBottom: 12,
     },
     versionText: {
         fontSize: 13,
-        color: '#9CA3AF',
+        color: palette.gray400,
         marginBottom: 28,
     },
     primaryButton: {
         width: '100%',
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         borderRadius: 16,
         paddingVertical: 16,
         alignItems: 'center',
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
         opacity: 0.5,
     },
     primaryButtonText: {
-        color: '#FFFFFF',
+        color: palette.white,
         fontSize: 16,
         fontWeight: '700',
     },
@@ -139,6 +140,6 @@ const styles = StyleSheet.create({
     },
     checkingText: {
         fontSize: 13,
-        color: '#9CA3AF',
+        color: palette.gray400,
     },
 });

@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import {
   AlertCircle,
   AlertTriangle,
@@ -48,21 +49,21 @@ const DEFAULT_TITLES: Partial<Record<StatusType, string>> = {
 };
 
 const PRIMARY_COLORS: Partial<Record<StatusType, string>> = {
-  success: '#0FBBA1',
-  error: '#EF4444',
-  date_error: '#EF4444',
-  warning: '#0FBBA1',
-  info: '#3B82F6',
+  success: palette.primary,
+  error: palette.red500,
+  date_error: palette.red500,
+  warning: palette.primary,
+  info: palette.blue500,
 };
 
 const GLOW_COLORS: Record<StatusType, string> = {
-  idle: '#0FBBA1',
-  loading: '#0FBBA1',
-  success: '#0FBBA1',
-  error: '#EF4444',
-  date_error: '#EF4444',
-  warning: '#F59E0B',
-  info: '#3B82F6',
+  idle: palette.primary,
+  loading: palette.primary,
+  success: palette.primary,
+  error: palette.red500,
+  date_error: palette.red500,
+  warning: palette.amber500,
+  info: palette.blue500,
 };
 
 // The same bright hex that reads fine on a white card renders far more
@@ -71,12 +72,12 @@ const GLOW_COLORS: Record<StatusType, string> = {
 // saturated shade for both the button and the border glow in dark mode
 // specifically. Light mode is untouched.
 const DARK_MODE_ACCENT_OVERRIDES: Partial<Record<StatusType, string>> = {
-  error: '#B91C1C',
-  date_error: '#B91C1C',
+  error: palette.red700,
+  date_error: palette.red700,
 };
 
-const CONFIRM_COLOR = '#EF4444';
-const DARK_CONFIRM_COLOR = '#B91C1C';
+const CONFIRM_COLOR = palette.red500;
+const DARK_CONFIRM_COLOR = palette.red700;
 
 export default function StatusModal({
   visible,
@@ -104,10 +105,10 @@ export default function StatusModal({
   useEffect(() => {
     if (Platform.OS === 'android' && visible && status !== 'idle') {
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#FFFFFF');
+        NavigationBar.setBackgroundColorAsync(palette.white);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -144,9 +145,9 @@ export default function StatusModal({
   if (status === 'loading') {
     return (
       <Modal transparent visible={visible} animationType="fade" statusBarTranslucent>
-        <View style={[styles.overlay, { backgroundColor: isDark ? 'rgba(0,0,0,0.8)' : 'rgba(15,23,42,0.5)' }]}>
+        <View style={[styles.overlay, { backgroundColor: isDark ? palette.blackA80 : palette.rgba_15_23_42_50 }]}>
           <View style={[styles.card, styles.loadingCard, { backgroundColor: cardBg }, glowStyle]}>
-            <ActivityIndicator size="large" color="#0FBBA1" />
+            <ActivityIndicator size="large" color={palette.primary} />
             <Text style={[styles.loadingText, { color: titleColor }]}>
               {message || 'Processing...'}
             </Text>
@@ -160,7 +161,7 @@ export default function StatusModal({
   const showCancel = isConfirmable && !!primaryAction;
   const primaryColor = showCancel
     ? (isDark ? DARK_CONFIRM_COLOR : CONFIRM_COLOR)
-    : (isDark && DARK_MODE_ACCENT_OVERRIDES[status]) || PRIMARY_COLORS[status] || '#0FBBA1';
+    : (isDark && DARK_MODE_ACCENT_OVERRIDES[status]) || PRIMARY_COLORS[status] || palette.primary;
   const primaryLabel = primaryActionText || (showCancel ? 'Yes' : 'OK');
 
   const renderIcon = () => {
@@ -173,7 +174,7 @@ export default function StatusModal({
               { backgroundColor: theme.primaryLight },
             ]}
           >
-            <CheckCircle2 size={32} color="#0FBBA1" strokeWidth={2.3} />
+            <CheckCircle2 size={32} color={palette.primary} strokeWidth={2.3} />
           </View>
         );
       case 'error':
@@ -185,7 +186,7 @@ export default function StatusModal({
               { backgroundColor: theme.errorBg },
             ]}
           >
-            <XCircle size={32} color="#EF4444" strokeWidth={2.3} />
+            <XCircle size={32} color={palette.red500} strokeWidth={2.3} />
           </View>
         );
       case 'warning':
@@ -196,7 +197,7 @@ export default function StatusModal({
               { backgroundColor: theme.warningBg },
             ]}
           >
-            <AlertTriangle size={32} color="#F59E0B" strokeWidth={2.3} />
+            <AlertTriangle size={32} color={palette.amber500} strokeWidth={2.3} />
           </View>
         );
       case 'info':
@@ -207,7 +208,7 @@ export default function StatusModal({
               { backgroundColor: theme.infoBg },
             ]}
           >
-            <Info size={32} color="#3B82F6" strokeWidth={2.3} />
+            <Info size={32} color={palette.blue500} strokeWidth={2.3} />
           </View>
         );
       default:
@@ -220,7 +221,7 @@ export default function StatusModal({
       <View
         style={[
           styles.overlay,
-          { backgroundColor: isDark ? 'rgba(0,0,0,0.8)' : 'rgba(15,23,42,0.5)' },
+          { backgroundColor: isDark ? palette.blackA80 : palette.rgba_15_23_42_50 },
         ]}
       >
         <View style={[styles.card, { backgroundColor: cardBg, borderColor: cardBorder }, glowStyle]}>
@@ -335,7 +336,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 14.5,
     fontWeight: '800',
     letterSpacing: -0.1,

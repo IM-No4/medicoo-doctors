@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useNavigation } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 import {
@@ -209,10 +210,10 @@ export default function DoctorEarningsScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -329,15 +330,15 @@ export default function DoctorEarningsScreen() {
     ? null
     : defaultAccount.account_type === 'vpa'
     ? defaultAccount.vpaVerified
-      ? { label: 'Verified', color: '#0FBBA1', Icon: CheckCircle2 }
-      : { label: 'Unverified', color: '#94A3B8', Icon: AlertCircle }
+      ? { label: 'Verified', color: palette.primary, Icon: CheckCircle2 }
+      : { label: 'Unverified', color: palette.slate400, Icon: AlertCircle }
     : defaultAccount.verificationStatus === 'verified'
-    ? { label: 'Verified', color: '#0FBBA1', Icon: CheckCircle2 }
+    ? { label: 'Verified', color: palette.primary, Icon: CheckCircle2 }
     : defaultAccount.verificationStatus === 'pending'
-    ? { label: 'Verifying…', color: '#D97706', Icon: Clock }
+    ? { label: 'Verifying…', color: palette.amber600, Icon: Clock }
     : defaultAccount.verificationStatus === 'failed'
-    ? { label: 'Verification Failed', color: '#EF4444', Icon: AlertTriangle }
-    : { label: 'Unverified', color: '#94A3B8', Icon: AlertCircle };
+    ? { label: 'Verification Failed', color: palette.red500, Icon: AlertTriangle }
+    : { label: 'Unverified', color: palette.slate400, Icon: AlertCircle };
 
   const now = new Date();
   const thisMonthEarnings = (summary?.transactions || [])
@@ -691,8 +692,8 @@ export default function DoctorEarningsScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={['#0FBBA1']}
-            tintColor="#0FBBA1"
+            colors={[palette.primary]}
+            tintColor={palette.primary}
           />
         }
       >
@@ -717,7 +718,7 @@ export default function DoctorEarningsScreen() {
 
           {loading ? (
             <ActivityIndicator
-              color="#0FBBA1"
+              color={palette.primary}
               style={{ marginVertical: 18, alignSelf: 'flex-start' }}
             />
           ) : (
@@ -735,7 +736,7 @@ export default function DoctorEarningsScreen() {
           >
             <View style={styles.metricItem}>
               <View style={styles.metricLabelRow}>
-                <Clock size={12} color="#F59E0B" />
+                <Clock size={12} color={palette.amber500} />
                 <Text style={[styles.metricLabel, { color: subTextColor }]}>
                   On Hold (48h)
                 </Text>
@@ -754,7 +755,7 @@ export default function DoctorEarningsScreen() {
                   This Month
                 </Text>
               </View>
-              <Text style={[styles.metricValue, { color: '#0FBBA1' }]}>
+              <Text style={[styles.metricValue, { color: palette.primary }]}>
                 +₹{thisMonthEarnings.toLocaleString()}
               </Text>
             </View>
@@ -763,7 +764,7 @@ export default function DoctorEarningsScreen() {
 
             <View style={styles.metricItem}>
               <View style={styles.metricLabelRow}>
-                <Calendar size={12} color="#3B82F6" />
+                <Calendar size={12} color={palette.blue500} />
                 <Text style={[styles.metricLabel, { color: subTextColor }]}>
                   Total Revenue
                 </Text>
@@ -784,7 +785,7 @@ export default function DoctorEarningsScreen() {
             disabled={availableAmount <= 0}
             activeOpacity={0.8}
           >
-            <ArrowRight size={16} color="#FFFFFF" strokeWidth={2.5} />
+            <ArrowRight size={16} color={palette.white} strokeWidth={2.5} />
             <Text style={styles.primaryWithdrawBtnText}>
               {availableAmount > 0
                 ? `Withdraw ₹${availableAmount.toLocaleString()}`
@@ -926,7 +927,7 @@ export default function DoctorEarningsScreen() {
                 onPress={() => setIsSetupModalVisible(true)}
                 activeOpacity={0.8}
               >
-                <Plus size={14} color="#FFFFFF" strokeWidth={2.5} />
+                <Plus size={14} color={palette.white} strokeWidth={2.5} />
                 <Text style={styles.addAccountCtaText}>Add Bank Account</Text>
               </TouchableOpacity>
             </View>
@@ -995,10 +996,10 @@ export default function DoctorEarningsScreen() {
                     styles.filterChip,
                     {
                       backgroundColor: isActive
-                        ? '#0FBBA1'
+                        ? palette.primary
                         : isDark
-                        ? '#10384D'
-                        : '#F1F5F9',
+                        ? palette.navyRaised
+                        : palette.slate100,
                     },
                   ]}
                   activeOpacity={0.7}
@@ -1007,7 +1008,7 @@ export default function DoctorEarningsScreen() {
                     style={[
                       styles.filterChipText,
                       {
-                        color: isActive ? '#FFFFFF' : subTextColor,
+                        color: isActive ? palette.white : subTextColor,
                         fontWeight: isActive ? '700' : '600',
                       },
                     ]}
@@ -1048,20 +1049,20 @@ export default function DoctorEarningsScreen() {
                           {
                             backgroundColor: isRefunded
                               ? isDark
-                                ? '#2A1417'
-                                : '#FEF2F2'
+                                ? palette.hex2A1417
+                                : palette.red50
                               : isOnHold
                               ? isDark
-                                ? '#2E2210'
-                                : '#FEF3C7'
+                                ? palette.hex2E2210
+                                : palette.amber100
                               : A.green.bg,
                           },
                         ]}
                       >
                         {isRefunded ? (
-                          <RotateCcw size={16} color="#EF4444" />
+                          <RotateCcw size={16} color={palette.red500} />
                         ) : isOnHold ? (
-                          <Clock size={16} color="#D97706" />
+                          <Clock size={16} color={palette.amber600} />
                         ) : (
                           <ArrowUpRight size={16} color={A.green.fg} />
                         )}
@@ -1085,10 +1086,10 @@ export default function DoctorEarningsScreen() {
                             styles.txAmountText,
                             {
                               color: isRefunded
-                                ? '#EF4444'
+                                ? palette.red500
                                 : isOnHold
-                                ? '#D97706'
-                                : '#10B981',
+                                ? palette.amber600
+                                : palette.emerald500,
                             },
                           ]}
                         >
@@ -1101,15 +1102,15 @@ export default function DoctorEarningsScreen() {
                             {
                               backgroundColor: isRefunded
                                 ? isDark
-                                  ? '#2A1417'
-                                  : '#FEF2F2'
+                                  ? palette.hex2A1417
+                                  : palette.red50
                                 : isOnHold
                                 ? isDark
-                                  ? '#2E2210'
-                                  : '#FEF3C7'
+                                  ? palette.hex2E2210
+                                  : palette.amber100
                                 : isDark
-                                ? '#07303A'
-                                : '#E6FAF6',
+                                ? palette.navyMint
+                                : palette.primaryTint,
                             },
                           ]}
                         >
@@ -1118,10 +1119,10 @@ export default function DoctorEarningsScreen() {
                               styles.microStatusTagText,
                               {
                                 color: isRefunded
-                                  ? '#EF4444'
+                                  ? palette.red500
                                   : isOnHold
-                                  ? '#D97706'
-                                  : '#0FBBA1',
+                                  ? palette.amber600
+                                  : palette.primary,
                               },
                             ]}
                           >
@@ -1211,28 +1212,28 @@ export default function DoctorEarningsScreen() {
                 const isFailed = withdrawal.status === 'failed' || withdrawal.status === 'rejected';
 
                 const statusFg = isCompleted
-                  ? '#0FBBA1'
+                  ? palette.primary
                   : isProcessing
-                  ? '#D97706'
+                  ? palette.amber600
                   : isFailed
-                  ? '#EF4444'
-                  : '#3B82F6';
+                  ? palette.red500
+                  : palette.blue500;
 
                 const statusBg = isDark
                   ? isCompleted
-                    ? '#07303A'
+                    ? palette.navyMint
                     : isProcessing
-                    ? '#2E2210'
+                    ? palette.hex2E2210
                     : isFailed
-                    ? '#2A1417'
-                    : '#172554'
+                    ? palette.hex2A1417
+                    : palette.hex172554
                   : isCompleted
-                  ? '#E6FAF6'
+                  ? palette.primaryTint
                   : isProcessing
-                  ? '#FEF3C7'
+                  ? palette.amber100
                   : isFailed
-                  ? '#FEF2F2'
-                  : '#EFF6FF';
+                  ? palette.red50
+                  : palette.blue50;
 
                 return (
                   <View
@@ -1384,7 +1385,7 @@ export default function DoctorEarningsScreen() {
                             <Text style={[styles.breakdownLabel, { color: subTextColor }]}>
                               Platform Processing Fee
                             </Text>
-                            <Text style={[styles.breakdownVal, { color: '#0FBBA1' }]}>
+                            <Text style={[styles.breakdownVal, { color: palette.primary }]}>
                               ₹0.00 (Free)
                             </Text>
                           </View>
@@ -1398,7 +1399,7 @@ export default function DoctorEarningsScreen() {
                             <Text style={[styles.breakdownTotalLabel, { color: textColor }]}>
                               Net Settled Amount
                             </Text>
-                            <Text style={[styles.breakdownTotalVal, { color: '#0FBBA1' }]}>
+                            <Text style={[styles.breakdownTotalVal, { color: palette.primary }]}>
                               ₹{withdrawal.amount.toLocaleString()}
                             </Text>
                           </View>
@@ -1412,8 +1413,8 @@ export default function DoctorEarningsScreen() {
                         <View style={styles.payoutTimelineContainer}>
                           <View style={styles.timelineStepRow}>
                             <View style={styles.stepIndicatorCol}>
-                              <View style={[styles.stepDot, { backgroundColor: '#0FBBA1' }]} />
-                              <View style={[styles.stepLine, { backgroundColor: isProcessing || isCompleted ? '#0FBBA1' : dividerColor }]} />
+                              <View style={[styles.stepDot, { backgroundColor: palette.primary }]} />
+                              <View style={[styles.stepLine, { backgroundColor: isProcessing || isCompleted ? palette.primary : dividerColor }]} />
                             </View>
                             <View style={styles.stepContentCol}>
                               <Text style={[styles.stepTitle, { color: textColor }]}>
@@ -1430,10 +1431,10 @@ export default function DoctorEarningsScreen() {
                               <View
                                 style={[
                                   styles.stepDot,
-                                  { backgroundColor: isProcessing || isCompleted ? '#0FBBA1' : '#D97706' },
+                                  { backgroundColor: isProcessing || isCompleted ? palette.primary : palette.amber600 },
                                 ]}
                               />
-                              <View style={[styles.stepLine, { backgroundColor: isCompleted ? '#0FBBA1' : dividerColor }]} />
+                              <View style={[styles.stepLine, { backgroundColor: isCompleted ? palette.primary : dividerColor }]} />
                             </View>
                             <View style={styles.stepContentCol}>
                               <Text style={[styles.stepTitle, { color: textColor }]}>
@@ -1452,9 +1453,9 @@ export default function DoctorEarningsScreen() {
                                   styles.stepDot,
                                   {
                                     backgroundColor: isCompleted
-                                      ? '#0FBBA1'
+                                      ? palette.primary
                                       : isFailed
-                                      ? '#EF4444'
+                                      ? palette.red500
                                       : dividerColor,
                                   },
                                 ]}
@@ -1464,7 +1465,7 @@ export default function DoctorEarningsScreen() {
                               <Text
                                 style={[
                                   styles.stepTitle,
-                                  { color: isCompleted ? '#0FBBA1' : isFailed ? '#EF4444' : subTextColor },
+                                  { color: isCompleted ? palette.primary : isFailed ? palette.red500 : subTextColor },
                                 ]}
                               >
                                 {isCompleted
@@ -1537,7 +1538,7 @@ export default function DoctorEarningsScreen() {
               <Text
                 style={[
                   styles.accountModeTabText,
-                  { color: accountMode === 'bank' ? '#FFFFFF' : subTextColor },
+                  { color: accountMode === 'bank' ? palette.white : subTextColor },
                 ]}
               >
                 Bank Account
@@ -1551,7 +1552,7 @@ export default function DoctorEarningsScreen() {
               <Text
                 style={[
                   styles.accountModeTabText,
-                  { color: accountMode === 'upi' ? '#FFFFFF' : subTextColor },
+                  { color: accountMode === 'upi' ? palette.white : subTextColor },
                 ]}
               >
                 UPI
@@ -1577,7 +1578,7 @@ export default function DoctorEarningsScreen() {
                       styles.selectInput,
                       {
                         backgroundColor: theme.background,
-                        borderColor: fieldErrors.bankName ? '#EF4444' : dividerColor,
+                        borderColor: fieldErrors.bankName ? palette.red500 : dividerColor,
                       },
                     ]}
                     onPress={openBankPicker}
@@ -1611,7 +1612,7 @@ export default function DoctorEarningsScreen() {
                       styles.input,
                       {
                         backgroundColor: theme.background,
-                        borderColor: fieldErrors.accountNumber ? '#EF4444' : dividerColor,
+                        borderColor: fieldErrors.accountNumber ? palette.red500 : dividerColor,
                         color: textColor,
                       },
                     ]}
@@ -1645,11 +1646,11 @@ export default function DoctorEarningsScreen() {
                       {
                         justifyContent: 'center',
                         backgroundColor: isBankVerified ? (theme.primaryLight) : (theme.background),
-                        borderColor: isBankVerified ? '#0FBBA1' : dividerColor,
+                        borderColor: isBankVerified ? palette.primary : dividerColor,
                       },
                     ]}
                   >
-                    <Text style={{ fontSize: 15, color: isBankVerified ? '#0FBBA1' : subTextColor }}>
+                    <Text style={{ fontSize: 15, color: isBankVerified ? palette.primary : subTextColor }}>
                       {draftPayoutMethod?.bank_account?.name || ''}
                     </Text>
                   </View>
@@ -1667,8 +1668,8 @@ export default function DoctorEarningsScreen() {
                       styles.input,
                       {
                         backgroundColor: isBankVerified ? (theme.primaryLight) : (theme.background),
-                        borderColor: isBankVerified ? '#0FBBA1' : fieldErrors.ifsc ? '#EF4444' : dividerColor,
-                        color: isBankVerified ? '#0FBBA1' : textColor,
+                        borderColor: isBankVerified ? palette.primary : fieldErrors.ifsc ? palette.red500 : dividerColor,
+                        color: isBankVerified ? palette.primary : textColor,
                       },
                     ]}
                     autoCapitalize="characters"
@@ -1720,7 +1721,7 @@ export default function DoctorEarningsScreen() {
                       styles.input,
                       {
                         backgroundColor: theme.background,
-                        borderColor: fieldErrors.upiId ? '#EF4444' : dividerColor,
+                        borderColor: fieldErrors.upiId ? palette.red500 : dividerColor,
                         color: textColor,
                       },
                     ]}
@@ -1755,7 +1756,7 @@ export default function DoctorEarningsScreen() {
               activeOpacity={0.8}
             >
               {saving || verifying ? (
-                <ActivityIndicator color="#FFFFFF" size="small" />
+                <ActivityIndicator color={palette.white} size="small" />
               ) : (
                 <Text style={styles.modalSubmitBtnText}>
                   {accountMode === 'upi' ? 'Save Payout Account' : isBankVerified ? 'Create' : 'Verify'}
@@ -1825,7 +1826,7 @@ export default function DoctorEarningsScreen() {
                   <Text style={[styles.inputLabel, { color: textColor }]}>
                     Withdrawal Amount (₹)
                   </Text>
-                  <Text style={[styles.inputHelper, { color: '#0FBBA1' }]}>
+                  <Text style={[styles.inputHelper, { color: palette.primary }]}>
                     Available: ₹{availableAmount.toLocaleString()}
                   </Text>
                 </View>
@@ -1872,7 +1873,7 @@ export default function DoctorEarningsScreen() {
                   onPress={() => setWithdrawAmount(String(availableAmount))}
                   activeOpacity={0.7}
                 >
-                  <Text style={[styles.quickAmountText, { color: '#0FBBA1' }]}>
+                  <Text style={[styles.quickAmountText, { color: palette.primary }]}>
                     Max (₹{availableAmount})
                   </Text>
                 </TouchableOpacity>
@@ -1891,7 +1892,7 @@ export default function DoctorEarningsScreen() {
                 activeOpacity={0.8}
               >
                 {withdrawing ? (
-                  <ActivityIndicator color="#FFFFFF" size="small" />
+                  <ActivityIndicator color={palette.white} size="small" />
                 ) : (
                   <Text style={styles.modalSubmitBtnText}>Confirm Instant Withdrawal</Text>
                 )}
@@ -2008,7 +2009,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   settlementBadge: {
-    backgroundColor: 'rgba(100, 116, 139, 0.14)',
+    backgroundColor: palette.rgba_100_116_139_14,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 8,
@@ -2016,7 +2017,7 @@ const styles = StyleSheet.create({
   settlementBadgeText: {
     fontSize: 10.5,
     fontWeight: '700',
-    color: '#64748B',
+    color: palette.slate500,
   },
   balanceAmountText: {
     fontSize: 32,
@@ -2062,18 +2063,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingVertical: 12,
     borderRadius: 12,
     marginTop: 12,
   },
   primaryWithdrawBtnDisabled: {
-    backgroundColor: '#94A3B8',
+    backgroundColor: palette.slate400,
   },
   primaryWithdrawBtnText: {
     fontSize: 13.5,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
   },
 
   // ═══ Payout Account Card ═══
@@ -2081,7 +2082,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: 'rgba(100, 116, 139, 0.14)',
+    backgroundColor: palette.rgba_100_116_139_14,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
@@ -2089,7 +2090,7 @@ const styles = StyleSheet.create({
   changeAccountLinkText: {
     fontSize: 11.5,
     fontWeight: '700',
-    color: '#64748B',
+    color: palette.slate500,
   },
   bankCardSurface: {
     borderRadius: 14,
@@ -2130,7 +2131,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: '#E6FAF6',
+    backgroundColor: palette.primaryTint,
     paddingHorizontal: 7,
     paddingVertical: 3,
     borderRadius: 7,
@@ -2138,7 +2139,7 @@ const styles = StyleSheet.create({
   verifiedBadgeText: {
     fontSize: 10.5,
     fontWeight: '700',
-    color: '#0FBBA1',
+    color: palette.primary,
   },
   bankCardMiddleRow: {
     paddingVertical: 4,
@@ -2162,7 +2163,7 @@ const styles = StyleSheet.create({
   payoutScheduleText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#64748B',
+    color: palette.slate500,
   },
 
   // Empty Payout State
@@ -2203,14 +2204,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingVertical: 10,
     borderRadius: 10,
   },
   addAccountCtaText: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
   },
 
   // ═══ Segment Control ═══
@@ -2230,7 +2231,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   segmentTabActive: {
-    shadowColor: '#000',
+    shadowColor: palette.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.08,
     shadowRadius: 2,
@@ -2489,7 +2490,7 @@ const styles = StyleSheet.create({
   },
   modalBlur: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: palette.blackA50,
   },
   modalContent: {
     borderTopLeftRadius: 22,
@@ -2540,7 +2541,7 @@ const styles = StyleSheet.create({
   fieldErrorText: {
     fontSize: 11.5,
     fontWeight: '600',
-    color: '#EF4444',
+    color: palette.red500,
     marginTop: 4,
   },
   inputHelper: {
@@ -2575,7 +2576,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   accountModeTabActive: {
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
   },
   accountModeTabText: {
     fontSize: 13.5,
@@ -2622,7 +2623,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   modalSubmitBtn: {
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     borderRadius: 14,
     paddingVertical: 14,
     alignItems: 'center',
@@ -2631,7 +2632,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   modalSubmitBtnText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 14.5,
     fontWeight: '800',
   },

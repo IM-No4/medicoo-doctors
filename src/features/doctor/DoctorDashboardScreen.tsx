@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as NavigationBar from 'expo-navigation-bar';
@@ -62,10 +63,10 @@ const CONSULTATION_TYPE_META: Record<
   string,
   { label: string; color: string; bg: string; darkBg: string; Icon: any }
 > = {
-  chat: { label: 'Chat', color: '#2563EB', bg: '#EFF6FF', darkBg: '#172554', Icon: MessageCircle },
-  voice: { label: 'Audio', color: '#059669', bg: '#ECFDF5', darkBg: '#064E3B', Icon: Phone },
-  audio: { label: 'Audio', color: '#059669', bg: '#ECFDF5', darkBg: '#064E3B', Icon: Phone },
-  video: { label: 'Video', color: '#0284C7', bg: '#F0F9FF', darkBg: '#0C4A6E', Icon: Video },
+  chat: { label: 'Chat', color: palette.blue600, bg: palette.blue50, darkBg: palette.hex172554, Icon: MessageCircle },
+  voice: { label: 'Audio', color: palette.emerald600, bg: palette.emerald50, darkBg: palette.emerald900, Icon: Phone },
+  audio: { label: 'Audio', color: palette.emerald600, bg: palette.emerald50, darkBg: palette.emerald900, Icon: Phone },
+  video: { label: 'Video', color: palette.sky600, bg: palette.sky50, darkBg: palette.sky900, Icon: Video },
 };
 
 const formatDisplayTime = (time: string): string => {
@@ -140,21 +141,21 @@ export default function DoctorDashboardScreen() {
 
   // Action Needed Dynamic State
   const hasPendingRequests = pendingRequests.length > 0;
-  const actionColor = hasPendingRequests ? '#DC2626' : (theme.textSecondary);
+  const actionColor = hasPendingRequests ? palette.red600 : (theme.textSecondary);
   const actionBg = hasPendingRequests
     ? isDark
-      ? '#2A1111'
-      : '#FEF2F2'
+      ? palette.hex2A1111
+      : palette.red50
     : isDark
-      ? '#0A2F42'
-      : '#F1F5F9';
+      ? palette.navyText
+      : palette.slate100;
 
   // Manage Dynamic Status Bar and Navigation Bar styling
   const currentStatusBarStyle = isScrolledPastHero && !isDark ? 'dark-content' : 'light-content';
   const currentStatusBarBg = isScrolledPastHero
     ? isDark
-      ? '#011A29'
-      : '#FFFFFF'
+      ? palette.navyDeep
+      : palette.white
     : 'transparent';
 
   // The bar itself is the <RNStatusBar> in the render below. Setting it imperatively as well made the two disagree: RN keeps a stack of
@@ -164,10 +165,10 @@ export default function DoctorDashboardScreen() {
   useEffect(() => {
     if (Platform.OS === 'android') {
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -448,8 +449,8 @@ export default function DoctorDashboardScreen() {
               setRefreshing(true);
               loadDashboardData();
             }}
-            colors={['#0FBBA1']}
-            tintColor="#0FBBA1"
+            colors={[palette.primary]}
+            tintColor={palette.primary}
             progressViewOffset={insets.top + 20}
           />
         }
@@ -462,7 +463,7 @@ export default function DoctorDashboardScreen() {
           onTouchCancel={() => setTouchOnHeader(false)}
         >
           <LinearGradient
-            colors={['#087F6D', '#0FBBA1']}
+            colors={[palette.hex087F6D, palette.primary]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.heroGradient}
@@ -498,7 +499,7 @@ export default function DoctorDashboardScreen() {
                   <View
                     style={[
                       styles.heroAvatarStatusDot,
-                      { backgroundColor: isOnline ? '#22C55E' : '#94A3B8' },
+                      { backgroundColor: isOnline ? palette.green500 : palette.slate400 },
                     ]}
                   />
                 </TouchableOpacity>
@@ -518,7 +519,7 @@ export default function DoctorDashboardScreen() {
                   <View
                     style={[
                       styles.statusPulseDot,
-                      { backgroundColor: isOnline ? '#22C55E' : '#94A3B8' },
+                      { backgroundColor: isOnline ? palette.green500 : palette.slate400 },
                     ]}
                   />
                   <View style={{ flex: 1 }}>
@@ -534,9 +535,9 @@ export default function DoctorDashboardScreen() {
                 </View>
 
                 {/* looks like a switch, works as a tap: nothing to drag */}
-                <View style={[styles.switchTrack, { backgroundColor: isOnline ? '#34D399' : 'rgba(255,255,255,0.3)' }, isOnline ? styles.switchTrackOn : styles.switchTrackOff]}>
+                <View style={[styles.switchTrack, { backgroundColor: isOnline ? palette.emerald400 : palette.whiteA30 }, isOnline ? styles.switchTrackOn : styles.switchTrackOff]}>
                   <View style={[styles.switchThumb, isOnline ? styles.switchThumbOn : styles.switchThumbOff]}>
-                    {togglingStatus && <ActivityIndicator size={12 as any} color="#0FBBA1" />}
+                    {togglingStatus && <ActivityIndicator size={12 as any} color={palette.primary} />}
                   </View>
                 </View>
               </TouchableOpacity>
@@ -624,7 +625,7 @@ export default function DoctorDashboardScreen() {
                           { backgroundColor: isExpired ? (theme.errorBg) : (theme.warningBg) },
                         ]}
                       >
-                        <AlertCircle size={13} color={isExpired ? '#EF4444' : (theme.warningText)} strokeWidth={2.4} />
+                        <AlertCircle size={13} color={isExpired ? palette.red500 : (theme.warningText)} strokeWidth={2.4} />
                       </View>
                       <Text
                         style={[
@@ -642,12 +643,12 @@ export default function DoctorDashboardScreen() {
                       <Text
                         style={[
                           styles.pendingUpdateStripAction,
-                          { color: isExpired ? '#EF4444' : (theme.warningText) },
+                          { color: isExpired ? palette.red500 : (theme.warningText) },
                         ]}
                       >
                         Update
                       </Text>
-                      <ChevronRight size={14} color={isExpired ? '#EF4444' : (theme.warningText)} strokeWidth={2.4} />
+                      <ChevronRight size={14} color={isExpired ? palette.red500 : (theme.warningText)} strokeWidth={2.4} />
                     </View>
                   </TouchableOpacity>
                 );
@@ -812,7 +813,7 @@ export default function DoctorDashboardScreen() {
                         { backgroundColor: theme.infoBg },
                       ]}
                     >
-                      <Calendar size={15} color="#6366F1" />
+                      <Calendar size={15} color={palette.indigo500} />
                     </View>
                     <Text style={[styles.snapshotNumber, { color: textColor }]}>
                       {consultationsCount}
@@ -837,7 +838,7 @@ export default function DoctorDashboardScreen() {
                         { backgroundColor: theme.infoBg },
                       ]}
                     >
-                      <TrendingUp size={15} color="#2563EB" />
+                      <TrendingUp size={15} color={palette.blue600} />
                     </View>
                     <Text style={[styles.snapshotNumber, { color: textColor }]}>
                       ₹{todayRevenue.toLocaleString('en-IN')}
@@ -862,7 +863,7 @@ export default function DoctorDashboardScreen() {
                         { backgroundColor: theme.warningBg },
                       ]}
                     >
-                      <Star size={15} color="#D97706" fill="#D97706" />
+                      <Star size={15} color={palette.amber600} fill={palette.amber600} />
                     </View>
                     <Text style={[styles.snapshotNumber, { color: textColor }]}>
                       {avgRating}
@@ -887,8 +888,8 @@ export default function DoctorDashboardScreen() {
                       backgroundColor: cardBg,
                       borderColor: hasPendingRequests
                         ? isDark
-                          ? '#7F1D1D'
-                          : '#FECACA'
+                          ? palette.red900
+                          : palette.red200
                         : cardBorder,
                     },
                   ]}
@@ -901,7 +902,7 @@ export default function DoctorDashboardScreen() {
                           { backgroundColor: theme.errorBg },
                         ]}
                       >
-                        <Zap size={18} color="#DC2626" />
+                        <Zap size={18} color={palette.red600} />
                       </View>
 
                       <View style={styles.actionNeededTextCol}>
@@ -993,11 +994,11 @@ export default function DoctorDashboardScreen() {
                         {
                           backgroundColor: isTodayAvailable
                             ? isDark
-                              ? '#172554'
-                              : '#EFF6FF'
+                              ? palette.hex172554
+                              : palette.blue50
                             : isDark
-                            ? '#0A2F42'
-                            : '#F1F5F9',
+                            ? palette.navyText
+                            : palette.slate100,
                         },
                       ]}
                     >
@@ -1006,8 +1007,8 @@ export default function DoctorDashboardScreen() {
                         color={
                           isTodayAvailable
                             ? isDark
-                              ? '#60A5FA'
-                              : '#2563EB'
+                              ? palette.blue400
+                              : palette.blue600
                             : subTextColor
                         }
                       />
@@ -1024,11 +1025,11 @@ export default function DoctorDashboardScreen() {
                             {
                               backgroundColor: isTodayAvailable
                                 ? isDark
-                                  ? '#064E3B'
-                                  : '#ECFDF5'
+                                  ? palette.emerald900
+                                  : palette.emerald50
                                 : isDark
-                                ? '#2A1A05'
-                                : '#FEF3C7',
+                                ? palette.hex2A1A05
+                                : palette.amber100,
                             },
                           ]}
                         >
@@ -1037,10 +1038,10 @@ export default function DoctorDashboardScreen() {
                               styles.todayStatusBadgeText,
                               {
                                 color: isTodayAvailable
-                                  ? '#059669'
+                                  ? palette.emerald600
                                   : isDark
-                                  ? '#FBBF24'
-                                  : '#D97706',
+                                  ? palette.amber400
+                                  : palette.amber600,
                               },
                             ]}
                           >
@@ -1060,10 +1061,10 @@ export default function DoctorDashboardScreen() {
                       value={isTodayAvailable}
                       onValueChange={handleToggleTodayAvailability}
                       trackColor={{
-                        false: 'rgba(148, 163, 184, 0.4)',
-                        true: '#2563EB',
+                        false: palette.rgba_148_163_184_40,
+                        true: palette.blue600,
                       }}
-                      thumbColor="#FFFFFF"
+                      thumbColor={palette.white}
                     />
                   </View>
 
@@ -1081,7 +1082,7 @@ export default function DoctorDashboardScreen() {
                       onPress={() => setTodayModalVisible(true)}
                       activeOpacity={0.7}
                     >
-                      <Sparkles size={13} color="#2563EB" />
+                      <Sparkles size={13} color={palette.blue600} />
                       <Text style={[styles.quickPresetPillText, { color: theme.info }]}>
                         Change Shifts / Hours
                       </Text>
@@ -1240,7 +1241,7 @@ const styles = StyleSheet.create({
   heroGreetingText: {
     fontSize: 11,
     fontWeight: '700',
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: palette.whiteA80,
     letterSpacing: 0.4,
     textTransform: 'uppercase',
   },
@@ -1248,17 +1249,17 @@ const styles = StyleSheet.create({
     width: 3,
     height: 3,
     borderRadius: 1.5,
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    backgroundColor: palette.whiteA60,
   },
   heroSpecialtyText: {
     fontSize: 11,
     fontWeight: '600',
-    color: 'rgba(255, 255, 255, 0.85)',
+    color: palette.whiteA85,
   },
   heroDoctorName: {
     fontSize: 21,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
     letterSpacing: -0.3,
   },
 
@@ -1266,9 +1267,9 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: palette.whiteA20,
     borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.35)',
+    borderColor: palette.whiteA35,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
@@ -1281,7 +1282,7 @@ const styles = StyleSheet.create({
   heroAvatarLetter: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
   },
   heroAvatarStatusDot: {
     position: 'absolute',
@@ -1291,7 +1292,7 @@ const styles = StyleSheet.create({
     height: 13,
     borderRadius: 6.5,
     borderWidth: 2,
-    borderColor: '#087F6D',
+    borderColor: palette.hex087F6D,
   },
 
   // ═══ Practice Status Bar ═══
@@ -1299,7 +1300,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    backgroundColor: palette.blackA20,
     paddingHorizontal: 14,
     paddingVertical: 9,
     borderRadius: 12,
@@ -1317,7 +1318,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: palette.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1338,12 +1339,12 @@ const styles = StyleSheet.create({
   practiceStatusTitle: {
     fontSize: 12.5,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: palette.white,
   },
   practiceStatusSub: {
     fontSize: 10.5,
     fontWeight: '500',
-    color: 'rgba(255, 255, 255, 0.75)',
+    color: palette.whiteA75,
   },
 
   // ═══ Main Body Content ═══
@@ -1394,14 +1395,14 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#2563EB',
+    backgroundColor: palette.blue600,
   },
 
   consultBadgeTagText: {
     fontSize: 10.5,
     fontWeight: '700',
     letterSpacing: 0.4,
-    color: '#2563EB',
+    color: palette.blue600,
   },
 
   consultModePill: {
@@ -1435,7 +1436,7 @@ const styles = StyleSheet.create({
   patientAvatarInitials: {
     fontSize: 15,
     fontWeight: '800',
-    color: '#2563EB',
+    color: palette.blue600,
   },
 
   patientHeroTextCol: {
@@ -1459,7 +1460,7 @@ const styles = StyleSheet.create({
   consultTimeChipText: {
     fontSize: 12.5,
     fontWeight: '500',
-    color: '#64748B',
+    color: palette.slate500,
   },
 
   emptyConsultRow: {
@@ -1497,7 +1498,7 @@ const styles = StyleSheet.create({
   cardActionText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#2563EB',
+    color: palette.blue600,
   },
 
   // ═══ 2. Snapshot 3-Card Grid Row ═══
@@ -1703,7 +1704,7 @@ const styles = StyleSheet.create({
   pendingUpdateStripAction: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#D97706',
+    color: palette.amber600,
   },
 
   // ═══ 5. Medicoo Footer ═══

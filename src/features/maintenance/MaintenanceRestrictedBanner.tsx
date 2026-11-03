@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { AlertTriangle } from 'lucide-react-native';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -21,7 +22,7 @@ export default function MaintenanceRestrictedBanner() {
     return (
         <View style={[styles.container, { paddingTop: insets.top + 8 }]} pointerEvents="none">
             <View style={styles.pill}>
-                <AlertTriangle size={14} color="#92400E" />
+                <AlertTriangle size={14} color={palette.amber800} />
                 <Text style={styles.text}>Limited availability - new requests can't be approved</Text>
             </View>
         </View>
@@ -41,13 +42,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 6,
-        backgroundColor: '#FEF3C7',
+        backgroundColor: palette.amber100,
         borderWidth: 1,
-        borderColor: '#FDE68A',
+        borderColor: palette.amber200,
         borderRadius: 20,
         paddingHorizontal: 14,
         paddingVertical: 8,
-        shadowColor: '#000',
+        shadowColor: palette.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.08,
         shadowRadius: 6,
@@ -56,6 +57,6 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 12.5,
         fontWeight: '600',
-        color: '#92400E',
+        color: palette.amber800,
     },
 });

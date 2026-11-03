@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
 import {
@@ -303,18 +304,18 @@ export default function DoctorCallScreen() {
                     {otherRemoteUids.map((uid) => (
                         <View
                             key={`tile-${uid}`}
-                            style={{ width: 92, height: 128, borderRadius: 14, overflow: 'hidden', backgroundColor: '#374151', borderWidth: 1, borderColor: 'rgba(255,255,255,0.25)' }}
+                            style={{ width: 92, height: 128, borderRadius: 14, overflow: 'hidden', backgroundColor: palette.gray700, borderWidth: 1, borderColor: palette.whiteA25 }}
                         >
                             {isVoiceMode ? (
                                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                    <Text style={{ fontSize: 28, fontWeight: '700', color: '#D1D5DB' }}>{nameOfUid(uid).charAt(0)}</Text>
+                                    <Text style={{ fontSize: 28, fontWeight: '700', color: palette.gray300 }}>{nameOfUid(uid).charAt(0)}</Text>
                                 </View>
                             ) : (
                                 <VideoRender canvas={{ uid, renderMode: RenderModeType.RenderModeHidden }} style={styles.videoStream} />
                             )}
-                            <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 6, paddingVertical: 4, backgroundColor: 'rgba(0,0,0,0.55)' }}>
-                                <Text style={{ color: '#fff', fontSize: 11, fontWeight: '700' }} numberOfLines={1}>{nameOfUid(uid)}</Text>
-                                <Text style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9.5, fontWeight: '600' }} numberOfLines={1}>
+                            <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 6, paddingVertical: 4, backgroundColor: palette.blackA55 }}>
+                                <Text style={{ color: palette.white, fontSize: 11, fontWeight: '700' }} numberOfLines={1}>{nameOfUid(uid)}</Text>
+                                <Text style={{ color: palette.whiteA70, fontSize: 9.5, fontWeight: '600' }} numberOfLines={1}>
                                     {uid === 3 ? 'Booked this' : uid === 2 ? 'Patient' : ''}
                                 </Text>
                             </View>
@@ -338,7 +339,7 @@ export default function DoctorCallScreen() {
             {/* Reconnecting Banner (Hidden in system PiP) */}
             {!isSystemPip && isReconnecting && !connectionFailed && (
                 <View style={[styles.reconnectingBanner, { top: insets.top + 70 }]}>
-                    <ActivityIndicator size="small" color="#fff" />
+                    <ActivityIndicator size="small" color={palette.white} />
                     <Text style={styles.reconnectingText}>Reconnecting...</Text>
                 </View>
             )}
@@ -356,12 +357,12 @@ export default function DoctorCallScreen() {
                 <View style={[styles.topBar, { paddingTop: insets.top + 10 }]}>
                     <View style={styles.topBarContent}>
                         <TouchableOpacity style={styles.backButton} onPress={minimizeCall}>
-                            <ChevronLeft size={28} color="#fff" />
+                            <ChevronLeft size={28} color={palette.white} />
                         </TouchableOpacity>
                         <View>
                             <Text style={styles.topDoctorName}>{displayName}</Text>
                             {bookedBy ? (
-                                <Text style={{ color: 'rgba(255,255,255,0.75)', fontSize: 11.5, fontWeight: '600' }}>
+                                <Text style={{ color: palette.whiteA75, fontSize: 11.5, fontWeight: '600' }}>
                                     Booked by {bookedBy.bookedBy?.name}
                                 </Text>
                             ) : null}
@@ -371,7 +372,7 @@ export default function DoctorCallScreen() {
                                 <Text style={styles.timerTextMain}>{formatDuration(duration)}</Text>
                             </BlurView>
                             <TouchableOpacity style={styles.toolsButton} onPress={() => setShowToolsSheet(true)}>
-                                <MoreHorizontal size={22} color="#fff" />
+                                <MoreHorizontal size={22} color={palette.white} />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -391,7 +392,7 @@ export default function DoctorCallScreen() {
                             />
                         ) : (
                             <View style={styles.selfViewCameraOff}>
-                                <VideoOff size={16} color="#94A3B8" />
+                                <VideoOff size={16} color={palette.slate400} />
                             </View>
                         )}
                     </View>
@@ -408,7 +409,7 @@ export default function DoctorCallScreen() {
                                 onPress={toggleCameraSwitch}
                                 activeOpacity={0.8}
                             >
-                                <SwitchCamera size={13} color="#FFFFFF" />
+                                <SwitchCamera size={13} color={palette.white} />
                             </TouchableOpacity>
                         )}
 
@@ -421,7 +422,7 @@ export default function DoctorCallScreen() {
                         ) : (
                             <View style={styles.selfViewCameraOff}>
                                 <View style={styles.cameraOffCircle}>
-                                    <VideoOff size={22} color="#94A3B8" />
+                                    <VideoOff size={22} color={palette.slate400} />
                                 </View>
                                 <Text style={styles.cameraOffText}>Camera Off</Text>
                             </View>
@@ -450,7 +451,7 @@ export default function DoctorCallScreen() {
                         ]}
                         onPress={toggleMic}
                     >
-                        {isMicOn ? <Mic size={22} color={theme.text} /> : <MicOff size={22} color="#EF4444" />}
+                        {isMicOn ? <Mic size={22} color={theme.text} /> : <MicOff size={22} color={palette.red500} />}
                     </TouchableOpacity>
 
                     {/* Video Button */}
@@ -462,7 +463,7 @@ export default function DoctorCallScreen() {
                             ]}
                             onPress={toggleVideo}
                         >
-                            {isVideoOn ? <VideoIcon size={22} color={theme.text} /> : <VideoOff size={22} color="#EF4444" />}
+                            {isVideoOn ? <VideoIcon size={22} color={theme.text} /> : <VideoOff size={22} color={palette.red500} />}
                         </TouchableOpacity>
                     )}
 
@@ -472,7 +473,7 @@ export default function DoctorCallScreen() {
                         onPress={handleEndCall}
                         activeOpacity={0.8}
                     >
-                        <PhoneOff size={26} color="#fff" />
+                        <PhoneOff size={26} color={palette.white} />
                     </TouchableOpacity>
 
                     {/* Switch Camera Button */}
@@ -498,7 +499,7 @@ export default function DoctorCallScreen() {
                         ]}
                         onPress={toggleSpeaker}
                     >
-                        {isSpeakerOn ? <Volume2 size={22} color="#0FBBA1" /> : <VolumeX size={22} color={theme.textSecondary} />}
+                        {isSpeakerOn ? <Volume2 size={22} color={palette.primary} /> : <VolumeX size={22} color={theme.textSecondary} />}
                     </TouchableOpacity>
                 </View>
             )}
@@ -561,41 +562,41 @@ export default function DoctorCallScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#000' },
+    container: { flex: 1, backgroundColor: palette.black },
     fullScreenVideo: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 },
     videoStream: { width: '100%', height: '100%' },
-    placeholderStream: { width: '100%', height: '100%', backgroundColor: '#1F2937', alignItems: 'center', justifyContent: 'center' },
-    avatarLarge: { width: 100, height: 100, borderRadius: 50, backgroundColor: '#374151', alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
-    avatarTextLarge: { fontSize: 40, color: '#9CA3AF', fontWeight: '700' },
-    connectingText: { color: '#9CA3AF', fontSize: 16, fontWeight: '500', paddingHorizontal: 32, textAlign: 'center' },
-    noShowNotice: { color: '#6B7280', fontSize: 13, fontWeight: '500', paddingHorizontal: 40, textAlign: 'center', marginTop: 12, lineHeight: 18 },
+    placeholderStream: { width: '100%', height: '100%', backgroundColor: palette.gray800, alignItems: 'center', justifyContent: 'center' },
+    avatarLarge: { width: 100, height: 100, borderRadius: 50, backgroundColor: palette.gray700, alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
+    avatarTextLarge: { fontSize: 40, color: palette.gray400, fontWeight: '700' },
+    connectingText: { color: palette.gray400, fontSize: 16, fontWeight: '500', paddingHorizontal: 32, textAlign: 'center' },
+    noShowNotice: { color: palette.gray500, fontSize: 13, fontWeight: '500', paddingHorizontal: 40, textAlign: 'center', marginTop: 12, lineHeight: 18 },
     connectionLostOverlay: {
         position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, zIndex: 40,
-        backgroundColor: 'rgba(0,0,0,0.85)', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32,
+        backgroundColor: palette.blackA85, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32,
     },
-    connectionLostTitle: { color: '#fff', fontSize: 18, fontWeight: '700', marginTop: 4 },
-    connectionLostText: { color: '#9CA3AF', fontSize: 14, textAlign: 'center', marginTop: 8, lineHeight: 20 },
-    retryButton: { backgroundColor: '#0FBBA1', borderRadius: 24, paddingHorizontal: 28, paddingVertical: 12, marginTop: 20 },
-    retryButtonText: { color: '#fff', fontSize: 15, fontWeight: '700' },
+    connectionLostTitle: { color: palette.white, fontSize: 18, fontWeight: '700', marginTop: 4 },
+    connectionLostText: { color: palette.gray400, fontSize: 14, textAlign: 'center', marginTop: 8, lineHeight: 20 },
+    retryButton: { backgroundColor: palette.primary, borderRadius: 24, paddingHorizontal: 28, paddingVertical: 12, marginTop: 20 },
+    retryButtonText: { color: palette.white, fontSize: 15, fontWeight: '700' },
     reconnectingBanner: {
         position: 'absolute', alignSelf: 'center', zIndex: 45,
         flexDirection: 'row', alignItems: 'center', gap: 8,
-        backgroundColor: 'rgba(0,0,0,0.7)', borderRadius: 20, paddingHorizontal: 14, paddingVertical: 8,
+        backgroundColor: palette.blackA70, borderRadius: 20, paddingHorizontal: 14, paddingVertical: 8,
     },
-    reconnectingText: { color: '#fff', fontSize: 13, fontWeight: '600' },
+    reconnectingText: { color: palette.white, fontSize: 13, fontWeight: '600' },
     topBar: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 },
     topBarContent: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16 },
-    backButton: { width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(255,255,255,0.2)', alignItems: 'center', justifyContent: 'center' },
-    topDoctorName: { color: '#fff', fontSize: 18, fontWeight: '700' },
+    backButton: { width: 44, height: 44, borderRadius: 22, backgroundColor: palette.whiteA20, alignItems: 'center', justifyContent: 'center' },
+    topDoctorName: { color: palette.white, fontSize: 18, fontWeight: '700' },
     timerPill: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, overflow: 'hidden' },
-    timerTextMain: { color: '#fff', fontSize: 14, fontWeight: '600' },
+    timerTextMain: { color: palette.white, fontSize: 14, fontWeight: '600' },
     topBarRight: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-    toolsButton: { width: 36, height: 36, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.2)', alignItems: 'center', justifyContent: 'center' },
+    toolsButton: { width: 36, height: 36, borderRadius: 18, backgroundColor: palette.whiteA20, alignItems: 'center', justifyContent: 'center' },
     timerBadgePipTop: {
         position: 'absolute',
         top: 8,
         left: 8,
-        backgroundColor: 'rgba(0,0,0,0.75)',
+        backgroundColor: palette.blackA75,
         paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 12,
@@ -608,10 +609,10 @@ const styles = StyleSheet.create({
         width: 6,
         height: 6,
         borderRadius: 3,
-        backgroundColor: '#10B981',
+        backgroundColor: palette.emerald500,
     },
     timerBadgePipText: {
-        color: '#fff',
+        color: palette.white,
         fontSize: 11,
         fontWeight: '700',
     },
@@ -624,8 +625,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         overflow: 'hidden',
         borderWidth: 1.5,
-        borderColor: 'rgba(255,255,255,0.7)',
-        backgroundColor: '#0A2F42',
+        borderColor: palette.whiteA70,
+        backgroundColor: palette.navyText,
         zIndex: 50,
         elevation: 6,
     },
@@ -636,10 +637,10 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         overflow: 'hidden',
         borderWidth: 1.5,
-        borderColor: 'rgba(255,255,255,0.25)',
-        backgroundColor: '#0A2F42',
+        borderColor: palette.whiteA25,
+        backgroundColor: palette.navyText,
         zIndex: 50,
-        shadowColor: '#000',
+        shadowColor: palette.black,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 6,
@@ -648,7 +649,7 @@ const styles = StyleSheet.create({
     selfViewCameraOff: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#0A2F42',
+        backgroundColor: palette.navyText,
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 6,
@@ -657,13 +658,13 @@ const styles = StyleSheet.create({
         width: 38,
         height: 38,
         borderRadius: 19,
-        backgroundColor: '#2B4A5E',
+        backgroundColor: palette.navyMuted,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 6,
     },
     cameraOffText: {
-        color: '#94A3B8',
+        color: palette.slate400,
         fontSize: 10,
         fontWeight: '600',
         textAlign: 'center',
@@ -672,21 +673,21 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 8,
         left: 8,
-        backgroundColor: 'rgba(47, 165, 97, 0.9)',
+        backgroundColor: palette.rgba_47_165_97_90,
         paddingHorizontal: 6,
         paddingVertical: 2,
         borderRadius: 4,
         zIndex: 60,
     },
     offBadge: {
-        backgroundColor: 'rgba(100, 116, 139, 0.9)',
+        backgroundColor: palette.rgba_100_116_139_90,
     },
-    liveBadgeText: { color: '#fff', fontSize: 8, fontWeight: '900' },
+    liveBadgeText: { color: palette.white, fontSize: 8, fontWeight: '900' },
     floatingSwitchCamBtn: {
         position: 'absolute',
         top: 8,
         right: 8,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: palette.blackA50,
         width: 26,
         height: 26,
         borderRadius: 13,
@@ -709,7 +710,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 32,
         borderTopRightRadius: 32,
         borderTopWidth: 1,
-        shadowColor: '#000',
+        shadowColor: palette.black,
         shadowOffset: { width: 0, height: -3 },
         shadowOpacity: 0.1,
         shadowRadius: 8,
@@ -719,7 +720,7 @@ const styles = StyleSheet.create({
         width: 58,
         height: 58,
         borderRadius: 29,
-        backgroundColor: '#EF4444',
+        backgroundColor: palette.red500,
         alignItems: 'center',
         justifyContent: 'center',
     },

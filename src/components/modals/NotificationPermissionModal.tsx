@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { Bell } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -65,7 +66,7 @@ export default function NotificationPermissionModal() {
             <View style={styles.overlay}>
                 <View style={styles.card}>
                     <View style={styles.iconBadge}>
-                        <Bell size={24} color="#0FBBA1" />
+                        <Bell size={24} color={palette.primary} />
                     </View>
                     <Text style={styles.title}>Stay on Top of Your Practice</Text>
                     <Text style={styles.message}>
@@ -92,7 +93,7 @@ export default function NotificationPermissionModal() {
 const styles = StyleSheet.create({
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: palette.blackA50,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 24,
@@ -100,11 +101,11 @@ const styles = StyleSheet.create({
     card: {
         width: '100%',
         maxWidth: 340,
-        backgroundColor: '#fff',
+        backgroundColor: palette.white,
         borderRadius: 20,
         padding: 24,
         alignItems: 'center',
-        shadowColor: '#000',
+        shadowColor: palette.black,
         shadowOpacity: 0.15,
         shadowRadius: 16,
         elevation: 8,
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
         width: 52,
         height: 52,
         borderRadius: 26,
-        backgroundColor: '#ECFDF9',
+        backgroundColor: palette.hexECFDF9,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 14,
@@ -121,13 +122,13 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: '700',
-        color: '#111827',
+        color: palette.gray900,
         textAlign: 'center',
     },
     message: {
         marginTop: 8,
         fontSize: 14,
-        color: '#6B7280',
+        color: palette.gray500,
         lineHeight: 20,
         textAlign: 'center',
     },
@@ -140,19 +141,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     enableButton: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
     },
     enableButtonText: {
-        color: '#fff',
+        color: palette.white,
         fontSize: 15,
         fontWeight: '700',
     },
     laterButton: {
-        backgroundColor: '#F3F4F6',
+        backgroundColor: palette.gray100,
         marginTop: 10,
     },
     laterButtonText: {
-        color: '#374151',
+        color: palette.gray700,
         fontSize: 15,
         fontWeight: '700',
     },

@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowRight, ChevronLeft, Lock, Plus } from 'lucide-react-native';
@@ -211,7 +212,7 @@ export default function OtpVerificationScreen() {
         resizeMode="cover"
       >
         <LinearGradient
-          colors={['rgba(11, 61, 54, 0.65)', 'rgba(15, 84, 75, 0.2)', 'rgba(11, 61, 54, 0.7)']}
+          colors={[palette.rgba_11_61_54_65, palette.rgba_15_84_75_20, palette.rgba_11_61_54_70]}
           locations={[0, 0.45, 1]}
           style={StyleSheet.absoluteFillObject}
         />
@@ -295,7 +296,7 @@ export default function OtpVerificationScreen() {
                   },
                   digit
                     ? {
-                        borderColor: '#0FBBA1',
+                        borderColor: palette.primary,
                         backgroundColor: theme.primaryLight,
                       }
                     : null,
@@ -323,11 +324,11 @@ export default function OtpVerificationScreen() {
             activeOpacity={0.85}
           >
             {loading ? (
-              <ActivityIndicator color="#FFFFFF" />
+              <ActivityIndicator color={palette.white} />
             ) : (
               <>
                 <Text style={styles.continueButtonText}>{t('verify_continue')}</Text>
-                <ArrowRight size={18} color="#FFFFFF" strokeWidth={2.5} />
+                <ArrowRight size={18} color={palette.white} strokeWidth={2.5} />
               </>
             )}
           </TouchableOpacity>
@@ -377,7 +378,7 @@ export default function OtpVerificationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0B3D36',
+    backgroundColor: palette.hex0B3D36,
     overflow: 'hidden',
   },
   logoRow: {
@@ -391,9 +392,9 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+    backgroundColor: palette.whiteA18,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
+    borderColor: palette.whiteA25,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 5,
@@ -405,7 +406,7 @@ const styles = StyleSheet.create({
   logoText: {
     fontFamily: 'MuseoModerno_700Bold',
     fontSize: 27,
-    color: '#FFFFFF',
+    color: palette.white,
     letterSpacing: -0.3,
   },
   cardWrapper: {
@@ -452,7 +453,7 @@ const styles = StyleSheet.create({
     width: 3.5,
     height: 20,
     borderRadius: 2,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     marginRight: 9,
   },
   headerTitle: {
@@ -474,7 +475,7 @@ const styles = StyleSheet.create({
   editLink: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#0FBBA1',
+    color: palette.primary,
   },
   otpContainer: {
     flexDirection: 'row',
@@ -496,7 +497,7 @@ const styles = StyleSheet.create({
     gap: 8,
     borderRadius: 14,
     height: 52,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -504,7 +505,7 @@ const styles = StyleSheet.create({
     opacity: 0.55,
   },
   continueButtonText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 16,
     fontWeight: '800',
   },
@@ -520,7 +521,7 @@ const styles = StyleSheet.create({
   resendLink: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#0FBBA1',
+    color: palette.primary,
   },
   securityRow: {
     flexDirection: 'row',

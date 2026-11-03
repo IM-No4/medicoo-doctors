@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { RefreshCw, ShieldAlert, WifiOff } from 'lucide-react-native';
 import React from 'react';
 import {
@@ -63,7 +64,7 @@ export default function NoInternetScreen({
               { backgroundColor: theme.errorBg },
             ]}
           >
-            <WifiOff size={42} color="#EF4444" strokeWidth={2.2} />
+            <WifiOff size={42} color={palette.red500} strokeWidth={2.2} />
           </View>
         </View>
 
@@ -82,23 +83,23 @@ export default function NoInternetScreen({
             },
           ]}
         >
-          <ShieldAlert size={16} color="#0FBBA1" />
+          <ShieldAlert size={16} color={palette.primary} />
           <Text style={[styles.tipText, { color: subTextColor }]}>
             Tip: Turn Airplane mode on and off, or connect to a reliable Wi-Fi network.
           </Text>
         </View>
 
         <TouchableOpacity
-          style={[styles.retryBtn, { backgroundColor: '#0FBBA1' }]}
+          style={[styles.retryBtn, { backgroundColor: palette.primary }]}
           onPress={handleRetry}
           disabled={isChecking}
           activeOpacity={0.8}
         >
           {isChecking ? (
-            <ActivityIndicator color="#FFFFFF" size="small" />
+            <ActivityIndicator color={palette.white} size="small" />
           ) : (
             <>
-              <RefreshCw size={16} color="#FFFFFF" strokeWidth={2.5} />
+              <RefreshCw size={16} color={palette.white} strokeWidth={2.5} />
               <Text style={styles.retryBtnText}>Retry Connection</Text>
             </>
           )}
@@ -172,14 +173,14 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: 14,
     borderRadius: 14,
-    shadowColor: '#0FBBA1',
+    shadowColor: palette.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   retryBtnText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 15,
     fontWeight: '800',
     letterSpacing: -0.2,

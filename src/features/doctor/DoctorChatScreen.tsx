@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import {
@@ -472,14 +473,14 @@ export default function DoctorChatScreen() {
                     style={styles.tickContainer}
                     hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                 >
-                    <AlertCircle size={12} color="#EF4444" />
+                    <AlertCircle size={12} color={palette.red500} />
                 </TouchableOpacity>
             );
         }
         if (item.status === 'pending' || item._id.startsWith('temp-')) {
             return (
                 <View style={styles.tickContainer}>
-                    <Clock size={11} color={isWhiteBubble ? '#94A3B8' : 'rgba(255,255,255,0.75)'} strokeWidth={2} />
+                    <Clock size={11} color={isWhiteBubble ? palette.slate400 : palette.whiteA75} strokeWidth={2} />
                 </View>
             );
         }
@@ -487,7 +488,7 @@ export default function DoctorChatScreen() {
             // Read receipt: Double blue / cyan tick
             return (
                 <View style={styles.tickContainer}>
-                    <CheckCheck size={14} color={isWhiteBubble ? '#0FBBA1' : '#67E8F9'} strokeWidth={2.5} />
+                    <CheckCheck size={14} color={isWhiteBubble ? palette.primary : palette.hex67E8F9} strokeWidth={2.5} />
                 </View>
             );
         }
@@ -495,14 +496,14 @@ export default function DoctorChatScreen() {
             // Sent to server: Single tick
             return (
                 <View style={styles.tickContainer}>
-                    <Check size={13} color={isWhiteBubble ? '#94A3B8' : 'rgba(255,255,255,0.85)'} strokeWidth={2.4} />
+                    <Check size={13} color={isWhiteBubble ? palette.slate400 : palette.whiteA85} strokeWidth={2.4} />
                 </View>
             );
         }
         // Delivered: Double tick
         return (
             <View style={styles.tickContainer}>
-                <CheckCheck size={14} color={isWhiteBubble ? '#94A3B8' : 'rgba(255,255,255,0.8)'} strokeWidth={2.2} />
+                <CheckCheck size={14} color={isWhiteBubble ? palette.slate400 : palette.whiteA80} strokeWidth={2.2} />
             </View>
         );
     };
@@ -521,10 +522,10 @@ export default function DoctorChatScreen() {
                             {/* Card Header */}
                             <View style={styles.rxCardHeader}>
                                 <View style={styles.rxCardBadge}>
-                                    <Pill size={15} color="#0FBBA1" />
+                                    <Pill size={15} color={palette.primary} />
                                     <Text style={styles.rxCardBadgeText}>Digital Prescription</Text>
                                 </View>
-                                <Sparkles size={14} color="#0FBBA1" />
+                                <Sparkles size={14} color={palette.primary} />
                             </View>
 
                             {/* Diagnosis / Clinical notes */}
@@ -574,7 +575,7 @@ export default function DoctorChatScreen() {
                                     </Text>
                                     {rxData.labTests.map((t: any, idx: number) => (
                                         <View key={idx} style={styles.rxTestItem}>
-                                            <FlaskConical size={13} color="#3B82F6" />
+                                            <FlaskConical size={13} color={palette.blue500} />
                                             <View style={{ flex: 1 }}>
                                                 <Text style={styles.rxTestName}>{t.testName}</Text>
                                                 {t.additionalDetails ? (
@@ -589,7 +590,7 @@ export default function DoctorChatScreen() {
                             {/* Card Footer */}
                             <View style={styles.rxCardFooter}>
                                 <View style={styles.verifiedDoctorBadge}>
-                                    <CheckCircle2 size={12} color="#0FBBA1" />
+                                    <CheckCircle2 size={12} color={palette.primary} />
                                     <Text style={styles.verifiedDoctorText}>Doctor Verified</Text>
                                 </View>
                                 <View style={styles.cardFooterTimeRow}>
@@ -613,7 +614,7 @@ export default function DoctorChatScreen() {
                     <View style={[styles.messageRow, isMine ? styles.messageRowRight : styles.messageRowLeft]}>
                         <View style={styles.docReqCard}>
                             <View style={styles.docReqHeader}>
-                                <FileText size={16} color="#2563EB" />
+                                <FileText size={16} color={palette.blue600} />
                                 <Text style={styles.docReqTitle}>{reqData.title || 'Documents Requested'}</Text>
                             </View>
                             <Text style={styles.docReqBody}>{reqData.message}</Text>
@@ -653,7 +654,7 @@ export default function DoctorChatScreen() {
             {/* ═══ Header Bar ═══ */}
             <View style={[styles.header, { paddingTop: insets.top + (Platform.OS === 'android' ? 12 : 4) }]}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton} activeOpacity={0.7}>
-                    <ChevronLeft size={22} color="#111827" />
+                    <ChevronLeft size={22} color={palette.gray900} />
                 </TouchableOpacity>
 
                 <View style={styles.headerInfo}>
@@ -683,7 +684,7 @@ export default function DoctorChatScreen() {
                     onPress={() => setShowMenu(prev => !prev)}
                     activeOpacity={0.7}
                 >
-                    <MoreVertical size={22} color="#2B4A5E" />
+                    <MoreVertical size={22} color={palette.navyMuted} />
                 </TouchableOpacity>
             </View>
 
@@ -711,7 +712,7 @@ export default function DoctorChatScreen() {
                                 onPress={handleConcludePrompt}
                                 activeOpacity={0.7}
                             >
-                                <LogOut size={16} color="#EF4444" />
+                                <LogOut size={16} color={palette.red500} />
                                 <Text style={styles.menuItemTextDanger}>End Session</Text>
                             </TouchableOpacity>
                         </View>
@@ -725,11 +726,11 @@ export default function DoctorChatScreen() {
             >
                 {loading ? (
                     <View style={styles.center}>
-                        <RNActivityIndicator size="large" color="#0FBBA1" />
+                        <RNActivityIndicator size="large" color={palette.primary} />
                     </View>
                 ) : loadError ? (
                     <View style={styles.center}>
-                        <AlertCircle size={28} color="#EF4444" style={{ marginBottom: 8 }} />
+                        <AlertCircle size={28} color={palette.red500} style={{ marginBottom: 8 }} />
                         <Text style={styles.errorText}>Couldn&apos;t load this conversation.</Text>
                         <TouchableOpacity style={styles.retryBtn} onPress={() => loadMessages(true)}>
                             <Text style={styles.retryBtnText}>Retry</Text>
@@ -794,7 +795,7 @@ export default function DoctorChatScreen() {
                                 activeOpacity={0.75}
                             >
                                 <View style={[styles.pillIconBadge, styles.pillIconBadgeTeal]}>
-                                    <Pill size={13} color="#0D9488" strokeWidth={2.5} />
+                                    <Pill size={13} color={palette.teal600} strokeWidth={2.5} />
                                 </View>
                                 <Text style={styles.quickPillTealText}>Write Prescription</Text>
                             </TouchableOpacity>
@@ -808,7 +809,7 @@ export default function DoctorChatScreen() {
                                 activeOpacity={0.75}
                             >
                                 <View style={[styles.pillIconBadge, styles.pillIconBadgeBlue]}>
-                                    <FlaskConical size={13} color="#2563EB" strokeWidth={2.5} />
+                                    <FlaskConical size={13} color={palette.blue600} strokeWidth={2.5} />
                                 </View>
                                 <Text style={styles.quickPillBlueText}>Order Lab Tests</Text>
                             </TouchableOpacity>
@@ -819,7 +820,7 @@ export default function DoctorChatScreen() {
                                 activeOpacity={0.75}
                             >
                                 <View style={[styles.pillIconBadge, styles.pillIconBadgeSlate]}>
-                                    <FileText size={13} color="#475569" strokeWidth={2.5} />
+                                    <FileText size={13} color={palette.slate600} strokeWidth={2.5} />
                                 </View>
                                 <Text style={styles.quickPillSlateText}>Patient Reports</Text>
                             </TouchableOpacity>
@@ -830,7 +831,7 @@ export default function DoctorChatScreen() {
                                 activeOpacity={0.75}
                             >
                                 <View style={[styles.pillIconBadge, styles.pillIconBadgePurple]}>
-                                    <Sparkles size={13} color="#7E22CE" strokeWidth={2.5} />
+                                    <Sparkles size={13} color={palette.purple700} strokeWidth={2.5} />
                                 </View>
                                 <Text style={styles.quickPillPurpleText}>Request Records</Text>
                             </TouchableOpacity>
@@ -842,7 +843,7 @@ export default function DoctorChatScreen() {
                         <TextInput
                             style={styles.input}
                             placeholder="Type a clinical message or advice..."
-                            placeholderTextColor="#94A3B8"
+                            placeholderTextColor={palette.slate400}
                             value={message}
                             onChangeText={handleTextChange}
                             onFocus={() => {
@@ -859,7 +860,7 @@ export default function DoctorChatScreen() {
                             disabled={!message.trim() || sending}
                             activeOpacity={0.8}
                         >
-                            <Send size={18} color="#FFFFFF" />
+                            <Send size={18} color={palette.white} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -915,24 +916,24 @@ export default function DoctorChatScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#F8FAFC' },
+    container: { flex: 1, backgroundColor: palette.slate50 },
     flexOne: { flex: 1 },
     center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
-    errorText: { fontSize: 14, color: '#64748B', textAlign: 'center' },
-    retryBtn: { marginTop: 12, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: '#0FBBA1', borderRadius: 10 },
-    retryBtnText: { color: '#fff', fontSize: 13, fontWeight: '700' },
+    errorText: { fontSize: 14, color: palette.slate500, textAlign: 'center' },
+    retryBtn: { marginTop: 12, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: palette.primary, borderRadius: 10 },
+    retryBtnText: { color: palette.white, fontSize: 13, fontWeight: '700' },
 
     header: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 16,
         paddingBottom: 12,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderBottomWidth: 1,
-        borderBottomColor: '#F1F5F9',
+        borderBottomColor: palette.slate100,
         gap: 10,
         ...Platform.select({
-            ios: { shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 4, shadowOffset: { width: 0, height: 2 } },
+            ios: { shadowColor: palette.black, shadowOpacity: 0.04, shadowRadius: 4, shadowOffset: { width: 0, height: 2 } },
             android: { elevation: 2 },
         }),
     },
@@ -942,14 +943,14 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-        backgroundColor: '#E6FAF6',
+        backgroundColor: palette.primaryTint,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    avatarTextHeader: { fontSize: 16, fontWeight: '800', color: '#0FBBA1' },
-    headerTitle: { fontSize: 15.5, fontWeight: '700', color: '#012233' },
-    headerSubTitle: { fontSize: 11.5, color: '#64748B', fontWeight: '500', marginTop: 1 },
-    headerSubTitleTyping: { color: '#0FBBA1', fontWeight: '700' },
+    avatarTextHeader: { fontSize: 16, fontWeight: '800', color: palette.primary },
+    headerTitle: { fontSize: 15.5, fontWeight: '700', color: palette.navy },
+    headerSubTitle: { fontSize: 11.5, color: palette.slate500, fontWeight: '500', marginTop: 1 },
+    headerSubTitleTyping: { color: palette.primary, fontWeight: '700' },
     iconButton: { width: 36, height: 36, alignItems: 'center', justifyContent: 'center', borderRadius: 18 },
 
     chatContent: { padding: 14, paddingBottom: 20, gap: 14, flexGrow: 1 },
@@ -965,27 +966,27 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         maxWidth: '100%',
         ...Platform.select({
-            ios: { shadowColor: '#012233', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 3 },
+            ios: { shadowColor: palette.navy, shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 3 },
             android: { elevation: 1 },
         }),
     },
     bubbleLeft: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderBottomLeftRadius: 4,
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
     },
     bubbleRight: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         borderBottomRightRadius: 4,
     },
     messageText: { fontSize: 14.5, lineHeight: 21 },
-    textLeft: { color: '#012233' },
-    textRight: { color: '#FFFFFF' },
+    textLeft: { color: palette.navy },
+    textRight: { color: palette.white },
 
     timeText: { fontSize: 10 },
-    timeLeft: { color: '#94A3B8' },
-    timeRight: { color: 'rgba(255,255,255,0.85)' },
+    timeLeft: { color: palette.slate400 },
+    timeRight: { color: palette.whiteA85 },
 
     bubbleFooterRow: {
         flexDirection: 'row',
@@ -1018,64 +1019,64 @@ const styles = StyleSheet.create({
         width: 300,
         borderRadius: 18,
         padding: 14,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderWidth: 1,
-        borderColor: '#CCFBF1',
+        borderColor: palette.teal100,
         ...Platform.select({
-            ios: { shadowColor: '#0D9488', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 6 },
+            ios: { shadowColor: palette.teal600, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 6 },
             android: { elevation: 2 },
         }),
     },
     rxCardBubbleLeft: { borderBottomLeftRadius: 4 },
-    rxCardBubbleRight: { borderBottomRightRadius: 4, borderColor: '#0FBBA1' },
+    rxCardBubbleRight: { borderBottomRightRadius: 4, borderColor: palette.primary },
     rxCardHeader: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingBottom: 10,
         borderBottomWidth: 1,
-        borderBottomColor: '#F1F5F9',
+        borderBottomColor: palette.slate100,
     },
     rxCardBadge: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-    rxCardBadgeText: { fontSize: 13.5, fontWeight: '800', color: '#0F766E' },
+    rxCardBadgeText: { fontSize: 13.5, fontWeight: '800', color: palette.teal700 },
     rxNotesBox: {
-        backgroundColor: '#F8FAFC',
+        backgroundColor: palette.slate50,
         borderRadius: 10,
         padding: 10,
         marginTop: 8,
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
     },
-    rxNotesLabel: { fontSize: 10.5, fontWeight: '700', color: '#64748B', textTransform: 'uppercase' },
-    rxNotesText: { fontSize: 12.5, color: '#0A2F42', marginTop: 2, lineHeight: 17 },
+    rxNotesLabel: { fontSize: 10.5, fontWeight: '700', color: palette.slate500, textTransform: 'uppercase' },
+    rxNotesText: { fontSize: 12.5, color: palette.navyText, marginTop: 2, lineHeight: 17 },
     rxMedsSection: { marginTop: 10, gap: 8 },
-    rxSectionTitle: { fontSize: 11.5, fontWeight: '700', color: '#475569', textTransform: 'uppercase' },
+    rxSectionTitle: { fontSize: 11.5, fontWeight: '700', color: palette.slate600, textTransform: 'uppercase' },
     rxMedItem: {
-        backgroundColor: '#F0FDF4',
+        backgroundColor: palette.green50,
         borderRadius: 10,
         padding: 10,
         borderWidth: 1,
-        borderColor: '#DCFCE7',
+        borderColor: palette.green100,
     },
     rxMedTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    rxMedName: { fontSize: 13.5, fontWeight: '700', color: '#012233', flex: 1 },
-    dosagePill: { backgroundColor: '#0FBBA1', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 2 },
-    dosagePillText: { color: '#FFFFFF', fontSize: 11, fontWeight: '700' },
-    rxMedPeriod: { fontSize: 11.5, color: '#0F766E', fontWeight: '600', marginTop: 4 },
-    rxInstructionsBox: { marginTop: 4, paddingTop: 4, borderTopWidth: 1, borderTopColor: '#DCFCE7', gap: 2 },
-    rxInstLine: { fontSize: 11, color: '#475569', lineHeight: 15 },
+    rxMedName: { fontSize: 13.5, fontWeight: '700', color: palette.navy, flex: 1 },
+    dosagePill: { backgroundColor: palette.primary, borderRadius: 12, paddingHorizontal: 8, paddingVertical: 2 },
+    dosagePillText: { color: palette.white, fontSize: 11, fontWeight: '700' },
+    rxMedPeriod: { fontSize: 11.5, color: palette.teal700, fontWeight: '600', marginTop: 4 },
+    rxInstructionsBox: { marginTop: 4, paddingTop: 4, borderTopWidth: 1, borderTopColor: palette.green100, gap: 2 },
+    rxInstLine: { fontSize: 11, color: palette.slate600, lineHeight: 15 },
     rxTestItem: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,
-        backgroundColor: '#EFF6FF',
+        backgroundColor: palette.blue50,
         borderRadius: 10,
         padding: 9,
         borderWidth: 1,
-        borderColor: '#DBEAFE',
+        borderColor: palette.blue100,
     },
-    rxTestName: { fontSize: 12.5, fontWeight: '700', color: '#1E3A8A' },
-    rxTestNotes: { fontSize: 11, color: '#3B82F6', marginTop: 1 },
+    rxTestName: { fontSize: 12.5, fontWeight: '700', color: palette.blue900 },
+    rxTestNotes: { fontSize: 11, color: palette.blue500, marginTop: 1 },
     rxCardFooter: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -1083,25 +1084,25 @@ const styles = StyleSheet.create({
         marginTop: 10,
         paddingTop: 8,
         borderTopWidth: 1,
-        borderTopColor: '#F1F5F9',
+        borderTopColor: palette.slate100,
     },
     verifiedDoctorBadge: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-    verifiedDoctorText: { fontSize: 10.5, fontWeight: '700', color: '#0FBBA1' },
-    rxCardTime: { fontSize: 10, color: '#94A3B8' },
+    verifiedDoctorText: { fontSize: 10.5, fontWeight: '700', color: palette.primary },
+    rxCardTime: { fontSize: 10, color: palette.slate400 },
 
     // Document Request Card
     docReqCard: {
         width: 280,
-        backgroundColor: '#EFF6FF',
+        backgroundColor: palette.blue50,
         borderWidth: 1,
-        borderColor: '#BFDBFE',
+        borderColor: palette.blue200,
         borderRadius: 16,
         padding: 12,
         gap: 6,
     },
     docReqHeader: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-    docReqTitle: { fontSize: 13, fontWeight: '700', color: '#1E40AF' },
-    docReqBody: { fontSize: 12, color: '#2B4A5E', lineHeight: 16 },
+    docReqTitle: { fontSize: 13, fontWeight: '700', color: palette.blue800 },
+    docReqBody: { fontSize: 12, color: palette.navyMuted, lineHeight: 16 },
 
     // Typing Bubble
     typingIndicatorRow: { alignSelf: 'flex-start', marginVertical: 4 },
@@ -1109,16 +1110,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 5,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderRadius: 16,
         borderBottomLeftRadius: 4,
         paddingHorizontal: 12,
         paddingVertical: 8,
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
     },
-    typingDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#0FBBA1' },
-    typingText: { fontSize: 11.5, color: '#64748B', fontWeight: '500', marginLeft: 4 },
+    typingDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: palette.primary },
+    typingText: { fontSize: 11.5, color: palette.slate500, fontWeight: '500', marginLeft: 4 },
 
     // Unified Bottom Dock (Background-less)
     bottomDock: {
@@ -1144,7 +1145,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderWidth: 1,
         ...Platform.select({
-            ios: { shadowColor: '#012233', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 2 },
+            ios: { shadowColor: palette.navy, shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 2 },
             android: { elevation: 1 },
         }),
     },
@@ -1155,21 +1156,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    pillIconBadgeTeal: { backgroundColor: '#CCFBF1' },
-    quickPillTeal: { backgroundColor: '#F0FDFA', borderColor: '#99F6E4' },
-    quickPillTealText: { fontSize: 12.5, fontWeight: '700', color: '#0F766E', letterSpacing: 0.1 },
+    pillIconBadgeTeal: { backgroundColor: palette.teal100 },
+    quickPillTeal: { backgroundColor: palette.teal50, borderColor: palette.teal200 },
+    quickPillTealText: { fontSize: 12.5, fontWeight: '700', color: palette.teal700, letterSpacing: 0.1 },
 
-    pillIconBadgeBlue: { backgroundColor: '#DBEAFE' },
-    quickPillBlue: { backgroundColor: '#EFF6FF', borderColor: '#BAE6FD' },
-    quickPillBlueText: { fontSize: 12.5, fontWeight: '700', color: '#0369A1', letterSpacing: 0.1 },
+    pillIconBadgeBlue: { backgroundColor: palette.blue100 },
+    quickPillBlue: { backgroundColor: palette.blue50, borderColor: palette.sky200 },
+    quickPillBlueText: { fontSize: 12.5, fontWeight: '700', color: palette.sky700, letterSpacing: 0.1 },
 
-    pillIconBadgeSlate: { backgroundColor: '#E2E8F0' },
-    quickPillSlate: { backgroundColor: '#F8FAFC', borderColor: '#CBD5E1' },
-    quickPillSlateText: { fontSize: 12.5, fontWeight: '700', color: '#2B4A5E', letterSpacing: 0.1 },
+    pillIconBadgeSlate: { backgroundColor: palette.slate200 },
+    quickPillSlate: { backgroundColor: palette.slate50, borderColor: palette.slate300 },
+    quickPillSlateText: { fontSize: 12.5, fontWeight: '700', color: palette.navyMuted, letterSpacing: 0.1 },
 
-    pillIconBadgePurple: { backgroundColor: '#F3E8FF' },
-    quickPillPurple: { backgroundColor: '#FAF5FF', borderColor: '#E9D5FF' },
-    quickPillPurpleText: { fontSize: 12.5, fontWeight: '700', color: '#7E22CE', letterSpacing: 0.1 },
+    pillIconBadgePurple: { backgroundColor: palette.purple100 },
+    quickPillPurple: { backgroundColor: palette.purple50, borderColor: palette.purple200 },
+    quickPillPurpleText: { fontSize: 12.5, fontWeight: '700', color: palette.purple700, letterSpacing: 0.1 },
 
     // Input Container
     inputContainer: {
@@ -1183,44 +1184,44 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderRadius: 22,
         borderWidth: 1,
-        borderColor: '#CBD5E1',
+        borderColor: palette.slate300,
         paddingHorizontal: 16,
         paddingVertical: 9,
         fontSize: 14.5,
-        color: '#012233',
+        color: palette.navy,
         maxHeight: 90,
     },
     sendButton: {
         width: 38,
         height: 38,
         borderRadius: 19,
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 2,
     },
-    sendButtonDisabled: { backgroundColor: '#CBD5E1' },
+    sendButtonDisabled: { backgroundColor: palette.slate300 },
 
     // 3-Dots Anchored Dropdown Menu
     menuBackdrop: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+        backgroundColor: palette.blackA5,
     },
     menuDropdown: {
         position: 'absolute',
         right: 14,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: palette.white,
         borderRadius: 14,
         paddingVertical: 4,
         minWidth: 155,
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: palette.slate200,
         ...Platform.select({
             ios: {
-                shadowColor: '#012233',
+                shadowColor: palette.navy,
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.12,
                 shadowRadius: 10,
@@ -1238,6 +1239,6 @@ const styles = StyleSheet.create({
     menuItemTextDanger: {
         fontSize: 14,
         fontWeight: '700',
-        color: '#EF4444',
+        color: palette.red500,
     },
 });

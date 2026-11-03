@@ -1,3 +1,4 @@
+import { palette } from '../theme/palette';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as Linking from 'expo-linking';
@@ -105,9 +106,9 @@ function SlowBootScreen() {
   return (
     <View style={styles.slowBootContainer}>
       <View style={styles.slowBootIconCircle}>
-        <Wifi size={28} color="#0FBBA1" />
+        <Wifi size={28} color={palette.primary} />
       </View>
-      <ActivityIndicator size="small" color="#0FBBA1" />
+      <ActivityIndicator size="small" color={palette.primary} />
       <Text style={styles.slowBootTitle}>Hang tight...</Text>
       <Text style={styles.slowBootSubtitle}>
         Your internet connection seems a little slow right now. Loading your workspace...
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: palette.white,
     paddingHorizontal: 32,
     gap: 10,
   },
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#E6FAF6',
+    backgroundColor: palette.primaryTint,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 6,
@@ -166,12 +167,12 @@ const styles = StyleSheet.create({
   slowBootTitle: {
     fontSize: 17,
     fontWeight: '800',
-    color: '#012233',
+    color: palette.navy,
     letterSpacing: -0.2,
   },
   slowBootSubtitle: {
     fontSize: 13,
-    color: '#64748B',
+    color: palette.slate500,
     textAlign: 'center',
     lineHeight: 18,
     fontWeight: '500',

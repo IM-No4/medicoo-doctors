@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useNavigation } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 import React, { useEffect, useRef, useState } from 'react';
@@ -90,7 +91,7 @@ export default function DoctorLiveChatScreen() {
   const inputBg = theme.card;
   const inputBorder = theme.border;
   const agentBubbleBg = theme.card;
-  const userBubbleBg = '#0FBBA1';
+  const userBubbleBg = palette.primary;
 
   useEffect(() => {
     RNStatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content', true);
@@ -98,10 +99,10 @@ export default function DoctorLiveChatScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -230,7 +231,7 @@ export default function DoctorLiveChatScreen() {
   if (loading) {
     return (
       <View style={[styles.container, styles.centerFill, { backgroundColor: bgColor }]}>
-        <ActivityIndicator size="large" color="#0FBBA1" />
+        <ActivityIndicator size="large" color={palette.primary} />
       </View>
     );
   }
@@ -267,7 +268,7 @@ export default function DoctorLiveChatScreen() {
             <Text style={[styles.screenHeaderTitle, { color: textColor }]}>
               Partner Support Desk
             </Text>
-            <ShieldCheck size={16} color="#0FBBA1" />
+            <ShieldCheck size={16} color={palette.primary} />
           </View>
           <View style={styles.activeStatusRow}>
             <View style={styles.greenDot} />
@@ -291,7 +292,7 @@ export default function DoctorLiveChatScreen() {
             onPress={handleCallSupport}
             activeOpacity={0.7}
           >
-            <PhoneCall size={18} color="#0FBBA1" />
+            <PhoneCall size={18} color={palette.primary} />
           </TouchableOpacity>
         )}
       </View>
@@ -311,7 +312,7 @@ export default function DoctorLiveChatScreen() {
           ListHeaderComponent={
             <View style={styles.quickPromptsSection}>
               <View style={[styles.securityNoticeCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
-                <Sparkles size={16} color="#0FBBA1" />
+                <Sparkles size={16} color={palette.primary} />
                 <Text style={[styles.securityNoticeText, { color: subTextColor }]}>
                   Priority channel for verified medical practitioners. End-to-end encrypted.
                 </Text>
@@ -340,7 +341,7 @@ export default function DoctorLiveChatScreen() {
                         {cat.label}
                       </Text>
                       {isSelected ? (
-                        <Check size={16} color="#0FBBA1" />
+                        <Check size={16} color={palette.primary} />
                       ) : (
                         <ChevronRight size={16} color={pickerLocked ? subTextColor : subTextColor} />
                       )}
@@ -348,7 +349,7 @@ export default function DoctorLiveChatScreen() {
                   );
                 })}
               </View>
-              {starting && <ActivityIndicator color="#0FBBA1" style={{ marginTop: 12 }} />}
+              {starting && <ActivityIndicator color={palette.primary} style={{ marginTop: 12 }} />}
 
               {chat?.status === 'closed' && (
                 <View style={[styles.closedNotice, { backgroundColor: theme.successBg }]}>
@@ -364,7 +365,7 @@ export default function DoctorLiveChatScreen() {
               <View style={[styles.messageRow, isUser ? styles.messageRowUser : styles.messageRowAgent]}>
                 {!isUser && (
                   <View style={styles.agentAvatarCircle}>
-                    {isBot ? <Sparkles size={14} color="#FFFFFF" /> : <Headphones size={14} color="#FFFFFF" />}
+                    {isBot ? <Sparkles size={14} color={palette.white} /> : <Headphones size={14} color={palette.white} />}
                   </View>
                 )}
 
@@ -383,15 +384,15 @@ export default function DoctorLiveChatScreen() {
                         : [styles.agentBubble, { backgroundColor: agentBubbleBg, borderColor: cardBorder }],
                     ]}
                   >
-                    <Text style={[styles.messageText, { color: isUser ? '#FFFFFF' : textColor }]}>
+                    <Text style={[styles.messageText, { color: isUser ? palette.white : textColor }]}>
                       {item.text}
                     </Text>
 
                     <View style={styles.metaRow}>
-                      <Text style={[styles.timeText, { color: isUser ? 'rgba(255, 255, 255, 0.75)' : subTextColor }]}>
+                      <Text style={[styles.timeText, { color: isUser ? palette.whiteA75 : subTextColor }]}>
                         {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </Text>
-                      {isUser && <CheckCheck size={14} color="#FFFFFF" />}
+                      {isUser && <CheckCheck size={14} color={palette.white} />}
                     </View>
                   </View>
                 </View>
@@ -437,7 +438,7 @@ export default function DoctorLiveChatScreen() {
               disabled={!inputText.trim()}
               activeOpacity={0.8}
             >
-              <Send size={16} color="#FFFFFF" />
+              <Send size={16} color={palette.white} />
             </TouchableOpacity>
           </View>
         )}
@@ -507,12 +508,12 @@ const styles = StyleSheet.create({
     width: 7,
     height: 7,
     borderRadius: 3.5,
-    backgroundColor: '#10B981',
+    backgroundColor: palette.emerald500,
   },
   activeStatusText: {
     fontSize: 11.5,
     fontWeight: '600',
-    color: '#059669',
+    color: palette.emerald600,
     flexShrink: 1,
   },
   roundCallBtn: {
@@ -526,7 +527,7 @@ const styles = StyleSheet.create({
   endChatBtnText: {
     fontSize: 11,
     fontWeight: '800',
-    color: '#DC2626',
+    color: palette.red600,
   },
 
   // ═══ Messages Stream ═══
@@ -574,14 +575,14 @@ const styles = StyleSheet.create({
   },
   categoryCardSelected: {
     opacity: 1,
-    borderColor: '#0FBBA1',
+    borderColor: palette.primary,
   },
   categoryCardText: {
     fontSize: 13,
     fontWeight: '600',
   },
   categoryCardTextSelected: {
-    color: '#0FBBA1',
+    color: palette.primary,
   },
 
   messageRow: {
@@ -601,7 +602,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 18,
@@ -654,7 +655,7 @@ const styles = StyleSheet.create({
   },
   closedNoticeText: {
     fontSize: 12,
-    color: '#166534',
+    color: palette.green800,
     fontWeight: '600',
   },
 
@@ -682,7 +683,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },

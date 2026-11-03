@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { AlertCircle, RefreshCw, Wifi, WifiOff } from 'lucide-react-native';
 import React, { useEffect, useRef } from 'react';
 import {
@@ -77,7 +78,7 @@ export default function SlowInternetLoader({
               { backgroundColor: theme.errorBg },
             ]}
           >
-            <WifiOff size={22} color="#EF4444" />
+            <WifiOff size={22} color={palette.red500} />
           </View>
           <Text style={[styles.titleText, { color: theme.text }]}>
             No Internet Connection
@@ -86,7 +87,7 @@ export default function SlowInternetLoader({
             Please check your network and try again.
           </Text>
           <TouchableOpacity
-            style={[styles.retryBtn, { backgroundColor: '#0FBBA1' }]}
+            style={[styles.retryBtn, { backgroundColor: palette.primary }]}
             onPress={() => {
               checkConnection();
               if (onRetry) onRetry();
@@ -95,10 +96,10 @@ export default function SlowInternetLoader({
             activeOpacity={0.8}
           >
             {isChecking ? (
-              <ActivityIndicator color="#FFFFFF" size="small" />
+              <ActivityIndicator color={palette.white} size="small" />
             ) : (
               <>
-                <RefreshCw size={13} color="#FFFFFF" strokeWidth={2.5} />
+                <RefreshCw size={13} color={palette.white} strokeWidth={2.5} />
                 <Text style={styles.retryBtnText}>Retry</Text>
               </>
             )}
@@ -106,7 +107,7 @@ export default function SlowInternetLoader({
         </View>
       ) : (
         <View style={styles.loadingBox}>
-          <ActivityIndicator size={fullScreen ? 'large' : 'small'} color="#0FBBA1" />
+          <ActivityIndicator size={fullScreen ? 'large' : 'small'} color={palette.primary} />
 
           <Text
             style={[
@@ -128,31 +129,31 @@ export default function SlowInternetLoader({
                   opacity: fadeAnim,
                   backgroundColor: isVerySlow
                     ? isDark
-                      ? '#23180D'
-                      : '#FFFBEB'
+                      ? palette.hex23180D
+                      : palette.amber50
                     : isDark
-                    ? '#0D201D'
-                    : '#F0FDF9',
+                    ? palette.hex0D201D
+                    : palette.primaryWash,
                   borderColor: isVerySlow
                     ? isDark
-                      ? '#4D2800'
-                      : '#FDE68A'
+                      ? palette.hex4D2800
+                      : palette.amber200
                     : isDark
-                    ? '#134E48'
-                    : '#CCFBF1',
+                    ? palette.hex134E48
+                    : palette.teal100,
                 },
               ]}
             >
               <View style={styles.slowNoticeHeader}>
                 {isVerySlow ? (
-                  <AlertCircle size={13} color="#D97706" />
+                  <AlertCircle size={13} color={palette.amber600} />
                 ) : (
-                  <Wifi size={13} color="#0FBBA1" />
+                  <Wifi size={13} color={palette.primary} />
                 )}
                 <Text
                   style={[
                     styles.slowNoticeTitle,
-                    { color: isVerySlow ? '#D97706' : '#0FBBA1' },
+                    { color: isVerySlow ? palette.amber600 : palette.primary },
                   ]}
                 >
                   {isVerySlow ? 'High Network Latency' : 'Slow Connection'}
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   retryBtnText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontSize: 12,
     fontWeight: '700',
   },

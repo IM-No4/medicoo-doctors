@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import React, { useEffect, useState } from 'react';
 import { Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -74,7 +75,7 @@ export default function UpdateAvailableModal() {
 const styles = StyleSheet.create({
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: palette.blackA50,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 24,
@@ -82,10 +83,10 @@ const styles = StyleSheet.create({
     card: {
         width: '100%',
         maxWidth: 340,
-        backgroundColor: '#fff',
+        backgroundColor: palette.white,
         borderRadius: 20,
         padding: 24,
-        shadowColor: '#000',
+        shadowColor: palette.black,
         shadowOpacity: 0.15,
         shadowRadius: 16,
         elevation: 8,
@@ -93,12 +94,12 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: '700',
-        color: '#111827',
+        color: palette.gray900,
     },
     message: {
         marginTop: 8,
         fontSize: 14,
-        color: '#6B7280',
+        color: palette.gray500,
         lineHeight: 20,
     },
     button: {
@@ -109,19 +110,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     updateButton: {
-        backgroundColor: '#0FBBA1',
+        backgroundColor: palette.primary,
     },
     updateButtonText: {
-        color: '#fff',
+        color: palette.white,
         fontSize: 15,
         fontWeight: '700',
     },
     laterButton: {
-        backgroundColor: '#F3F4F6',
+        backgroundColor: palette.gray100,
         marginTop: 10,
     },
     laterButtonText: {
-        color: '#374151',
+        color: palette.gray700,
         fontSize: 15,
         fontWeight: '700',
     },

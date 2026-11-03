@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as NavigationBar from 'expo-navigation-bar';
@@ -80,10 +81,10 @@ export default function DoctorReviewsScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -193,8 +194,8 @@ export default function DoctorReviewsScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={['#0FBBA1']}
-            tintColor="#0FBBA1"
+            colors={[palette.primary]}
+            tintColor={palette.primary}
           />
         }
       >
@@ -222,10 +223,10 @@ export default function DoctorReviewsScreen() {
                   <Star
                     key={s}
                     size={16}
-                    color="#F59E0B"
+                    color={palette.amber500}
                     fill={
                       s <= Math.round(averageRating || 5)
-                        ? '#F59E0B'
+                        ? palette.amber500
                         : 'transparent'
                     }
                   />
@@ -299,7 +300,7 @@ export default function DoctorReviewsScreen() {
                 { backgroundColor: theme.warningBg },
               ]}
             >
-              <Sparkles size={16} color="#F59E0B" />
+              <Sparkles size={16} color={palette.amber500} />
             </View>
             <View style={styles.twinTextCol}>
               <Text style={[styles.twinTitle, { color: subTextColor }]}>
@@ -338,10 +339,10 @@ export default function DoctorReviewsScreen() {
                     styles.filterChip,
                     {
                       backgroundColor: isActive
-                        ? '#0FBBA1'
+                        ? palette.primary
                         : isDark
-                        ? '#10384D'
-                        : '#F1F5F9',
+                        ? palette.navyRaised
+                        : palette.slate100,
                     },
                   ]}
                   activeOpacity={0.7}
@@ -350,7 +351,7 @@ export default function DoctorReviewsScreen() {
                     style={[
                       styles.filterChipText,
                       {
-                        color: isActive ? '#FFFFFF' : subTextColor,
+                        color: isActive ? palette.white : subTextColor,
                         fontWeight: isActive ? '700' : '500',
                       },
                     ]}
@@ -363,7 +364,7 @@ export default function DoctorReviewsScreen() {
           </View>
 
           {loading ? (
-            <ActivityIndicator color="#0FBBA1" style={{ marginVertical: 24 }} />
+            <ActivityIndicator color={palette.primary} style={{ marginVertical: 24 }} />
           ) : visibleReviews.length === 0 ? (
             <View style={styles.emptyContainer}>
               <View
@@ -427,7 +428,7 @@ export default function DoctorReviewsScreen() {
                           },
                         ]}
                       >
-                        <Star size={12} color="#F59E0B" fill="#F59E0B" />
+                        <Star size={12} color={palette.amber500} fill={palette.amber500} />
                         <Text style={styles.ratingPillText}>
                           {item.rating.toFixed(1)}
                         </Text>
@@ -544,7 +545,7 @@ const styles = StyleSheet.create({
   progressBarFill: {
     height: '100%',
     borderRadius: 3,
-    backgroundColor: '#FBBF24',
+    backgroundColor: palette.amber400,
   },
 
   // ═══ 2. Twin Soft Stat Cards ═══
@@ -581,13 +582,13 @@ const styles = StyleSheet.create({
   twinSubtitleTeal: {
     fontSize: 14,
     fontWeight: '800',
-    color: '#0FBBA1',
+    color: palette.primary,
     marginTop: 2,
   },
   twinSubtitleAmber: {
     fontSize: 14,
     fontWeight: '800',
-    color: '#F59E0B',
+    color: palette.amber500,
     marginTop: 2,
   },
 
@@ -609,7 +610,7 @@ const styles = StyleSheet.create({
     width: 3.5,
     height: 16,
     borderRadius: 2,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     marginRight: 8,
   },
   sectionTitle: {
@@ -677,7 +678,7 @@ const styles = StyleSheet.create({
   ratingPillText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#D97706',
+    color: palette.amber600,
   },
   reviewCommentText: {
     fontSize: 13,

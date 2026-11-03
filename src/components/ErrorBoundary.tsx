@@ -1,3 +1,4 @@
+import { palette } from '../theme/palette';
 import crashlytics from '@react-native-firebase/crashlytics';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -53,28 +54,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 24,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: palette.white,
   },
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111827',
+    color: palette.gray900,
     marginBottom: 8,
   },
   message: {
     fontSize: 14,
-    color: '#6B7280',
+    color: palette.gray500,
     textAlign: 'center',
     marginBottom: 24,
   },
   button: {
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 12,
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: palette.white,
     fontWeight: '600',
     fontSize: 15,
   },

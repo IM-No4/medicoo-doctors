@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
 
   message: {
     fontSize: 14,
-    color: '#151517',
+    color: palette.hex151517,
     opacity: 0.7,
     textAlign: 'center',
     marginBottom: 12,
@@ -38,11 +39,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 18,
     borderRadius: 12,
-    backgroundColor: '#151517',
+    backgroundColor: palette.hex151517,
   },
 
   buttonText: {
-    color: '#ffffff',
+    color: palette.white,
     fontSize: 14,
     fontWeight: '600',
   },

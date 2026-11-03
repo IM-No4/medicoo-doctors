@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 import {
@@ -99,45 +100,45 @@ const STATUS_CONFIG: Record<
 > = {
   pending: {
     label: 'Pending',
-    lightBg: '#FEF3C7',
-    darkBg: '#2E2210',
-    fg: '#D97706',
+    lightBg: palette.amber100,
+    darkBg: palette.hex2E2210,
+    fg: palette.amber600,
   },
   approved: {
     label: 'Confirmed',
-    lightBg: '#E6FAF6',
-    darkBg: '#07303A',
-    fg: '#0FBBA1',
+    lightBg: palette.primaryTint,
+    darkBg: palette.navyMint,
+    fg: palette.primary,
   },
   rejected: {
     label: 'Declined',
-    lightBg: '#FEF2F2',
-    darkBg: '#2A1417',
-    fg: '#EF4444',
+    lightBg: palette.red50,
+    darkBg: palette.hex2A1417,
+    fg: palette.red500,
   },
   cancelled: {
     label: 'Cancelled',
-    lightBg: '#F1F5F9',
-    darkBg: '#0A2F42',
-    fg: '#64748B',
+    lightBg: palette.slate100,
+    darkBg: palette.navyText,
+    fg: palette.slate500,
   },
   completed: {
     label: 'Completed',
-    lightBg: '#EFF6FF',
-    darkBg: '#0A2F42',
-    fg: '#3B82F6',
+    lightBg: palette.blue50,
+    darkBg: palette.navyText,
+    fg: palette.blue500,
   },
   expired: {
     label: 'Expired',
-    lightBg: '#F1F5F9',
-    darkBg: '#0A2F42',
-    fg: '#64748B',
+    lightBg: palette.slate100,
+    darkBg: palette.navyText,
+    fg: palette.slate500,
   },
   no_show: {
     label: 'Missed',
-    lightBg: '#FEF2F2',
-    darkBg: '#2A1417',
-    fg: '#EF4444',
+    lightBg: palette.red50,
+    darkBg: palette.hex2A1417,
+    fg: palette.red500,
   },
 };
 
@@ -256,10 +257,10 @@ export default function AppointmentRequestsScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -455,9 +456,9 @@ export default function AppointmentRequestsScreen() {
     const config = awaitingReschedule
       ? {
           label: 'Reschedule Requested',
-          lightBg: '#EFF6FF',
-          darkBg: '#1E2D4A',
-          fg: '#2563EB',
+          lightBg: palette.blue50,
+          darkBg: palette.hex1E2D4A,
+          fg: palette.blue600,
         }
       : STATUS_CONFIG[item.status] || STATUS_CONFIG.pending;
 
@@ -595,10 +596,10 @@ export default function AppointmentRequestsScreen() {
               activeOpacity={0.7}
             >
               {busyId === item.requestId ? (
-                <ActivityIndicator size="small" color="#EF4444" />
+                <ActivityIndicator size="small" color={palette.red500} />
               ) : (
                 <>
-                  <X size={15} color="#EF4444" />
+                  <X size={15} color={palette.red500} />
                   <Text style={styles.declineBtnText}>Decline</Text>
                 </>
               )}
@@ -611,10 +612,10 @@ export default function AppointmentRequestsScreen() {
               activeOpacity={0.8}
             >
               {busyId === item.requestId ? (
-                <ActivityIndicator size="small" color="#FFFFFF" />
+                <ActivityIndicator size="small" color={palette.white} />
               ) : (
                 <>
-                  <Check size={15} color="#FFFFFF" strokeWidth={2.5} />
+                  <Check size={15} color={palette.white} strokeWidth={2.5} />
                   <Text style={styles.acceptBtnText}>{isApprovingPaused ? 'Unavailable' : 'Confirm'}</Text>
                 </>
               )}
@@ -628,7 +629,7 @@ export default function AppointmentRequestsScreen() {
             onPress={() => openDetails(item)}
             activeOpacity={0.8}
           >
-            <Clock size={15} color="#FFFFFF" />
+            <Clock size={15} color={palette.white} />
             <Text style={styles.rescheduleActionBtnText}>
               Respond to Reschedule
             </Text>
@@ -800,10 +801,10 @@ export default function AppointmentRequestsScreen() {
                     styles.filterChip,
                     {
                       backgroundColor: isActive
-                        ? '#0FBBA1'
+                        ? palette.primary
                         : cardBg,
                       borderColor: isActive
-                        ? '#0FBBA1'
+                        ? palette.primary
                         : cardBorder,
                     },
                   ]}
@@ -814,7 +815,7 @@ export default function AppointmentRequestsScreen() {
                     style={[
                       styles.filterChipText,
                       {
-                        color: isActive ? '#FFFFFF' : subTextColor,
+                        color: isActive ? palette.white : subTextColor,
                         fontWeight: isActive ? '700' : '600',
                       },
                     ]}
@@ -827,10 +828,10 @@ export default function AppointmentRequestsScreen() {
                         styles.chipBadge,
                         {
                           backgroundColor: isActive
-                            ? 'rgba(255, 255, 255, 0.25)'
+                            ? palette.whiteA25
                             : isDark
-                            ? '#082E41'
-                            : '#F1F5F9',
+                            ? palette.navyCard
+                            : palette.slate100,
                         },
                       ]}
                     >
@@ -838,7 +839,7 @@ export default function AppointmentRequestsScreen() {
                         style={[
                           styles.chipBadgeText,
                           {
-                            color: isActive ? '#FFFFFF' : subTextColor,
+                            color: isActive ? palette.white : subTextColor,
                           },
                         ]}
                       >
@@ -860,8 +861,8 @@ export default function AppointmentRequestsScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor="#0FBBA1"
-            colors={['#0FBBA1']}
+            tintColor={palette.primary}
+            colors={[palette.primary]}
           />
         }
         ListEmptyComponent={emptyState}
@@ -1081,30 +1082,30 @@ const styles = StyleSheet.create({
   declineBtnText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#EF4444',
+    color: palette.red500,
   },
   acceptBtn: {
     flex: 1,
     height: 40,
     borderRadius: 12,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
   },
   acceptBtnPaused: {
-    backgroundColor: '#9CA3AF',
+    backgroundColor: palette.gray400,
   },
   acceptBtnText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: palette.white,
   },
   rescheduleActionBtn: {
     height: 40,
     borderRadius: 12,
-    backgroundColor: '#2563EB',
+    backgroundColor: palette.blue600,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -1114,7 +1115,7 @@ const styles = StyleSheet.create({
   rescheduleActionBtnText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: palette.white,
   },
 
   // ═══ Empty State ═══

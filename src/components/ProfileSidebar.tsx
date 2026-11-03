@@ -1,3 +1,4 @@
+import { palette } from '../theme/palette';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as NavigationBar from 'expo-navigation-bar';
@@ -120,10 +121,10 @@ export default function ProfileSidebar({
         RNStatusBar.setBackgroundColor(bgColor, true);
         RNStatusBar.setTranslucent(false);
         if (isDark) {
-          NavigationBar.setBackgroundColorAsync('#011A29');
+          NavigationBar.setBackgroundColorAsync(palette.navyDeep);
           NavigationBar.setButtonStyleAsync('light');
         } else {
-          NavigationBar.setBackgroundColorAsync('#EFF2F6');
+          NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
           NavigationBar.setButtonStyleAsync('dark');
         }
       }
@@ -263,7 +264,7 @@ export default function ProfileSidebar({
           activeOpacity={0.9}
         >
           <LinearGradient
-            colors={isDark ? ['#062420', '#0A3830', '#0D4A40'] : ['#064E3B', '#0A6B56', '#0FBBA1']}
+            colors={isDark ? [palette.hex062420, palette.hex0A3830, palette.hex0D4A40] : [palette.emerald900, palette.hex0A6B56, palette.primary]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.topProfileCard}
@@ -283,7 +284,7 @@ export default function ProfileSidebar({
                   style={[
                     styles.onlineDot,
                     {
-                      backgroundColor: isOnline ? '#22C55E' : '#94A3B8',
+                      backgroundColor: isOnline ? palette.green500 : palette.slate400,
                       borderColor: theme.primaryLight,
                     },
                   ]}
@@ -295,10 +296,10 @@ export default function ProfileSidebar({
                   {doctorName.startsWith('Dr.') ? doctorName : `Dr. ${doctorName}`}
                 </Text>
                 <View style={styles.editProfileRow}>
-                  <Text style={[styles.editProfileText, { color: isDark ? '#94A3B8' : 'rgba(255,255,255,0.85)' }]}>
+                  <Text style={[styles.editProfileText, { color: isDark ? palette.slate400 : palette.whiteA85 }]}>
                     {specialization || 'Edit profile'}
                   </Text>
-                  <ChevronRight size={14} color={isDark ? '#94A3B8' : 'rgba(255,255,255,0.85)'} />
+                  <ChevronRight size={14} color={isDark ? palette.slate400 : palette.whiteA85} />
                 </View>
               </View>
             </View>
@@ -306,7 +307,7 @@ export default function ProfileSidebar({
             {/* Bottom Status Banner Strip */}
             <View style={styles.bottomBannerStrip}>
               <View style={styles.verifiedRow}>
-                <ShieldCheck size={17} color="#4ADE80" strokeWidth={2.2} />
+                <ShieldCheck size={17} color={palette.green400} strokeWidth={2.2} />
                 <Text style={[styles.verifiedText, { color: brand.white }]}>Medicoo Certified Doctor</Text>
               </View>
 
@@ -336,18 +337,18 @@ export default function ProfileSidebar({
                   {
                     backgroundColor: isOnline
                       ? isDark
-                        ? '#064E3B'
-                        : '#E6FAF6'
+                        ? palette.emerald900
+                        : palette.primaryTint
                       : isDark
-                      ? '#0A2F42'
-                      : '#F1F5F9',
+                      ? palette.navyText
+                      : palette.slate100,
                   },
                 ]}
               >
                 <View
                   style={[
                     styles.statusIndicatorDot,
-                    { backgroundColor: isOnline ? '#22C55E' : '#94A3B8' },
+                    { backgroundColor: isOnline ? palette.green500 : palette.slate400 },
                   ]}
                 />
               </View>
@@ -367,8 +368,8 @@ export default function ProfileSidebar({
               <Switch
                 value={isOnline}
                 onValueChange={onToggleOnline}
-                trackColor={{ false: theme.border, true: '#0FBBA1' }}
-                thumbColor={Platform.OS === 'android' ? '#FFFFFF' : undefined}
+                trackColor={{ false: theme.border, true: palette.primary }}
+                thumbColor={Platform.OS === 'android' ? palette.white : undefined}
               />
             )}
           </View>
@@ -382,7 +383,7 @@ export default function ProfileSidebar({
             activeOpacity={0.7}
           >
             <View style={[styles.twinIconCircle, { backgroundColor: theme.primaryLight }]}>
-              <Wallet size={16} color="#0FBBA1" />
+              <Wallet size={16} color={palette.primary} />
             </View>
             <View style={styles.twinTextCol}>
               <Text style={[styles.twinTitle, { color: textColor }]}>Earnings</Text>
@@ -396,7 +397,7 @@ export default function ProfileSidebar({
             activeOpacity={0.7}
           >
             <View style={[styles.twinIconCircle, { backgroundColor: theme.warningBg }]}>
-              <Star size={16} color="#F59E0B" />
+              <Star size={16} color={palette.amber500} />
             </View>
             <View style={styles.twinTextCol}>
               <Text style={[styles.twinTitle, { color: textColor }]}>Reviews</Text>
@@ -489,7 +490,7 @@ export default function ProfileSidebar({
                     style={[
                       styles.themeTab,
                       isActive && {
-                        backgroundColor: '#0FBBA1',
+                        backgroundColor: palette.primary,
                       },
                     ]}
                     onPress={() => setThemeMode(opt.mode)}
@@ -497,13 +498,13 @@ export default function ProfileSidebar({
                   >
                     <IconComp
                       size={12}
-                      color={isActive ? '#FFFFFF' : subTextColor}
+                      color={isActive ? palette.white : subTextColor}
                     />
                     <Text
                       style={[
                         styles.themeTabText,
                         {
-                          color: isActive ? '#FFFFFF' : subTextColor,
+                          color: isActive ? palette.white : subTextColor,
                           fontWeight: isActive ? '700' : '500',
                         },
                       ]}
@@ -562,14 +563,14 @@ export default function ProfileSidebar({
             onPress={onLogout}
             activeOpacity={0.6}
           >
-            <LogOut size={18} color="#EF4444" />
+            <LogOut size={18} color={palette.red500} />
             <Text style={styles.logoutRowText}>Log Out</Text>
           </TouchableOpacity>
           <View style={[styles.rowDivider, { backgroundColor: dividerColor }]} />
           <ZomatoRow
-            icon={<Trash2 size={18} color="#EF4444" />}
+            icon={<Trash2 size={18} color={palette.red500} />}
             title="Delete Account"
-            textColor="#EF4444"
+            textColor={palette.red500}
             subTextColor={subTextColor}
             dividerColor={dividerColor}
             showDivider={false}
@@ -694,9 +695,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+    backgroundColor: palette.whiteA18,
     borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.35)',
+    borderColor: palette.whiteA35,
   },
   avatarImg: {
     width: 60,
@@ -706,7 +707,7 @@ const styles = StyleSheet.create({
   avatarLetter: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
   },
   onlineDot: {
     position: 'absolute',
@@ -723,7 +724,7 @@ const styles = StyleSheet.create({
   doctorNameText: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: palette.white,
     letterSpacing: -0.3,
   },
   editProfileRow: {
@@ -735,13 +736,13 @@ const styles = StyleSheet.create({
   editProfileText: {
     fontSize: 13,
     fontWeight: '500',
-    color: 'rgba(255, 255, 255, 0.85)',
+    color: palette.whiteA85,
   },
   bottomBannerStrip: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(0, 0, 0, 0.16)',
+    backgroundColor: palette.blackA16,
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
@@ -753,15 +754,15 @@ const styles = StyleSheet.create({
   verifiedText: {
     fontSize: 13.5,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: palette.white,
   },
   statusPill: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+    backgroundColor: palette.whiteA18,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: palette.whiteA30,
     paddingHorizontal: 6,
     paddingVertical: 4,
     borderRadius: 14,
@@ -769,7 +770,7 @@ const styles = StyleSheet.create({
   statusPillText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: palette.white,
   },
 
   // ═══ 2. Twin Soft Shortcut Cards ═══
@@ -806,13 +807,13 @@ const styles = StyleSheet.create({
   twinSubtitleTeal: {
     fontSize: 11.5,
     fontWeight: '700',
-    color: '#0FBBA1',
+    color: palette.primary,
     marginTop: 1,
   },
   twinSubtitleAmber: {
     fontSize: 11.5,
     fontWeight: '700',
-    color: '#F59E0B',
+    color: palette.amber500,
     marginTop: 1,
   },
 
@@ -875,7 +876,7 @@ const styles = StyleSheet.create({
     width: 3.5,
     height: 16,
     borderRadius: 2,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     marginRight: 8,
   },
   sectionTitle: {
@@ -963,7 +964,7 @@ const styles = StyleSheet.create({
   logoutRowText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#EF4444',
+    color: palette.red500,
   },
 
   // ═══ Footer Branding ═══

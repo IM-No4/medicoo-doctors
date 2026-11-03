@@ -1,3 +1,4 @@
+import { palette } from '../../../theme/palette';
 import { Camera, FileText, Image as ImageIcon, X } from 'lucide-react-native';
 import React from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
@@ -35,23 +36,23 @@ export default function MediaPickerModal({
                         <View style={styles.header}>
                             <Text style={styles.title}>{title}</Text>
                             <TouchableOpacity onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                                <X size={24} color="#6B7280" />
+                                <X size={24} color={palette.gray500} />
                             </TouchableOpacity>
                         </View>
 
                         <View style={styles.optionsContainer}>
                             {/* Camera Option */}
                             <TouchableOpacity style={styles.option} onPress={onCameraSelect}>
-                                <View style={[styles.iconBox, { backgroundColor: '#E0F2F1' }]}>
-                                    <Camera size={24} color="#009688" />
+                                <View style={[styles.iconBox, { backgroundColor: palette.hexE0F2F1 }]}>
+                                    <Camera size={24} color={palette.hex009688} />
                                 </View>
                                 <Text style={styles.optionLabel}>Camera</Text>
                             </TouchableOpacity>
 
                             {/* Gallery Option */}
                             <TouchableOpacity style={styles.option} onPress={onGallerySelect}>
-                                <View style={[styles.iconBox, { backgroundColor: '#E3F2FD' }]}>
-                                    <ImageIcon size={24} color="#2196F3" />
+                                <View style={[styles.iconBox, { backgroundColor: palette.hexE3F2FD }]}>
+                                    <ImageIcon size={24} color={palette.hex2196F3} />
                                 </View>
                                 <Text style={styles.optionLabel}>Gallery</Text>
                             </TouchableOpacity>
@@ -59,8 +60,8 @@ export default function MediaPickerModal({
                             {/* Document Option (Conditional) */}
                             {onDocumentSelect && (
                                 <TouchableOpacity style={styles.option} onPress={onDocumentSelect}>
-                                    <View style={[styles.iconBox, { backgroundColor: '#FFF3E0' }]}>
-                                        <FileText size={24} color="#FF9800" />
+                                    <View style={[styles.iconBox, { backgroundColor: palette.hexFFF3E0 }]}>
+                                        <FileText size={24} color={palette.hexFF9800} />
                                     </View>
                                     <Text style={styles.optionLabel}>Document</Text>
                                 </TouchableOpacity>
@@ -76,11 +77,11 @@ export default function MediaPickerModal({
 const styles = StyleSheet.create({
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: palette.blackA50,
         justifyContent: 'flex-end',
     },
     content: {
-        backgroundColor: '#fff',
+        backgroundColor: palette.white,
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
         padding: 24,
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: '600',
-        color: '#111827',
+        color: palette.gray900,
     },
     optionsContainer: {
         flexDirection: 'row',
@@ -116,6 +117,6 @@ const styles = StyleSheet.create({
     optionLabel: {
         fontSize: 14,
         fontWeight: '500',
-        color: '#374151',
+        color: palette.gray700,
     },
 });

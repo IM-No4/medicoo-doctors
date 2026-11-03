@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { Check, RefreshCw, WifiOff } from 'lucide-react-native';
 import React, { useEffect, useRef } from 'react';
 import {
@@ -63,22 +64,22 @@ export default function OfflineBanner() {
   // Modern sleek capsule theme
   const pillBg = isRecovery
     ? isDark
-      ? '#064E3B'
-      : '#065F46'
+      ? palette.emerald900
+      : palette.emerald800
     : isDark
-    ? '#0A2F42'
-    : '#012233';
+    ? palette.navyText
+    : palette.navy;
 
   const pillBorder = isRecovery
     ? isDark
-      ? '#059669'
-      : '#10B981'
+      ? palette.emerald600
+      : palette.emerald500
     : isDark
-    ? '#2B4A5E'
-    : '#0A2F42';
+    ? palette.navyMuted
+    : palette.navyText;
 
-  const dotColor = isRecovery ? '#34D399' : '#EF4444';
-  const iconColor = isRecovery ? '#34D399' : '#F87171';
+  const dotColor = isRecovery ? palette.emerald400 : palette.red500;
+  const iconColor = isRecovery ? palette.emerald400 : palette.red400;
 
   return (
     <Animated.View
@@ -126,10 +127,10 @@ export default function OfflineBanner() {
           <View style={styles.actionGroup}>
             <View style={styles.divider} />
             {isChecking ? (
-              <ActivityIndicator size="small" color="#FFFFFF" style={{ transform: [{ scale: 0.7 }] }} />
+              <ActivityIndicator size="small" color={palette.white} style={{ transform: [{ scale: 0.7 }] }} />
             ) : (
               <View style={styles.retryWrap}>
-                <RefreshCw size={11} color="#94A3B8" />
+                <RefreshCw size={11} color={palette.slate400} />
                 <Text style={styles.retryText}>Retry</Text>
               </View>
             )}
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     borderRadius: 22,
     borderWidth: 1,
-    shadowColor: '#000000',
+    shadowColor: palette.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 10,
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: palette.white,
     letterSpacing: -0.1,
   },
   actionGroup: {
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
   divider: {
     width: 1,
     height: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: palette.whiteA20,
   },
   retryWrap: {
     flexDirection: 'row',
@@ -197,6 +198,6 @@ const styles = StyleSheet.create({
   retryText: {
     fontSize: 11.5,
     fontWeight: '600',
-    color: '#CBD5E1',
+    color: palette.slate300,
   },
 });

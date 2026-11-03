@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useNavigation } from '@react-navigation/native';
 import { AlertCircle, ArrowLeft, Send } from 'lucide-react-native';
 import React, { useState } from 'react';
@@ -113,14 +114,14 @@ export default function DoctorNewSupportRequestScreen() {
                     style={[
                       styles.pill,
                       {
-                        backgroundColor: selected ? '#0FBBA1' : theme.cardSecondary,
-                        borderColor: selected ? '#0FBBA1' : theme.border,
+                        backgroundColor: selected ? palette.primary : theme.cardSecondary,
+                        borderColor: selected ? palette.primary : theme.border,
                       },
                     ]}
                     onPress={() => setCategory(cat)}
                     activeOpacity={0.7}
                   >
-                    <Text style={[styles.pillText, { color: selected ? '#FFFFFF' : subTextColor, fontWeight: selected ? '700' : '500' }]}>{cat.label}</Text>
+                    <Text style={[styles.pillText, { color: selected ? palette.white : subTextColor, fontWeight: selected ? '700' : '500' }]}>{cat.label}</Text>
                   </TouchableOpacity>
                 );
               })}
@@ -152,19 +153,19 @@ export default function DoctorNewSupportRequestScreen() {
           <View
             style={[
               styles.urgentRow,
-              { backgroundColor: cardBg, borderColor: isUrgent ? '#EF4444' : cardBorder },
+              { backgroundColor: cardBg, borderColor: isUrgent ? palette.red500 : cardBorder },
             ]}
           >
-            <AlertCircle size={18} color={isUrgent ? '#EF4444' : subTextColor} />
+            <AlertCircle size={18} color={isUrgent ? palette.red500 : subTextColor} />
             <View style={{ flex: 1 }}>
-              <Text style={[styles.urgentTitle, { color: isUrgent ? '#EF4444' : textColor }]}>Consultation Emergency</Text>
+              <Text style={[styles.urgentTitle, { color: isUrgent ? palette.red500 : textColor }]}>Consultation Emergency</Text>
               <Text style={[styles.urgentSub, { color: subTextColor }]}>Immediate live priority routing</Text>
             </View>
             <Switch
               value={isUrgent}
               onValueChange={setIsUrgent}
-              trackColor={{ false: '#CBD5E1', true: '#FCA5A5' }}
-              thumbColor={isUrgent ? '#EF4444' : '#F8FAFC'}
+              trackColor={{ false: palette.slate300, true: palette.red300 }}
+              thumbColor={isUrgent ? palette.red500 : palette.slate50}
             />
           </View>
         </ScrollView>
@@ -172,10 +173,10 @@ export default function DoctorNewSupportRequestScreen() {
         <View style={[styles.footer, { backgroundColor: cardBg, borderTopColor: dividerColor, paddingBottom: insets.bottom + 12 }]}>
           <TouchableOpacity style={[styles.submit, submitting && { opacity: 0.7 }]} onPress={submit} disabled={submitting} activeOpacity={0.85}>
             {submitting ? (
-              <ActivityIndicator size="small" color="#FFFFFF" />
+              <ActivityIndicator size="small" color={palette.white} />
             ) : (
               <>
-                <Send size={16} color="#FFFFFF" />
+                <Send size={16} color={palette.white} />
                 <Text style={styles.submitText}>Submit Request</Text>
               </>
             )}
@@ -218,6 +219,6 @@ const styles = StyleSheet.create({
   urgentSub: { fontSize: 12, marginTop: 2 },
 
   footer: { paddingHorizontal: 16, paddingTop: 12, borderTopWidth: StyleSheet.hairlineWidth },
-  submit: { flexDirection: 'row', gap: 8, backgroundColor: '#0FBBA1', borderRadius: 14, paddingVertical: 15, alignItems: 'center', justifyContent: 'center' },
-  submitText: { color: '#FFFFFF', fontSize: 15, fontWeight: '800' },
+  submit: { flexDirection: 'row', gap: 8, backgroundColor: palette.primary, borderRadius: 14, paddingVertical: 15, alignItems: 'center', justifyContent: 'center' },
+  submitText: { color: palette.white, fontSize: 15, fontWeight: '800' },
 });

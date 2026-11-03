@@ -1,3 +1,4 @@
+import { palette } from '../theme/palette';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import {
   Calendar,
@@ -69,9 +70,9 @@ export default function DoctorBottomTabBar({
 
   const bgColor = theme.card;
   const borderColor = theme.border;
-  const activeColor = '#0FBBA1';
+  const activeColor = palette.primary;
   const inactiveColor = theme.textMuted;
-  const activeBg = isDark ? 'rgba(15, 187, 161, 0.12)' : 'rgba(15, 187, 161, 0.08)';
+  const activeBg = isDark ? palette.rgba_15_187_161_12 : palette.rgba_15_187_161_8;
 
   // Calculate bottom padding for home indicator / navigation bar
   const bottomPadding = Math.max(insets.bottom, Platform.OS === 'android' ? 10 : 8);

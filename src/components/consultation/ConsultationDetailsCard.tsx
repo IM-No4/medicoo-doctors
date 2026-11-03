@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { ClipboardList, FlaskConical, Pill } from 'lucide-react-native';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -28,7 +29,7 @@ export default function ConsultationDetailsCard({ details }: Props) {
   return (
     <View style={[styles.card, { backgroundColor: cardBg, borderColor: cardBorder }]}>
       <View style={styles.sectionHeader}>
-        <ClipboardList size={16} color="#0FBBA1" />
+        <ClipboardList size={16} color={palette.primary} />
         <Text style={[styles.sectionTitle, { color: textColor }]}>Consultation Summary</Text>
       </View>
 
@@ -42,7 +43,7 @@ export default function ConsultationDetailsCard({ details }: Props) {
       {hasMedicines && (
         <View style={styles.block}>
           <View style={styles.blockHeaderRow}>
-            <Pill size={14} color="#0FBBA1" />
+            <Pill size={14} color={palette.primary} />
             <Text style={[styles.blockLabel, { color: subTextColor }]}>Prescribed Medicines</Text>
           </View>
           {details.prescribedMedicines.map((med, index) => (
@@ -65,7 +66,7 @@ export default function ConsultationDetailsCard({ details }: Props) {
       {hasLabTests && (
         <View style={styles.block}>
           <View style={styles.blockHeaderRow}>
-            <FlaskConical size={14} color="#3B82F6" />
+            <FlaskConical size={14} color={palette.blue500} />
             <Text style={[styles.blockLabel, { color: subTextColor }]}>Recommended Lab Tests</Text>
           </View>
           {details.prescribedLabTests.map((test, index) => (

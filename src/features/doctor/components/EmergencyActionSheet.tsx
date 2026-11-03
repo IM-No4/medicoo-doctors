@@ -1,3 +1,4 @@
+import { palette } from '../../../theme/palette';
 import { AlertTriangle, Phone, ShieldAlert, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -54,25 +55,25 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                     style={[
                         styles.content,
                         {
-                            backgroundColor: isDark ? theme.card : '#FFFFFF',
+                            backgroundColor: isDark ? theme.card : palette.white,
                             paddingBottom: Math.max(insets.bottom, 16) + 12,
                         },
                     ]}
                 >
-                    <View style={[styles.handle, { backgroundColor: isDark ? 'rgba(255,255,255,0.2)' : '#CBD5E1' }]} />
+                    <View style={[styles.handle, { backgroundColor: isDark ? palette.whiteA20 : palette.slate300 }]} />
 
                     <View style={styles.header}>
                         <View style={[styles.headerIcon, { backgroundColor: theme.errorBg }]}>
-                            <AlertTriangle size={22} color="#EF4444" />
+                            <AlertTriangle size={22} color={palette.red500} />
                         </View>
                         <View style={{ flex: 1 }}>
-                            <Text style={[styles.title, { color: isDark ? theme.text : '#012233' }]}>Emergency Assistance</Text>
-                            <Text style={[styles.subtitle, { color: isDark ? theme.textSecondary : '#64748B' }]}>
+                            <Text style={[styles.title, { color: isDark ? theme.text : palette.navy }]}>Emergency Assistance</Text>
+                            <Text style={[styles.subtitle, { color: isDark ? theme.textSecondary : palette.slate500 }]}>
                                 For a suspected patient medical emergency
                             </Text>
                         </View>
-                        <TouchableOpacity onPress={handleClose} style={[styles.closeBtn, { backgroundColor: isDark ? theme.cardSecondary : '#F1F5F9' }]} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-                            <X size={18} color={isDark ? theme.textSecondary : '#64748B'} />
+                        <TouchableOpacity onPress={handleClose} style={[styles.closeBtn, { backgroundColor: isDark ? theme.cardSecondary : palette.slate100 }]} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                            <X size={18} color={isDark ? theme.textSecondary : palette.slate500} />
                         </TouchableOpacity>
                     </View>
 
@@ -81,8 +82,8 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                         onPress={() => handleCall('112')}
                         activeOpacity={0.8}
                     >
-                        <View style={[styles.callIconBox, { backgroundColor: '#EF4444' }]}>
-                            <Phone size={18} color="#FFFFFF" />
+                        <View style={[styles.callIconBox, { backgroundColor: palette.red500 }]}>
+                            <Phone size={18} color={palette.white} />
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text style={[styles.callTitle, { color: theme.error }]}>National Emergency - 112</Text>
@@ -95,8 +96,8 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                         onPress={() => handleCall('108')}
                         activeOpacity={0.8}
                     >
-                        <View style={[styles.callIconBox, { backgroundColor: '#EF4444' }]}>
-                            <Phone size={18} color="#FFFFFF" />
+                        <View style={[styles.callIconBox, { backgroundColor: palette.red500 }]}>
+                            <Phone size={18} color={palette.white} />
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text style={[styles.callTitle, { color: theme.error }]}>Ambulance - 108</Text>
@@ -104,29 +105,29 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                         </View>
                     </TouchableOpacity>
 
-                    <Text style={[styles.sectionLabel, { color: isDark ? theme.textSecondary : '#64748B' }]}>
+                    <Text style={[styles.sectionLabel, { color: isDark ? theme.textSecondary : palette.slate500 }]}>
                         Also notify Medicoo
                     </Text>
                     <TouchableOpacity
                         style={[
                             styles.notifyCard,
                             {
-                                backgroundColor: notified ? (theme.successBg) : (isDark ? theme.cardSecondary : '#F8FAFC'),
-                                borderColor: notified ? '#0FBBA1' : (isDark ? theme.border : '#E2E8F0'),
+                                backgroundColor: notified ? (theme.successBg) : (isDark ? theme.cardSecondary : palette.slate50),
+                                borderColor: notified ? palette.primary : (isDark ? theme.border : palette.slate200),
                             },
                         ]}
                         onPress={handleNotify}
                         disabled={notifying || notified}
                         activeOpacity={0.8}
                     >
-                        <View style={[styles.callIconBox, { backgroundColor: notified ? '#0FBBA1' : (theme.border) }]}>
-                            <ShieldAlert size={18} color={notified ? '#FFFFFF' : (isDark ? theme.textSecondary : '#64748B')} />
+                        <View style={[styles.callIconBox, { backgroundColor: notified ? palette.primary : (theme.border) }]}>
+                            <ShieldAlert size={18} color={notified ? palette.white : (isDark ? theme.textSecondary : palette.slate500)} />
                         </View>
                         <View style={{ flex: 1 }}>
-                            <Text style={[styles.callTitle, { color: isDark ? theme.text : '#012233' }]}>
+                            <Text style={[styles.callTitle, { color: isDark ? theme.text : palette.navy }]}>
                                 {notified ? 'Safety team notified' : notifying ? 'Notifying...' : 'Notify Clinical Safety Team'}
                             </Text>
-                            <Text style={[styles.callSub, { color: isDark ? theme.textSecondary : '#64748B' }]}>
+                            <Text style={[styles.callSub, { color: isDark ? theme.textSecondary : palette.slate500 }]}>
                                 {notified
                                     ? 'This consultation has been flagged for follow-up'
                                     : 'Logs this consultation for our team to follow up - this does not call emergency services'}
@@ -141,7 +142,7 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
 
 const styles = StyleSheet.create({
     overlay: { flex: 1, justifyContent: 'flex-end' },
-    backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.5)' },
+    backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: palette.blackA50 },
     content: {
         borderTopLeftRadius: 28,
         borderTopRightRadius: 28,

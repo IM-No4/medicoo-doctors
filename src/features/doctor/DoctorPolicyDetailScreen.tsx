@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 import React, { useEffect, useState } from 'react';
@@ -165,10 +166,10 @@ export default function DoctorPolicyDetailScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -370,14 +371,14 @@ const styles = StyleSheet.create({
   badgePill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ECFDF5',
+    backgroundColor: palette.emerald50,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
     gap: 4,
   },
   badgePillText: {
-    color: '#059669',
+    color: palette.emerald600,
     fontSize: 11,
     fontWeight: '700',
   },
@@ -407,7 +408,7 @@ const styles = StyleSheet.create({
     width: 3.5,
     height: 20,
     borderRadius: 2,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
   },
   sectionTitle: {
     fontSize: 14,

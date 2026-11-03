@@ -1,3 +1,4 @@
+import { palette } from '../../theme/palette';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 import {
@@ -72,10 +73,10 @@ export default function DoctorDetailScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#011A29');
+        NavigationBar.setBackgroundColorAsync(palette.navyDeep);
         NavigationBar.setButtonStyleAsync('light');
       } else {
-        NavigationBar.setBackgroundColorAsync('#EFF2F6');
+        NavigationBar.setBackgroundColorAsync(palette.hexEFF2F6);
         NavigationBar.setButtonStyleAsync('dark');
       }
     }
@@ -255,7 +256,7 @@ export default function DoctorDetailScreen() {
           onPress={() => navigation.navigate('DoctorOnboarding', { isEdit: true })}
           activeOpacity={0.7}
         >
-          <Edit3 size={18} color="#0FBBA1" />
+          <Edit3 size={18} color={palette.primary} />
         </TouchableOpacity>
       </View>
 
@@ -273,8 +274,8 @@ export default function DoctorDetailScreen() {
               setRefreshing(true);
               loadProfile();
             }}
-            colors={['#0FBBA1']}
-            tintColor="#0FBBA1"
+            colors={[palette.primary]}
+            tintColor={palette.primary}
           />
         }
       >
@@ -304,7 +305,7 @@ export default function DoctorDetailScreen() {
                   {avatarUri ? (
                     <Image source={{ uri: avatarUri }} style={styles.avatarImg} />
                   ) : (
-                    <Text style={[styles.avatarLetter, { color: '#0FBBA1' }]}>
+                    <Text style={[styles.avatarLetter, { color: palette.primary }]}>
                       {doctorName.charAt(0).toUpperCase()}
                     </Text>
                   )}
@@ -317,7 +318,7 @@ export default function DoctorDetailScreen() {
                   >
                     {doctorName.startsWith('Dr.') ? doctorName : `Dr. ${doctorName}`}
                   </Text>
-                  <Text style={[styles.specialtyText, { color: '#0FBBA1' }]}>
+                  <Text style={[styles.specialtyText, { color: palette.primary }]}>
                     {specialization}
                   </Text>
                   <Text style={[styles.regNumberText, { color: subTextColor }]} numberOfLines={1}>
@@ -363,7 +364,7 @@ export default function DoctorDetailScreen() {
                     { backgroundColor: theme.infoBg },
                   ]}
                 >
-                  <CalendarCheck size={16} color="#2563EB" />
+                  <CalendarCheck size={16} color={palette.blue600} />
                 </View>
                 <Text style={[styles.metricValue, { color: textColor }]}>
                   Online
@@ -385,7 +386,7 @@ export default function DoctorDetailScreen() {
                     { backgroundColor: theme.warningBg },
                   ]}
                 >
-                  <Award size={16} color="#F59E0B" />
+                  <Award size={16} color={palette.amber500} />
                 </View>
                 <Text style={[styles.metricValue, { color: textColor }]}>
                   Verified
@@ -440,7 +441,7 @@ export default function DoctorDetailScreen() {
                     { backgroundColor: theme.infoBg },
                   ]}
                 >
-                  <FileCheck size={16} color="#2563EB" />
+                  <FileCheck size={16} color={palette.blue600} />
                 </View>
                 <View style={styles.detailTextCol}>
                   <Text style={[styles.detailLabel, { color: subTextColor }]}>
@@ -463,7 +464,7 @@ export default function DoctorDetailScreen() {
                     { backgroundColor: accent('violet', isDark).bg },
                   ]}
                 >
-                  <Building2 size={16} color="#7C3AED" />
+                  <Building2 size={16} color={palette.violet600} />
                 </View>
                 <View style={styles.detailTextCol}>
                   <Text style={[styles.detailLabel, { color: subTextColor }]}>
@@ -486,7 +487,7 @@ export default function DoctorDetailScreen() {
                     { backgroundColor: theme.warningBg },
                   ]}
                 >
-                  <Globe size={16} color="#F59E0B" />
+                  <Globe size={16} color={palette.amber500} />
                 </View>
                 <View style={styles.detailTextCol}>
                   <Text style={[styles.detailLabel, { color: subTextColor }]}>
@@ -524,7 +525,7 @@ export default function DoctorDetailScreen() {
                   ]}
                 >
                   <View style={styles.feeHeader}>
-                    <Video size={16} color="#0284C7" />
+                    <Video size={16} color={palette.sky600} />
                     <Text
                       style={[
                         styles.feeTypeTitle,
@@ -552,7 +553,7 @@ export default function DoctorDetailScreen() {
                   ]}
                 >
                   <View style={styles.feeHeader}>
-                    <Phone size={16} color="#059669" />
+                    <Phone size={16} color={palette.emerald600} />
                     <Text
                       style={[
                         styles.feeTypeTitle,
@@ -580,7 +581,7 @@ export default function DoctorDetailScreen() {
                   ]}
                 >
                   <View style={styles.feeHeader}>
-                    <MessageCircle size={16} color="#2563EB" />
+                    <MessageCircle size={16} color={palette.blue600} />
                     <Text
                       style={[
                         styles.feeTypeTitle,
@@ -798,7 +799,7 @@ const styles = StyleSheet.create({
     width: 3.5,
     height: 15,
     borderRadius: 2,
-    backgroundColor: '#0FBBA1',
+    backgroundColor: palette.primary,
     marginRight: 8,
   },
   sectionTitle: {
