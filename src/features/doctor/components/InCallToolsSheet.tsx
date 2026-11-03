@@ -35,7 +35,7 @@ export default function InCallToolsSheet({
     useEffect(() => {
         if (Platform.OS === 'android' && visible) {
             if (isDark) {
-                NavigationBar.setBackgroundColorAsync('#080E17');
+                NavigationBar.setBackgroundColorAsync('#011A29');
                 NavigationBar.setButtonStyleAsync('light');
             } else {
                 NavigationBar.setBackgroundColorAsync('#FFFFFF');
@@ -51,7 +51,7 @@ export default function InCallToolsSheet({
             description: 'Write & edit prescribed medications & dosage',
             Icon: Pill,
             iconColor: '#0FBBA1',
-            iconBg: isDark ? '#0F2F2C' : '#E6FAF6',
+            iconBg: isDark ? '#07303A' : '#E6FAF6',
             onPress: onOpenPrescription || onOpenNotes,
         },
         {
@@ -108,7 +108,7 @@ export default function InCallToolsSheet({
                     {/* Header */}
                     <View style={styles.header}>
                         <View style={styles.headerTextGroup}>
-                            <Text style={[styles.title, { color: isDark ? theme.text : '#0F172A' }]}>
+                            <Text style={[styles.title, { color: isDark ? theme.text : '#012233' }]}>
                                 Consultation Actions
                             </Text>
                             <Text style={[styles.subtitle, { color: isDark ? theme.textSecondary : '#64748B' }]}>
@@ -174,7 +174,7 @@ export default function InCallToolsSheet({
                                     <item.Icon size={20} color={item.iconColor} />
                                 </View>
                                 <View style={styles.cardContent}>
-                                    <Text style={[styles.cardTitle, { color: isDark ? theme.text : '#0F172A' }]}>
+                                    <Text style={[styles.cardTitle, { color: isDark ? theme.text : '#012233' }]}>
                                         {item.title}
                                     </Text>
                                     <Text
@@ -204,7 +204,7 @@ export default function InCallToolsSheet({
                                     <FileText size={20} color="#3B82F6" />
                                 </View>
                                 <View style={styles.cardContent}>
-                                    <Text style={[styles.cardTitle, { color: isDark ? theme.text : '#0F172A' }]}>
+                                    <Text style={[styles.cardTitle, { color: isDark ? theme.text : '#012233' }]}>
                                         Request Documents
                                     </Text>
                                     <Text

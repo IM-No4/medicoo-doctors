@@ -45,15 +45,15 @@ export default function DeleteAccountScreen() {
   const [error, setError] = useState<string | null>(null);
   const [justScheduled, setJustScheduled] = useState(false);
 
-  const bgColor = isDark ? '#080E17' : '#EFF2F6';
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#1E293B';
+  const bgColor = isDark ? '#011A29' : '#EFF2F6';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
+  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
   const subText = isDark ? '#94A3B8' : '#64748B';
-  const divider = isDark ? '#1A2636' : '#F1F5F9';
+  const divider = isDark ? '#082E41' : '#F1F5F9';
   const redBg = isDark ? '#2A1417' : '#FEF2F2';
-  const inputBg = isDark ? '#080E17' : '#F8FAFC';
-  const inputBorder = isDark ? '#1A2737' : '#E2E8F0';
+  const inputBg = isDark ? '#011A29' : '#F8FAFC';
+  const inputBorder = isDark ? '#082E41' : '#E2E8F0';
 
   const A = {
     blue: accent('blue', isDark),

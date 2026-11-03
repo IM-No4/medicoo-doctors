@@ -67,8 +67,8 @@ export default function DoctorBottomTabBar({
     return null;
   }
 
-  const bgColor = isDark ? '#111B27' : '#FFFFFF';
-  const borderColor = isDark ? '#1A2737' : '#E2E8F0';
+  const bgColor = isDark ? '#082E41' : '#FFFFFF';
+  const borderColor = isDark ? '#082E41' : '#E2E8F0';
   const activeColor = '#0FBBA1';
   const inactiveColor = isDark ? '#64748B' : '#94A3B8';
   const activeBg = isDark ? 'rgba(15, 187, 161, 0.12)' : 'rgba(15, 187, 161, 0.08)';

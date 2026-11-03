@@ -104,7 +104,7 @@ export default function StatusModal({
   useEffect(() => {
     if (Platform.OS === 'android' && visible && status !== 'idle') {
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#080E17');
+        NavigationBar.setBackgroundColorAsync('#011A29');
         NavigationBar.setButtonStyleAsync('light');
       } else {
         NavigationBar.setBackgroundColorAsync('#FFFFFF');
@@ -116,12 +116,12 @@ export default function StatusModal({
   if (!visible || status === 'idle') return null;
 
   const glowColor = (isDark && DARK_MODE_ACCENT_OVERRIDES[status]) || GLOW_COLORS[status];
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
   const cardBorder = isDark ? '#10384D' : '#E2E8F0';
-  const titleColor = isDark ? '#F8FAFC' : '#0F172A';
+  const titleColor = isDark ? '#F8FAFC' : '#012233';
   const messageColor = isDark ? '#94A3B8' : '#64748B';
   const secondaryBg = isDark ? '#10384D' : '#F1F5F9';
-  const secondaryTextColor = isDark ? '#CBD5E1' : '#334155';
+  const secondaryTextColor = isDark ? '#CBD5E1' : '#2B4A5E';
 
   const glowStyle = Platform.select({
     ios: {

@@ -104,12 +104,12 @@ export default function ProfileSidebar({
     setStatusModal({ visible: true, type, title, message });
   };
 
-  const bgColor = isDark ? '#080E17' : '#EFF2F6';
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#1E293B';
+  const bgColor = isDark ? '#011A29' : '#EFF2F6';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
+  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
+  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
   const iconColor = isDark ? '#94A3B8' : '#475569';
 
   useEffect(() => {
@@ -120,7 +120,7 @@ export default function ProfileSidebar({
         RNStatusBar.setBackgroundColor(bgColor, true);
         RNStatusBar.setTranslucent(false);
         if (isDark) {
-          NavigationBar.setBackgroundColorAsync('#080E17');
+          NavigationBar.setBackgroundColorAsync('#011A29');
           NavigationBar.setButtonStyleAsync('light');
         } else {
           NavigationBar.setBackgroundColorAsync('#EFF2F6');
@@ -339,7 +339,7 @@ export default function ProfileSidebar({
                         ? '#064E3B'
                         : '#E6FAF6'
                       : isDark
-                      ? '#1E293B'
+                      ? '#0A2F42'
                       : '#F1F5F9',
                   },
                 ]}
@@ -367,7 +367,7 @@ export default function ProfileSidebar({
               <Switch
                 value={isOnline}
                 onValueChange={onToggleOnline}
-                trackColor={{ false: isDark ? '#334155' : '#CBD5E1', true: '#0FBBA1' }}
+                trackColor={{ false: isDark ? '#2B4A5E' : '#CBD5E1', true: '#0FBBA1' }}
                 thumbColor={Platform.OS === 'android' ? '#FFFFFF' : undefined}
               />
             )}
@@ -381,7 +381,7 @@ export default function ProfileSidebar({
             onPress={() => navigateTo('DoctorEarnings')}
             activeOpacity={0.7}
           >
-            <View style={[styles.twinIconCircle, { backgroundColor: isDark ? '#0E2924' : '#E6FAF6' }]}>
+            <View style={[styles.twinIconCircle, { backgroundColor: isDark ? '#07303A' : '#E6FAF6' }]}>
               <Wallet size={16} color="#0FBBA1" />
             </View>
             <View style={styles.twinTextCol}>
@@ -476,7 +476,7 @@ export default function ProfileSidebar({
               style={[
                 styles.themeSegment,
                 {
-                  backgroundColor: isDark ? '#172230' : '#F1F5F9',
+                  backgroundColor: isDark ? '#10384D' : '#F1F5F9',
                 },
               ]}
             >

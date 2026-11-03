@@ -41,7 +41,7 @@ export default function PatientReportsModal({ visible, onClose, customerId, fami
     useEffect(() => {
         if (Platform.OS === 'android' && visible) {
             if (isDark) {
-                NavigationBar.setBackgroundColorAsync('#080E17');
+                NavigationBar.setBackgroundColorAsync('#011A29');
                 NavigationBar.setButtonStyleAsync('light');
             } else {
                 NavigationBar.setBackgroundColorAsync('#FFFFFF');

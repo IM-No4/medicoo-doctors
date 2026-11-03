@@ -80,12 +80,12 @@ export default function DoctorReferralScreen() {
     setStatusModal({ visible: true, status, title, message });
   };
 
-  const bgColor = isDark ? '#080E17' : '#EFF2F6';
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#1E293B';
+  const bgColor = isDark ? '#011A29' : '#EFF2F6';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
+  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
+  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
 
   useEffect(() => {
     RNStatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content', true);
@@ -93,7 +93,7 @@ export default function DoctorReferralScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#080E17');
+        NavigationBar.setBackgroundColorAsync('#011A29');
         NavigationBar.setButtonStyleAsync('light');
       } else {
         NavigationBar.setBackgroundColorAsync('#EFF2F6');
@@ -257,7 +257,7 @@ export default function DoctorReferralScreen() {
             style={[
               styles.codeBox,
               {
-                backgroundColor: isDark ? '#0D1520' : '#F8FAFC',
+                backgroundColor: isDark ? '#011A29' : '#F8FAFC',
                 borderColor: isDark ? '#10384D' : '#E2E8F0',
               },
             ]}
@@ -317,7 +317,7 @@ export default function DoctorReferralScreen() {
                   {
                     color: textColor,
                     borderColor: isDark ? '#10384D' : '#E2E8F0',
-                    backgroundColor: isDark ? '#0D1520' : '#F8FAFC',
+                    backgroundColor: isDark ? '#011A29' : '#F8FAFC',
                   },
                 ]}
               />
@@ -363,7 +363,7 @@ export default function DoctorReferralScreen() {
           <View style={styles.stepsCol}>
             {/* Item 1 */}
             <View style={styles.stepItemRow}>
-              <View style={[styles.stepNumCircle, { backgroundColor: isDark ? '#172230' : '#ECFDF5' }]}>
+              <View style={[styles.stepNumCircle, { backgroundColor: isDark ? '#10384D' : '#ECFDF5' }]}>
                 <Users size={16} color="#059669" />
               </View>
               <View style={styles.stepTextCol}>
@@ -380,7 +380,7 @@ export default function DoctorReferralScreen() {
 
             {/* Item 2 */}
             <View style={styles.stepItemRow}>
-              <View style={[styles.stepNumCircle, { backgroundColor: isDark ? '#172230' : '#E0F2FE' }]}>
+              <View style={[styles.stepNumCircle, { backgroundColor: isDark ? '#10384D' : '#E0F2FE' }]}>
                 <Stethoscope size={16} color="#0284C7" />
               </View>
               <View style={styles.stepTextCol}>
@@ -397,7 +397,7 @@ export default function DoctorReferralScreen() {
 
             {/* Item 3 */}
             <View style={styles.stepItemRow}>
-              <View style={[styles.stepNumCircle, { backgroundColor: isDark ? '#172230' : '#FEF3C7' }]}>
+              <View style={[styles.stepNumCircle, { backgroundColor: isDark ? '#10384D' : '#FEF3C7' }]}>
                 <Globe size={16} color="#D97706" />
               </View>
               <View style={styles.stepTextCol}>

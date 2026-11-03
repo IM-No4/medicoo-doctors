@@ -95,12 +95,12 @@ export default function LoginScreen() {
     }
   };
 
-  const sheetBg = isDark ? '#080E17' : '#EFF2F6';
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#0F172A';
+  const sheetBg = isDark ? '#011A29' : '#EFF2F6';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
+  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+  const textColor = isDark ? '#E2E8F0' : '#012233';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const inputBg = isDark ? '#0D1520' : '#F1F5F9';
+  const inputBg = isDark ? '#011A29' : '#F1F5F9';
   const inputBorder = isDark ? '#10384D' : '#E2E8F0';
 
   return (

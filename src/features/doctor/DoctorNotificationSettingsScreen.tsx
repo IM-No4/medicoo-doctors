@@ -66,12 +66,12 @@ export default function DoctorNotificationSettingsScreen() {
     setStatusModal({ visible: true, status, title, message });
   };
 
-  const bgColor = isDark ? '#080E17' : '#EFF2F6';
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#1E293B';
+  const bgColor = isDark ? '#011A29' : '#EFF2F6';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
+  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
+  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
   const iconColor = isDark ? '#94A3B8' : '#475569';
 
   React.useEffect(() => {
@@ -80,7 +80,7 @@ export default function DoctorNotificationSettingsScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#080E17');
+        NavigationBar.setBackgroundColorAsync('#011A29');
         NavigationBar.setButtonStyleAsync('light');
       } else {
         NavigationBar.setBackgroundColorAsync('#EFF2F6');
@@ -241,7 +241,7 @@ export default function DoctorNotificationSettingsScreen() {
                   value={notificationSettings[item.key]}
                   onValueChange={() => toggleNotificationSetting(item.key)}
                   disabled={savingKey === item.key}
-                  trackColor={{ false: isDark ? '#334155' : '#CBD5E1', true: '#0FBBA1' }}
+                  trackColor={{ false: isDark ? '#2B4A5E' : '#CBD5E1', true: '#0FBBA1' }}
                   thumbColor={Platform.OS === 'android' ? '#FFFFFF' : undefined}
                 />
               </View>

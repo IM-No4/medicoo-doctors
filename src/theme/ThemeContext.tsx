@@ -42,7 +42,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => {
     if (Platform.OS === 'android') {
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#080E17');
+        NavigationBar.setBackgroundColorAsync('#011A29');
         NavigationBar.setButtonStyleAsync('light');
       } else {
         NavigationBar.setBackgroundColorAsync('#FFFFFF');

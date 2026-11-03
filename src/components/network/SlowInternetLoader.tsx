@@ -65,7 +65,7 @@ export default function SlowInternetLoader({
     <View
       style={[
         containerStyle,
-        { backgroundColor: fullScreen ? (isDark ? '#080E17' : '#FFFFFF') : 'transparent' },
+        { backgroundColor: fullScreen ? (isDark ? '#011A29' : '#FFFFFF') : 'transparent' },
         style,
       ]}
     >
@@ -79,7 +79,7 @@ export default function SlowInternetLoader({
           >
             <WifiOff size={22} color="#EF4444" />
           </View>
-          <Text style={[styles.titleText, { color: isDark ? '#F8FAFC' : '#0F172A' }]}>
+          <Text style={[styles.titleText, { color: isDark ? '#F8FAFC' : '#012233' }]}>
             No Internet Connection
           </Text>
           <Text style={[styles.subText, { color: isDark ? '#94A3B8' : '#64748B' }]}>
@@ -174,17 +174,17 @@ export default function SlowInternetLoader({
                     styles.smallRetryBtn,
                     {
                       backgroundColor: isDark ? '#10384D' : '#FFFFFF',
-                      borderColor: isDark ? '#334155' : '#E2E8F0',
+                      borderColor: isDark ? '#2B4A5E' : '#E2E8F0',
                     },
                   ]}
                   onPress={onRetry}
                   activeOpacity={0.7}
                 >
-                  <RefreshCw size={11} color={isDark ? '#E2E8F0' : '#1E293B'} />
+                  <RefreshCw size={11} color={isDark ? '#E2E8F0' : '#0A2F42'} />
                   <Text
                     style={[
                       styles.smallRetryBtnText,
-                      { color: isDark ? '#E2E8F0' : '#1E293B' },
+                      { color: isDark ? '#E2E8F0' : '#0A2F42' },
                     ]}
                   >
                     Refresh

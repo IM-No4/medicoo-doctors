@@ -683,7 +683,7 @@ export default function DoctorChatScreen() {
                     onPress={() => setShowMenu(prev => !prev)}
                     activeOpacity={0.7}
                 >
-                    <MoreVertical size={22} color="#334155" />
+                    <MoreVertical size={22} color="#2B4A5E" />
                 </TouchableOpacity>
             </View>
 
@@ -947,7 +947,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     avatarTextHeader: { fontSize: 16, fontWeight: '800', color: '#0FBBA1' },
-    headerTitle: { fontSize: 15.5, fontWeight: '700', color: '#0F172A' },
+    headerTitle: { fontSize: 15.5, fontWeight: '700', color: '#012233' },
     headerSubTitle: { fontSize: 11.5, color: '#64748B', fontWeight: '500', marginTop: 1 },
     headerSubTitleTyping: { color: '#0FBBA1', fontWeight: '700' },
     iconButton: { width: 36, height: 36, alignItems: 'center', justifyContent: 'center', borderRadius: 18 },
@@ -965,7 +965,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         maxWidth: '100%',
         ...Platform.select({
-            ios: { shadowColor: '#0F172A', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 3 },
+            ios: { shadowColor: '#012233', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 3 },
             android: { elevation: 1 },
         }),
     },
@@ -980,7 +980,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 4,
     },
     messageText: { fontSize: 14.5, lineHeight: 21 },
-    textLeft: { color: '#0F172A' },
+    textLeft: { color: '#012233' },
     textRight: { color: '#FFFFFF' },
 
     timeText: { fontSize: 10 },
@@ -1047,7 +1047,7 @@ const styles = StyleSheet.create({
         borderColor: '#E2E8F0',
     },
     rxNotesLabel: { fontSize: 10.5, fontWeight: '700', color: '#64748B', textTransform: 'uppercase' },
-    rxNotesText: { fontSize: 12.5, color: '#1E293B', marginTop: 2, lineHeight: 17 },
+    rxNotesText: { fontSize: 12.5, color: '#0A2F42', marginTop: 2, lineHeight: 17 },
     rxMedsSection: { marginTop: 10, gap: 8 },
     rxSectionTitle: { fontSize: 11.5, fontWeight: '700', color: '#475569', textTransform: 'uppercase' },
     rxMedItem: {
@@ -1058,7 +1058,7 @@ const styles = StyleSheet.create({
         borderColor: '#DCFCE7',
     },
     rxMedTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    rxMedName: { fontSize: 13.5, fontWeight: '700', color: '#0F172A', flex: 1 },
+    rxMedName: { fontSize: 13.5, fontWeight: '700', color: '#012233', flex: 1 },
     dosagePill: { backgroundColor: '#0FBBA1', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 2 },
     dosagePillText: { color: '#FFFFFF', fontSize: 11, fontWeight: '700' },
     rxMedPeriod: { fontSize: 11.5, color: '#0F766E', fontWeight: '600', marginTop: 4 },
@@ -1101,7 +1101,7 @@ const styles = StyleSheet.create({
     },
     docReqHeader: { flexDirection: 'row', alignItems: 'center', gap: 6 },
     docReqTitle: { fontSize: 13, fontWeight: '700', color: '#1E40AF' },
-    docReqBody: { fontSize: 12, color: '#334155', lineHeight: 16 },
+    docReqBody: { fontSize: 12, color: '#2B4A5E', lineHeight: 16 },
 
     // Typing Bubble
     typingIndicatorRow: { alignSelf: 'flex-start', marginVertical: 4 },
@@ -1144,7 +1144,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderWidth: 1,
         ...Platform.select({
-            ios: { shadowColor: '#0F172A', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 2 },
+            ios: { shadowColor: '#012233', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 2 },
             android: { elevation: 1 },
         }),
     },
@@ -1165,7 +1165,7 @@ const styles = StyleSheet.create({
 
     pillIconBadgeSlate: { backgroundColor: '#E2E8F0' },
     quickPillSlate: { backgroundColor: '#F8FAFC', borderColor: '#CBD5E1' },
-    quickPillSlateText: { fontSize: 12.5, fontWeight: '700', color: '#334155', letterSpacing: 0.1 },
+    quickPillSlateText: { fontSize: 12.5, fontWeight: '700', color: '#2B4A5E', letterSpacing: 0.1 },
 
     pillIconBadgePurple: { backgroundColor: '#F3E8FF' },
     quickPillPurple: { backgroundColor: '#FAF5FF', borderColor: '#E9D5FF' },
@@ -1190,7 +1190,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 9,
         fontSize: 14.5,
-        color: '#0F172A',
+        color: '#012233',
         maxHeight: 90,
     },
     sendButton: {
@@ -1220,7 +1220,7 @@ const styles = StyleSheet.create({
         borderColor: '#E2E8F0',
         ...Platform.select({
             ios: {
-                shadowColor: '#0F172A',
+                shadowColor: '#012233',
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.12,
                 shadowRadius: 10,

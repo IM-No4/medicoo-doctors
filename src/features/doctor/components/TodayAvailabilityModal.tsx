@@ -189,7 +189,7 @@ export default function TodayAvailabilityModal({
     if (Platform.OS === 'android') {
       if (rendered) {
         if (isDark) {
-          NavigationBar.setBackgroundColorAsync('#111B27');
+          NavigationBar.setBackgroundColorAsync('#082E41');
           NavigationBar.setButtonStyleAsync('light');
         } else {
           NavigationBar.setBackgroundColorAsync('#FFFFFF');
@@ -197,7 +197,7 @@ export default function TodayAvailabilityModal({
         }
       } else {
         if (isDark) {
-          NavigationBar.setBackgroundColorAsync('#080E17');
+          NavigationBar.setBackgroundColorAsync('#011A29');
           NavigationBar.setButtonStyleAsync('light');
         } else {
           NavigationBar.setBackgroundColorAsync('#F8FAFC');
@@ -283,11 +283,11 @@ export default function TodayAvailabilityModal({
     }
   };
 
-  const modalBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1A2737' : '#E2E8F0';
-  const textColor = isDark ? '#F1F5F9' : '#0F172A';
+  const modalBg = isDark ? '#082E41' : '#FFFFFF';
+  const cardBorder = isDark ? '#082E41' : '#E2E8F0';
+  const textColor = isDark ? '#F1F5F9' : '#012233';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#1E293B' : '#F1F5F9';
+  const dividerColor = isDark ? '#0A2F42' : '#F1F5F9';
 
   return (
     <View style={StyleSheet.absoluteFillObject} pointerEvents={visible ? 'auto' : 'none'}>
@@ -315,7 +315,7 @@ export default function TodayAvailabilityModal({
           <View
             style={[
               styles.handleBar,
-              { backgroundColor: isDark ? '#334155' : '#CBD5E1' },
+              { backgroundColor: isDark ? '#2B4A5E' : '#CBD5E1' },
             ]}
           />
         </View>
@@ -341,7 +341,7 @@ export default function TodayAvailabilityModal({
             onPress={handleClose}
             style={[
               styles.closeBtn,
-              { backgroundColor: isDark ? '#1E293B' : '#F1F5F9' },
+              { backgroundColor: isDark ? '#0A2F42' : '#F1F5F9' },
             ]}
             activeOpacity={0.7}
           >
@@ -354,7 +354,7 @@ export default function TodayAvailabilityModal({
           style={[
             styles.statusToggleCard,
             {
-              backgroundColor: isDark ? '#080E17' : '#F8FAFC',
+              backgroundColor: isDark ? '#011A29' : '#F8FAFC',
               borderColor: cardBorder,
             },
           ]}
@@ -426,7 +426,7 @@ export default function TodayAvailabilityModal({
                             ? p.darkBg
                             : p.bg
                           : isDark
-                          ? '#080E17'
+                          ? '#011A29'
                           : '#F8FAFC',
                         borderColor: isSelected ? p.color : cardBorder,
                       },
@@ -483,7 +483,7 @@ export default function TodayAvailabilityModal({
                 style={[
                   styles.timeChip,
                   {
-                    backgroundColor: isDark ? '#080E17' : '#F8FAFC',
+                    backgroundColor: isDark ? '#011A29' : '#F8FAFC',
                     borderColor: cardBorder,
                   },
                 ]}
@@ -510,7 +510,7 @@ export default function TodayAvailabilityModal({
                 style={[
                   styles.timeChip,
                   {
-                    backgroundColor: isDark ? '#080E17' : '#F8FAFC',
+                    backgroundColor: isDark ? '#011A29' : '#F8FAFC',
                     borderColor: cardBorder,
                   },
                 ]}
@@ -543,7 +543,7 @@ export default function TodayAvailabilityModal({
           <TouchableOpacity
             style={[
               styles.cancelBtn,
-              { backgroundColor: isDark ? '#1E293B' : '#F1F5F9' },
+              { backgroundColor: isDark ? '#0A2F42' : '#F1F5F9' },
             ]}
             onPress={handleClose}
             disabled={saving}

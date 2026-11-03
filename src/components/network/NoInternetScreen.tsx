@@ -35,8 +35,8 @@ export default function NoInternetScreen({
     }
   };
 
-  const bgColor = isDark ? '#080E17' : '#FFFFFF';
-  const textColor = isDark ? '#F8FAFC' : '#0F172A';
+  const bgColor = isDark ? '#011A29' : '#FFFFFF';
+  const textColor = isDark ? '#F8FAFC' : '#012233';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
 
   return (
@@ -77,7 +77,7 @@ export default function NoInternetScreen({
           style={[
             styles.tipBox,
             {
-              backgroundColor: isDark ? '#111B27' : '#F8FAFC',
+              backgroundColor: isDark ? '#082E41' : '#F8FAFC',
               borderColor: isDark ? '#10384D' : '#E2E8F0',
             },
           ]}

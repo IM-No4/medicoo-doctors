@@ -129,14 +129,14 @@ export default function DoctorDashboardScreen() {
   });
 
   // Standardized Theme Palette (Matching ProfileSidebar & DoctorDetailScreen)
-  const bgColor = isDark ? '#080E17' : '#EFF2F6';
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#1E293B';
+  const bgColor = isDark ? '#011A29' : '#EFF2F6';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
+  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
   const sectionLabelColor = isDark ? '#94A3B8' : '#64748B';
-  const subtleBorder = isDark ? '#1E293B' : '#F1F5F9';
-  const mutedTileBg = isDark ? '#162232' : '#F1F5F9';
+  const subtleBorder = isDark ? '#0A2F42' : '#F1F5F9';
+  const mutedTileBg = isDark ? '#082E41' : '#F1F5F9';
 
   // Action Needed Dynamic State
   const hasPendingRequests = pendingRequests.length > 0;
@@ -146,14 +146,14 @@ export default function DoctorDashboardScreen() {
       ? '#2A1111'
       : '#FEF2F2'
     : isDark
-      ? '#1E293B'
+      ? '#0A2F42'
       : '#F1F5F9';
 
   // Manage Dynamic Status Bar and Navigation Bar styling
   const currentStatusBarStyle = isScrolledPastHero && !isDark ? 'dark-content' : 'light-content';
   const currentStatusBarBg = isScrolledPastHero
     ? isDark
-      ? '#080E17'
+      ? '#011A29'
       : '#FFFFFF'
     : 'transparent';
 
@@ -164,7 +164,7 @@ export default function DoctorDashboardScreen() {
   useEffect(() => {
     if (Platform.OS === 'android') {
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#080E17');
+        NavigationBar.setBackgroundColorAsync('#011A29');
         NavigationBar.setButtonStyleAsync('light');
       } else {
         NavigationBar.setBackgroundColorAsync('#EFF2F6');
@@ -423,8 +423,8 @@ export default function DoctorDashboardScreen() {
             styles.statusBarCover,
             {
               height: insets.top,
-              backgroundColor: isDark ? '#080E17' : '#FFFFFF',
-              borderBottomColor: isDark ? '#1A2737' : '#E2E8F0',
+              backgroundColor: isDark ? '#011A29' : '#FFFFFF',
+              borderBottomColor: isDark ? '#082E41' : '#E2E8F0',
             },
           ]}
         />
@@ -669,7 +669,7 @@ export default function DoctorDashboardScreen() {
                         <View
                           style={[
                             styles.consultBadgeTag,
-                            { backgroundColor: isDark ? '#1E293B' : '#EFF6FF' },
+                            { backgroundColor: isDark ? '#0A2F42' : '#EFF6FF' },
                           ]}
                         >
                           <View style={styles.livePulseMini} />
@@ -703,7 +703,7 @@ export default function DoctorDashboardScreen() {
                         <View
                           style={[
                             styles.patientAvatarWrap,
-                            { backgroundColor: isDark ? '#1E293B' : '#EFF6FF' },
+                            { backgroundColor: isDark ? '#0A2F42' : '#EFF6FF' },
                           ]}
                         >
                           <Text style={styles.patientAvatarInitials}>
@@ -756,7 +756,7 @@ export default function DoctorDashboardScreen() {
                         <View
                           style={[
                             styles.emptyIconCircle,
-                            { backgroundColor: isDark ? '#1E293B' : '#F1F5F9' },
+                            { backgroundColor: isDark ? '#0A2F42' : '#F1F5F9' },
                           ]}
                         >
                           <Calendar size={20} color={isDark ? '#94A3B8' : '#64748B'} />
@@ -932,7 +932,7 @@ export default function DoctorDashboardScreen() {
                       <View
                         style={[
                           styles.actionIconContainer,
-                          { backgroundColor: isDark ? '#1E293B' : '#F1F5F9' },
+                          { backgroundColor: isDark ? '#0A2F42' : '#F1F5F9' },
                         ]}
                       >
                         <CheckCircle2 size={18} color={isDark ? '#94A3B8' : '#64748B'} />
@@ -996,7 +996,7 @@ export default function DoctorDashboardScreen() {
                               ? '#172554'
                               : '#EFF6FF'
                             : isDark
-                            ? '#1E293B'
+                            ? '#0A2F42'
                             : '#F1F5F9',
                         },
                       ]}
@@ -1074,7 +1074,7 @@ export default function DoctorDashboardScreen() {
                       style={[
                         styles.quickPresetPill,
                         {
-                          backgroundColor: isDark ? '#1E293B' : '#F8FAFC',
+                          backgroundColor: isDark ? '#0A2F42' : '#F8FAFC',
                           borderColor: cardBorder,
                         },
                       ]}

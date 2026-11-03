@@ -103,7 +103,7 @@ const STATUS_CONFIG: Record<
   approved: {
     label: 'Confirmed',
     lightBg: '#E6FAF6',
-    darkBg: '#0E2924',
+    darkBg: '#07303A',
     fg: '#0FBBA1',
     icon: CheckCircle2,
   },
@@ -117,7 +117,7 @@ const STATUS_CONFIG: Record<
   cancelled: {
     label: 'Cancelled',
     lightBg: '#F1F5F9',
-    darkBg: '#1E293B',
+    darkBg: '#0A2F42',
     fg: '#64748B',
     icon: AlertCircle,
   },
@@ -131,7 +131,7 @@ const STATUS_CONFIG: Record<
   expired: {
     label: 'Expired',
     lightBg: '#F1F5F9',
-    darkBg: '#1E293B',
+    darkBg: '#0A2F42',
     fg: '#64748B',
     icon: Clock,
   },
@@ -165,14 +165,14 @@ const CONSULTATION_TYPE_META: Record<
     label: 'Voice Call',
     color: '#0FBBA1',
     lightBg: '#E6FAF6',
-    darkBg: '#0E2924',
+    darkBg: '#07303A',
     Icon: Phone,
   },
   video: {
     label: 'Video Consultation',
     color: '#0FBBA1',
     lightBg: '#E6FAF6',
-    darkBg: '#0E2924',
+    darkBg: '#07303A',
     Icon: Video,
   },
 };
@@ -327,14 +327,14 @@ export default function PatientConsultationDetailScreen() {
   const [rxModalVisible, setRxModalVisible] = useState(false);
   const [activeRxSession, setActiveRxSession] = useState<any>(null);
 
-  const bgColor = isDark ? '#080E17' : '#EFF2F6';
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#1E293B';
+  const bgColor = isDark ? '#011A29' : '#EFF2F6';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
+  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
+  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
   const iconColor = isDark ? '#94A3B8' : '#64748B';
-  const neutralTileBg = isDark ? '#172230' : '#F1F5F9';
+  const neutralTileBg = isDark ? '#10384D' : '#F1F5F9';
   const A = { green: accent('green', isDark), blue: accent('blue', isDark), violet: accent('violet', isDark), sky: accent('sky', isDark), amber: accent('amber', isDark) };
 
   useEffect(() => {
@@ -343,7 +343,7 @@ export default function PatientConsultationDetailScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#080E17');
+        NavigationBar.setBackgroundColorAsync('#011A29');
         NavigationBar.setButtonStyleAsync('light');
       } else {
         NavigationBar.setBackgroundColorAsync('#EFF2F6');
@@ -863,7 +863,7 @@ export default function PatientConsultationDetailScreen() {
             <View
               style={[
                 styles.demographicItem,
-                { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
               ]}
             >
               <View style={styles.demoLabelRow}>
@@ -878,7 +878,7 @@ export default function PatientConsultationDetailScreen() {
             <View
               style={[
                 styles.demographicItem,
-                { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
               ]}
             >
               <View style={styles.demoLabelRow}>
@@ -893,7 +893,7 @@ export default function PatientConsultationDetailScreen() {
             <View
               style={[
                 styles.demographicItem,
-                { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
               ]}
             >
               <View style={styles.demoLabelRow}>
@@ -908,7 +908,7 @@ export default function PatientConsultationDetailScreen() {
             <View
               style={[
                 styles.demographicItem,
-                { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
               ]}
             >
               <View style={styles.demoLabelRow}>
@@ -1010,7 +1010,7 @@ export default function PatientConsultationDetailScreen() {
                   key={doc._id}
                   style={[
                     styles.docItemCard,
-                    { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                    { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
                   ]}
                   onPress={() => setReportsModalVisible(true)}
                   activeOpacity={0.7}
@@ -1038,7 +1038,7 @@ export default function PatientConsultationDetailScreen() {
             <View
               style={[
                 styles.emptyDocsBox,
-                { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
               ]}
             >
               <FileText size={20} color={subTextColor} />
@@ -1242,8 +1242,8 @@ export default function PatientConsultationDetailScreen() {
                           style={[
                             styles.noticeBanner,
                             {
-                              backgroundColor: isDark ? '#1E293B' : '#F1F5F9',
-                              borderColor: isDark ? '#334155' : '#E2E8F0',
+                              backgroundColor: isDark ? '#0A2F42' : '#F1F5F9',
+                              borderColor: isDark ? '#2B4A5E' : '#E2E8F0',
                             },
                           ]}
                         >
@@ -1272,7 +1272,7 @@ export default function PatientConsultationDetailScreen() {
                               styles.inlineDeclineBtn,
                               {
                                 backgroundColor: A.sky.bg,
-                                borderColor: isDark ? '#1A2737' : '#E2E8F0',
+                                borderColor: isDark ? '#082E41' : '#E2E8F0',
                                 marginTop: 10,
                                 alignSelf: 'flex-start',
                               },
@@ -1337,8 +1337,8 @@ export default function PatientConsultationDetailScreen() {
                             style={[
                               styles.refundStatusBox,
                               {
-                                backgroundColor: isDark ? '#172230' : '#FFFFFF',
-                                borderColor: isDark ? '#1F3145' : '#E2E8F0',
+                                backgroundColor: isDark ? '#10384D' : '#FFFFFF',
+                                borderColor: isDark ? '#10384D' : '#E2E8F0',
                               },
                             ]}
                           >
@@ -1356,7 +1356,7 @@ export default function PatientConsultationDetailScreen() {
                                       ? '#0FBBA1'
                                       : isDark
                                       ? '#CBD5E1'
-                                      : '#334155',
+                                      : '#2B4A5E',
                                   },
                                 ]}
                               >
@@ -1450,7 +1450,7 @@ export default function PatientConsultationDetailScreen() {
                               {
                                 backgroundColor: isPaid
                                   ? isDark
-                                    ? '#0E2924'
+                                    ? '#07303A'
                                     : '#E6FAF6'
                                   : isDark
                                   ? '#2E2210'
@@ -1499,7 +1499,7 @@ export default function PatientConsultationDetailScreen() {
                               <Text
                                 style={[
                                   styles.rescheduleDesc,
-                                  { color: isDark ? '#E2E8F0' : '#1E293B' },
+                                  { color: isDark ? '#E2E8F0' : '#0A2F42' },
                                 ]}
                               >
                                 {patientData.name} proposed:{' '}
@@ -1573,7 +1573,7 @@ export default function PatientConsultationDetailScreen() {
                               style={[
                                 styles.sessionStatusNotice,
                                 {
-                                  backgroundColor: isDark ? '#111E2E' : '#EFF6FF',
+                                  backgroundColor: isDark ? '#082E41' : '#EFF6FF',
                                   borderColor: isDark ? '#1E3A5F' : '#BFDBFE',
                                 },
                               ]}
@@ -1596,8 +1596,8 @@ export default function PatientConsultationDetailScreen() {
                                   style={[
                                     styles.secondaryActionBtn,
                                     {
-                                      backgroundColor: isDark ? '#172230' : '#F1F5F9',
-                                      borderColor: isDark ? '#1E3145' : '#E2E8F0',
+                                      backgroundColor: isDark ? '#10384D' : '#F1F5F9',
+                                      borderColor: isDark ? '#10384D' : '#E2E8F0',
                                     },
                                   ]}
                                   onPress={() => handleOpenRxModal(session)}
@@ -1655,7 +1655,7 @@ export default function PatientConsultationDetailScreen() {
                                 <View
                                   style={[
                                     styles.vitalCard,
-                                    { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                                    { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
                                   ]}
                                 >
                                   <View style={styles.vitalHeaderRow}>
@@ -1670,7 +1670,7 @@ export default function PatientConsultationDetailScreen() {
                                 <View
                                   style={[
                                     styles.vitalCard,
-                                    { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                                    { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
                                   ]}
                                 >
                                   <View style={styles.vitalHeaderRow}>
@@ -1685,7 +1685,7 @@ export default function PatientConsultationDetailScreen() {
                                 <View
                                   style={[
                                     styles.vitalCard,
-                                    { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                                    { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
                                   ]}
                                 >
                                   <View style={styles.vitalHeaderRow}>
@@ -1700,7 +1700,7 @@ export default function PatientConsultationDetailScreen() {
                                 <View
                                   style={[
                                     styles.vitalCard,
-                                    { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                                    { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
                                   ]}
                                 >
                                   <View style={styles.vitalHeaderRow}>
@@ -1751,7 +1751,7 @@ export default function PatientConsultationDetailScreen() {
                                         key={idx}
                                         style={[
                                           styles.rxItemRow,
-                                          { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                                          { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
                                         ]}
                                       >
                                         <View style={styles.rxItemTop}>
@@ -1789,7 +1789,7 @@ export default function PatientConsultationDetailScreen() {
                                         key={idx}
                                         style={[
                                           styles.rxItemRow,
-                                          { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                                          { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
                                         ]}
                                       >
                                         <Text style={[styles.rxItemTitle, { color: textColor }]}>
@@ -1809,7 +1809,7 @@ export default function PatientConsultationDetailScreen() {
                               <View
                                 style={[
                                   styles.emptyRxBox,
-                                  { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+                                  { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
                                 ]}
                               >
                                 <Pill size={16} color={subTextColor} />
@@ -1900,7 +1900,7 @@ export default function PatientConsultationDetailScreen() {
                   styles.secondaryBtn,
                   {
                     backgroundColor: A.sky.bg,
-                    borderColor: isDark ? '#1A2737' : '#E2E8F0',
+                    borderColor: isDark ? '#082E41' : '#E2E8F0',
                   },
                 ]}
                 onPress={() =>
@@ -1970,7 +1970,7 @@ export default function PatientConsultationDetailScreen() {
                 {
                   flex: 1,
                   backgroundColor: neutralTileBg,
-                  borderColor: isDark ? '#1A2737' : '#E2E8F0',
+                  borderColor: isDark ? '#082E41' : '#E2E8F0',
                 },
               ]}
               onPress={() =>

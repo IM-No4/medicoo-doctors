@@ -2017,7 +2017,7 @@ export default function DoctorOnboardingScreen() {
                             style={styles.headerIconButton}
                             activeOpacity={0.7}
                         >
-                            <ChevronLeft size={22} color="#0F172A" />
+                            <ChevronLeft size={22} color="#012233" />
                         </TouchableOpacity>
                     ) : (
                         <View style={styles.headerSpacer} />
@@ -2158,7 +2158,7 @@ export default function DoctorOnboardingScreen() {
                         style={styles.headerIconButton}
                         activeOpacity={0.7}
                     >
-                        <ChevronLeft size={22} color="#0F172A" />
+                        <ChevronLeft size={22} color="#012233" />
                     </TouchableOpacity>
                 ) : (
                     <View style={styles.headerSpacer} />
@@ -2522,7 +2522,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 17,
         fontWeight: '700',
-        color: '#0F172A',
+        color: '#012233',
         letterSpacing: -0.2,
     },
     headerSub: {
@@ -2600,7 +2600,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
     stepLabelDone: {
-        color: '#0F172A',
+        color: '#012233',
         fontWeight: '600',
     },
     stepLineWrapper: {
@@ -2646,7 +2646,7 @@ const styles = StyleSheet.create({
     cardHeaderTitle: {
         fontSize: 16,
         fontWeight: '700',
-        color: '#0F172A',
+        color: '#012233',
         letterSpacing: -0.2,
     },
     cardHeaderSub: {
@@ -2663,7 +2663,7 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 13,
         fontWeight: '600',
-        color: '#334155',
+        color: '#2B4A5E',
         marginBottom: 7,
     },
     reqStar: {
@@ -2678,7 +2678,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         fontSize: 14,
         fontWeight: '500',
-        color: '#0F172A',
+        color: '#012233',
     },
     inputWithIcon: {
         flexDirection: 'row',
@@ -2695,7 +2695,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         fontSize: 14,
         fontWeight: '500',
-        color: '#0F172A',
+        color: '#012233',
     },
     selectInput: {
         flexDirection: 'row',
@@ -2717,7 +2717,7 @@ const styles = StyleSheet.create({
     selectText: {
         fontSize: 14,
         fontWeight: '500',
-        color: '#0F172A',
+        color: '#012233',
     },
     placeholderText: {
         color: '#94A3B8',
@@ -2778,7 +2778,7 @@ const styles = StyleSheet.create({
     uploadedFileName: {
         fontSize: 13,
         fontWeight: '500',
-        color: '#0F172A',
+        color: '#012233',
     },
     changeFilePrompt: {
         fontSize: 11,
@@ -2803,7 +2803,7 @@ const styles = StyleSheet.create({
     uploadPrimaryText: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#0F172A',
+        color: '#012233',
         marginBottom: 2,
     },
     uploadSecondaryText: {
@@ -2844,7 +2844,7 @@ const styles = StyleSheet.create({
     },
     uploadSuccessFileName: {
         fontSize: 12,
-        color: '#334155',
+        color: '#2B4A5E',
         marginTop: 1,
     },
     changeActionText: {
@@ -2888,7 +2888,7 @@ const styles = StyleSheet.create({
     feeTitleText: {
         fontSize: 15,
         fontWeight: '700',
-        color: '#0F172A',
+        color: '#012233',
     },
     feeSubtitleText: {
         fontSize: 12,
@@ -2935,7 +2935,7 @@ const styles = StyleSheet.create({
     feeInputLabel: {
         fontSize: 13,
         fontWeight: '600',
-        color: '#334155',
+        color: '#2B4A5E',
     },
     feeInputBox: {
         flexDirection: 'row',
@@ -2957,7 +2957,7 @@ const styles = StyleSheet.create({
         width: 65,
         fontSize: 16,
         fontWeight: '700',
-        color: '#0F172A',
+        color: '#012233',
         paddingVertical: 0,
     },
     perSessionText: {
@@ -3053,7 +3053,7 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 13,
         fontWeight: '500',
-        color: '#334155',
+        color: '#2B4A5E',
         lineHeight: 18,
     },
 
@@ -3083,7 +3083,7 @@ const styles = StyleSheet.create({
     docType: {
         fontSize: 13,
         fontWeight: '700',
-        color: '#0F172A',
+        color: '#012233',
     },
     docDetails: {
         fontSize: 11,
@@ -3128,7 +3128,7 @@ const styles = StyleSheet.create({
     formTitle: {
         fontSize: 15,
         fontWeight: '700',
-        color: '#0F172A',
+        color: '#012233',
         marginBottom: 14,
     },
     formActions: {
@@ -3174,7 +3174,7 @@ const styles = StyleSheet.create({
     reviewDoctorBadge: {
         fontSize: 18,
         fontWeight: '800',
-        color: '#0F172A',
+        color: '#012233',
         letterSpacing: -0.2,
     },
     reviewDoctorSpecialty: {
@@ -3202,7 +3202,7 @@ const styles = StyleSheet.create({
     reviewFieldValue: {
         fontSize: 13,
         fontWeight: '700',
-        color: '#0F172A',
+        color: '#012233',
         maxWidth: '55%',
         textAlign: 'right',
     },
@@ -3228,7 +3228,7 @@ const styles = StyleSheet.create({
     },
     serviceRateText: {
         fontSize: 12,
-        color: '#334155',
+        color: '#2B4A5E',
         fontWeight: '600',
     },
     serviceRateBold: {
@@ -3308,7 +3308,7 @@ const styles = StyleSheet.create({
     btnBackText: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#334155',
+        color: '#2B4A5E',
     },
     btnPrimary: {
         backgroundColor: '#0FBBA1',
@@ -3340,7 +3340,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     btnOutlineText: {
-        color: '#334155',
+        color: '#2B4A5E',
         fontSize: 14,
         fontWeight: '600',
     },
@@ -3450,7 +3450,7 @@ const styles = StyleSheet.create({
     modalTitle: {
         fontSize: 17,
         fontWeight: '700',
-        color: '#0F172A',
+        color: '#012233',
     },
     modalCloseBtn: {
         width: 32,
@@ -3475,7 +3475,7 @@ const styles = StyleSheet.create({
     optionText: {
         fontSize: 15,
         fontWeight: '500',
-        color: '#334155',
+        color: '#2B4A5E',
     },
     selectedOptionText: {
         color: '#0FBBA1',
@@ -3632,7 +3632,7 @@ const styles = StyleSheet.create({
     pendingHeroTitle: {
         fontSize: 20,
         fontWeight: '800',
-        color: '#0F172A',
+        color: '#012233',
         textAlign: 'center',
         marginBottom: 8,
         letterSpacing: -0.3,
@@ -3741,7 +3741,7 @@ const styles = StyleSheet.create({
     timelineTitle: {
         fontSize: 14,
         fontWeight: '700',
-        color: '#0F172A',
+        color: '#012233',
     },
     timelineTitlePending: {
         fontSize: 14,

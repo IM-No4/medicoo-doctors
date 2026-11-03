@@ -42,14 +42,14 @@ export default function DoctorNewSupportRequestScreen() {
   const showStatus = (status: StatusType, title: string, body: string, done = false) =>
     setStatusModal({ visible: true, status, title, message: body, done });
 
-  const bgColor = isDark ? '#080E17' : '#EFF2F6';
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#1E293B';
+  const bgColor = isDark ? '#011A29' : '#EFF2F6';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
+  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
-  const inputBg = isDark ? '#0D1520' : '#F8FAFC';
-  const inputBorder = isDark ? '#1E2D3D' : '#E2E8F0';
+  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
+  const inputBg = isDark ? '#011A29' : '#F8FAFC';
+  const inputBorder = isDark ? '#10384D' : '#E2E8F0';
 
   const topPadding = insets.top > 0 ? insets.top : Platform.OS === 'android' ? (RNStatusBar.currentHeight ?? 24) : 20;
 
@@ -113,8 +113,8 @@ export default function DoctorNewSupportRequestScreen() {
                     style={[
                       styles.pill,
                       {
-                        backgroundColor: selected ? '#0FBBA1' : isDark ? '#172230' : '#F1F5F9',
-                        borderColor: selected ? '#0FBBA1' : isDark ? '#1E2D3D' : '#E2E8F0',
+                        backgroundColor: selected ? '#0FBBA1' : isDark ? '#10384D' : '#F1F5F9',
+                        borderColor: selected ? '#0FBBA1' : isDark ? '#10384D' : '#E2E8F0',
                       },
                     ]}
                     onPress={() => setCategory(cat)}

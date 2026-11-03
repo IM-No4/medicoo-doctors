@@ -66,7 +66,7 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                             <AlertTriangle size={22} color="#EF4444" />
                         </View>
                         <View style={{ flex: 1 }}>
-                            <Text style={[styles.title, { color: isDark ? theme.text : '#0F172A' }]}>Emergency Assistance</Text>
+                            <Text style={[styles.title, { color: isDark ? theme.text : '#012233' }]}>Emergency Assistance</Text>
                             <Text style={[styles.subtitle, { color: isDark ? theme.textSecondary : '#64748B' }]}>
                                 For a suspected patient medical emergency
                             </Text>
@@ -111,7 +111,7 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                         style={[
                             styles.notifyCard,
                             {
-                                backgroundColor: notified ? (isDark ? '#0F2F2C' : '#ECFDF5') : (isDark ? theme.cardSecondary : '#F8FAFC'),
+                                backgroundColor: notified ? (isDark ? '#07303A' : '#ECFDF5') : (isDark ? theme.cardSecondary : '#F8FAFC'),
                                 borderColor: notified ? '#0FBBA1' : (isDark ? theme.border : '#E2E8F0'),
                             },
                         ]}
@@ -119,11 +119,11 @@ export default function EmergencyActionSheet({ visible, onClose, onNotifySafetyT
                         disabled={notifying || notified}
                         activeOpacity={0.8}
                     >
-                        <View style={[styles.callIconBox, { backgroundColor: notified ? '#0FBBA1' : (isDark ? '#1E293B' : '#E2E8F0') }]}>
+                        <View style={[styles.callIconBox, { backgroundColor: notified ? '#0FBBA1' : (isDark ? '#0A2F42' : '#E2E8F0') }]}>
                             <ShieldAlert size={18} color={notified ? '#FFFFFF' : (isDark ? theme.textSecondary : '#64748B')} />
                         </View>
                         <View style={{ flex: 1 }}>
-                            <Text style={[styles.callTitle, { color: isDark ? theme.text : '#0F172A' }]}>
+                            <Text style={[styles.callTitle, { color: isDark ? theme.text : '#012233' }]}>
                                 {notified ? 'Safety team notified' : notifying ? 'Notifying...' : 'Notify Clinical Safety Team'}
                             </Text>
                             <Text style={[styles.callSub, { color: isDark ? theme.textSecondary : '#64748B' }]}>

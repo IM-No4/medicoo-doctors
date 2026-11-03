@@ -72,8 +72,8 @@ export default function AutoPayoutCard({
   }, [load]);
 
   const accent = '#0FBBA1';
-  const chipBg = isDark ? '#162232' : '#F1F5F9';
-  const border = isDark ? '#1A2737' : '#E2E8F0';
+  const chipBg = isDark ? '#082E41' : '#F1F5F9';
+  const border = isDark ? '#082E41' : '#E2E8F0';
 
   if (loading) {
     return (
@@ -146,7 +146,7 @@ export default function AutoPayoutCard({
           value={draft.enabled}
           onValueChange={(enabled) => setDraft({ ...draft, enabled })}
           disabled={!hasPayoutMethod || saving}
-          trackColor={{ false: isDark ? '#334155' : '#CBD5E1', true: accent }}
+          trackColor={{ false: isDark ? '#2B4A5E' : '#CBD5E1', true: accent }}
           thumbColor="#FFFFFF"
         />
       </View>

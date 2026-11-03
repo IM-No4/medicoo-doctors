@@ -35,12 +35,12 @@ export default function BankPickerModal({
   const insets = useSafeAreaInsets();
   const [search, setSearch] = useState('');
 
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#1E293B';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
+  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
-  const inputBg = isDark ? '#080E17' : '#F8FAFC';
-  const chipBg = isDark ? '#172230' : '#F1F5F9';
+  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
+  const inputBg = isDark ? '#011A29' : '#F8FAFC';
+  const chipBg = isDark ? '#10384D' : '#F1F5F9';
 
   const filteredBanks = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -110,7 +110,7 @@ export default function BankPickerModal({
                           styles.bankRow,
                           {
                             borderBottomColor: dividerColor,
-                            backgroundColor: isSelected ? (isDark ? '#0E2924' : '#E6FAF6') : 'transparent',
+                            backgroundColor: isSelected ? (isDark ? '#07303A' : '#E6FAF6') : 'transparent',
                           },
                         ]}
                         onPress={() => {

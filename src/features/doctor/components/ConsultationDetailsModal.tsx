@@ -364,7 +364,7 @@ export default function ConsultationDetailsModal({
     useEffect(() => {
         if (Platform.OS === 'android' && visible) {
             if (isDark) {
-                NavigationBar.setBackgroundColorAsync('#080E17');
+                NavigationBar.setBackgroundColorAsync('#011A29');
                 NavigationBar.setButtonStyleAsync('light');
             } else {
                 NavigationBar.setBackgroundColorAsync('#EFF2F6');
@@ -409,12 +409,12 @@ export default function ConsultationDetailsModal({
     };
 
     // Theme tokens (Clean, glowing-background flat styling matching ProfileSidebar)
-    const sheetBg = isDark ? '#080E17' : '#EFF2F6';
-    const cardBg = isDark ? '#111B27' : '#FFFFFF';
-    const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-    const textColor = isDark ? '#E2E8F0' : '#0F172A';
+    const sheetBg = isDark ? '#011A29' : '#EFF2F6';
+    const cardBg = isDark ? '#082E41' : '#FFFFFF';
+    const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+    const textColor = isDark ? '#E2E8F0' : '#012233';
     const subTextColor = isDark ? '#94A3B8' : '#64748B';
-    const inputBg = isDark ? '#0D1520' : '#F1F5F9';
+    const inputBg = isDark ? '#011A29' : '#F1F5F9';
     const inputBorder = isDark ? '#10384D' : '#E2E8F0';
 
     const titleText = mode === 'chat_prescription'
@@ -435,7 +435,7 @@ export default function ConsultationDetailsModal({
                 <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={handleClose} />
                 <View style={[styles.content, { backgroundColor: sheetBg, paddingBottom: Math.max(insets.bottom, 12) }]}>
                     {/* Top drag handle */}
-                    <View style={[styles.dragHandle, { backgroundColor: isDark ? '#334155' : '#CBD5E1' }]} />
+                    <View style={[styles.dragHandle, { backgroundColor: isDark ? '#2B4A5E' : '#CBD5E1' }]} />
 
                     {/* Header */}
                     <View style={styles.headerRow}>
@@ -468,7 +468,7 @@ export default function ConsultationDetailsModal({
                             <TouchableOpacity
                                 style={[
                                     styles.tabBtn,
-                                    activeTab === 'meds' && [styles.tabBtnActive, { backgroundColor: isDark ? '#1E293B' : '#E6FAF6' }],
+                                    activeTab === 'meds' && [styles.tabBtnActive, { backgroundColor: isDark ? '#0A2F42' : '#E6FAF6' }],
                                 ]}
                                 onPress={() => setActiveTab('meds')}
                                 activeOpacity={0.8}
@@ -488,7 +488,7 @@ export default function ConsultationDetailsModal({
                             <TouchableOpacity
                                 style={[
                                     styles.tabBtn,
-                                    activeTab === 'labs' && [styles.tabBtnActive, { backgroundColor: isDark ? '#1E293B' : '#EFF6FF' }],
+                                    activeTab === 'labs' && [styles.tabBtnActive, { backgroundColor: isDark ? '#0A2F42' : '#EFF6FF' }],
                                 ]}
                                 onPress={() => setActiveTab('labs')}
                                 activeOpacity={0.8}
@@ -508,7 +508,7 @@ export default function ConsultationDetailsModal({
                             <TouchableOpacity
                                 style={[
                                     styles.tabBtn,
-                                    activeTab === 'notes' && [styles.tabBtnActive, { backgroundColor: isDark ? '#1E293B' : '#F5F3FF' }],
+                                    activeTab === 'notes' && [styles.tabBtnActive, { backgroundColor: isDark ? '#0A2F42' : '#F5F3FF' }],
                                 ]}
                                 onPress={() => setActiveTab('notes')}
                                 activeOpacity={0.8}
@@ -833,7 +833,7 @@ export default function ConsultationDetailsModal({
                     </ScrollView>
 
                     {/* ═══ Bottom Floating Action Footer ═══ */}
-                    <View style={[styles.footerBar, { borderTopColor: isDark ? '#1E293B' : '#F1F5F9' }]}>
+                    <View style={[styles.footerBar, { borderTopColor: isDark ? '#0A2F42' : '#F1F5F9' }]}>
                         <View style={styles.summaryStrip}>
                             <Text style={[styles.summaryText, { color: subTextColor }]}>
                                 Summary: <Text style={{ color: '#0FBBA1', fontWeight: '700' }}>{medicines.length} Medicines</Text> ·{' '}
@@ -932,11 +932,11 @@ function AddMedicineForm({
     const [duration, setDuration] = useState('5 Days');
     const [customInstructions, setCustomInstructions] = useState('');
 
-    const cardBg = isDark ? '#111B27' : '#FFFFFF';
-    const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-    const textColor = isDark ? '#E2E8F0' : '#0F172A';
+    const cardBg = isDark ? '#082E41' : '#FFFFFF';
+    const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+    const textColor = isDark ? '#E2E8F0' : '#012233';
     const subTextColor = isDark ? '#94A3B8' : '#64748B';
-    const inputBg = isDark ? '#0D1520' : '#F1F5F9';
+    const inputBg = isDark ? '#011A29' : '#F1F5F9';
     const inputBorder = isDark ? '#10384D' : '#E2E8F0';
 
     const handleSelectMedicine = (med: { sku: number; productName: string }) => {
@@ -982,7 +982,7 @@ function AddMedicineForm({
                     </View>
                     <TouchableOpacity
                         onPress={onCancel}
-                        style={[styles.composerClose, { backgroundColor: isDark ? '#1E293B' : '#F1F5F9' }]}
+                        style={[styles.composerClose, { backgroundColor: isDark ? '#0A2F42' : '#F1F5F9' }]}
                         activeOpacity={0.7}
                     >
                         <X size={16} color={subTextColor} />
@@ -1226,11 +1226,11 @@ function AddLabTestForm({
     const [selected, setSelected] = useState<string | null>(null);
     const [notes, setNotes] = useState('');
 
-    const cardBg = isDark ? '#111B27' : '#FFFFFF';
-    const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-    const textColor = isDark ? '#E2E8F0' : '#0F172A';
+    const cardBg = isDark ? '#082E41' : '#FFFFFF';
+    const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+    const textColor = isDark ? '#E2E8F0' : '#012233';
     const subTextColor = isDark ? '#94A3B8' : '#64748B';
-    const inputBg = isDark ? '#0D1520' : '#F1F5F9';
+    const inputBg = isDark ? '#011A29' : '#F1F5F9';
     const inputBorder = isDark ? '#10384D' : '#E2E8F0';
 
     useEffect(() => {
@@ -1269,7 +1269,7 @@ function AddLabTestForm({
                     </View>
                     <TouchableOpacity
                         onPress={onCancel}
-                        style={[styles.composerClose, { backgroundColor: isDark ? '#1E293B' : '#F1F5F9' }]}
+                        style={[styles.composerClose, { backgroundColor: isDark ? '#0A2F42' : '#F1F5F9' }]}
                         activeOpacity={0.7}
                     >
                         <X size={16} color={subTextColor} />

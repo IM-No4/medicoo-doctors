@@ -450,7 +450,7 @@ export default function DoctorCallScreen() {
                         ]}
                         onPress={toggleMic}
                     >
-                        {isMicOn ? <Mic size={22} color={isDark ? '#F8FAFC' : '#0F172A'} /> : <MicOff size={22} color="#EF4444" />}
+                        {isMicOn ? <Mic size={22} color={isDark ? '#F8FAFC' : '#012233'} /> : <MicOff size={22} color="#EF4444" />}
                     </TouchableOpacity>
 
                     {/* Video Button */}
@@ -462,7 +462,7 @@ export default function DoctorCallScreen() {
                             ]}
                             onPress={toggleVideo}
                         >
-                            {isVideoOn ? <VideoIcon size={22} color={isDark ? '#F8FAFC' : '#0F172A'} /> : <VideoOff size={22} color="#EF4444" />}
+                            {isVideoOn ? <VideoIcon size={22} color={isDark ? '#F8FAFC' : '#012233'} /> : <VideoOff size={22} color="#EF4444" />}
                         </TouchableOpacity>
                     )}
 
@@ -486,7 +486,7 @@ export default function DoctorCallScreen() {
                             onPress={toggleCameraSwitch}
                             disabled={!isVideoOn}
                         >
-                            <SwitchCamera size={22} color={isVideoOn ? (isDark ? '#F8FAFC' : '#0F172A') : (isDark ? '#64748B' : '#94A3B8')} />
+                            <SwitchCamera size={22} color={isVideoOn ? (isDark ? '#F8FAFC' : '#012233') : (isDark ? '#64748B' : '#94A3B8')} />
                         </TouchableOpacity>
                     )}
 
@@ -494,7 +494,7 @@ export default function DoctorCallScreen() {
                     <TouchableOpacity
                         style={[
                             styles.iconCircle,
-                            { backgroundColor: isSpeakerOn ? (isDark ? '#0F2F2C' : '#E6FAF6') : (isDark ? '#10384D' : '#F1F5F9') },
+                            { backgroundColor: isSpeakerOn ? (isDark ? '#07303A' : '#E6FAF6') : (isDark ? '#10384D' : '#F1F5F9') },
                         ]}
                         onPress={toggleSpeaker}
                     >
@@ -625,7 +625,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         borderWidth: 1.5,
         borderColor: 'rgba(255,255,255,0.7)',
-        backgroundColor: '#1E293B',
+        backgroundColor: '#0A2F42',
         zIndex: 50,
         elevation: 6,
     },
@@ -637,7 +637,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         borderWidth: 1.5,
         borderColor: 'rgba(255,255,255,0.25)',
-        backgroundColor: '#1E293B',
+        backgroundColor: '#0A2F42',
         zIndex: 50,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
@@ -648,7 +648,7 @@ const styles = StyleSheet.create({
     selfViewCameraOff: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#1E293B',
+        backgroundColor: '#0A2F42',
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 6,
@@ -657,7 +657,7 @@ const styles = StyleSheet.create({
         width: 38,
         height: 38,
         borderRadius: 19,
-        backgroundColor: '#334155',
+        backgroundColor: '#2B4A5E',
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 6,

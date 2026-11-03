@@ -106,7 +106,7 @@ const STATUS_CONFIG: Record<
   approved: {
     label: 'Confirmed',
     lightBg: '#E6FAF6',
-    darkBg: '#0E2924',
+    darkBg: '#07303A',
     fg: '#0FBBA1',
   },
   rejected: {
@@ -118,19 +118,19 @@ const STATUS_CONFIG: Record<
   cancelled: {
     label: 'Cancelled',
     lightBg: '#F1F5F9',
-    darkBg: '#1E293B',
+    darkBg: '#0A2F42',
     fg: '#64748B',
   },
   completed: {
     label: 'Completed',
     lightBg: '#EFF6FF',
-    darkBg: '#1E293B',
+    darkBg: '#0A2F42',
     fg: '#3B82F6',
   },
   expired: {
     label: 'Expired',
     lightBg: '#F1F5F9',
-    darkBg: '#1E293B',
+    darkBg: '#0A2F42',
     fg: '#64748B',
   },
   no_show: {
@@ -240,14 +240,14 @@ export default function AppointmentRequestsScreen() {
     message: '',
   });
 
-  const bgColor = isDark ? '#080E17' : '#EFF2F6';
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#1E293B';
+  const bgColor = isDark ? '#011A29' : '#EFF2F6';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
+  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
+  const dividerColor = isDark ? '#082E41' : '#F1F5F9';
   const iconColor = isDark ? '#94A3B8' : '#64748B';
-  const neutralTileBg = isDark ? '#172230' : '#F1F5F9';
+  const neutralTileBg = isDark ? '#10384D' : '#F1F5F9';
   const A = { green: accent('green', isDark), blue: accent('blue', isDark), violet: accent('violet', isDark), sky: accent('sky', isDark), amber: accent('amber', isDark) };
 
   useEffect(() => {
@@ -256,7 +256,7 @@ export default function AppointmentRequestsScreen() {
       RNStatusBar.setBackgroundColor(bgColor, true);
       RNStatusBar.setTranslucent(false);
       if (isDark) {
-        NavigationBar.setBackgroundColorAsync('#080E17');
+        NavigationBar.setBackgroundColorAsync('#011A29');
         NavigationBar.setButtonStyleAsync('light');
       } else {
         NavigationBar.setBackgroundColorAsync('#EFF2F6');
@@ -551,7 +551,7 @@ export default function AppointmentRequestsScreen() {
         <View
           style={[
             styles.scheduleStrip,
-            { backgroundColor: isDark ? '#080E17' : '#F8FAFC' },
+            { backgroundColor: isDark ? '#011A29' : '#F8FAFC' },
           ]}
         >
           <View style={styles.scheduleItem}>
@@ -657,7 +657,7 @@ export default function AppointmentRequestsScreen() {
         <View
           style={[
             styles.emptyIconCircle,
-            { backgroundColor: isDark ? '#111B27' : '#FFFFFF' },
+            { backgroundColor: isDark ? '#082E41' : '#FFFFFF' },
           ]}
         >
           <Inbox size={26} color={iconColor} />
@@ -829,7 +829,7 @@ export default function AppointmentRequestsScreen() {
                           backgroundColor: isActive
                             ? 'rgba(255, 255, 255, 0.25)'
                             : isDark
-                            ? '#1A2737'
+                            ? '#082E41'
                             : '#F1F5F9',
                         },
                       ]}

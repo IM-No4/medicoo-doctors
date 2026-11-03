@@ -19,11 +19,11 @@ export default function ConsultationDetailsCard({ details }: Props) {
 
   if (!hasNotes && !hasMedicines && !hasLabTests) return null;
 
-  const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1A2737' : '#FFFFFF';
-  const textColor = isDark ? '#E2E8F0' : '#1E293B';
+  const cardBg = isDark ? '#082E41' : '#FFFFFF';
+  const cardBorder = isDark ? '#082E41' : '#FFFFFF';
+  const textColor = isDark ? '#E2E8F0' : '#0A2F42';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
-  const itemBg = isDark ? '#080E17' : '#F8FAFC';
+  const itemBg = isDark ? '#011A29' : '#F8FAFC';
 
   return (
     <View style={[styles.card, { backgroundColor: cardBg, borderColor: cardBorder }]}>

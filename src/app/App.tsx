@@ -139,7 +139,7 @@ function SystemNavBarBackground({ skip }: { skip: boolean }) {
         right: 0,
         bottom: 0,
         height: insets.bottom,
-        backgroundColor: isDark ? '#080E17' : '#FFFFFF',
+        backgroundColor: isDark ? '#011A29' : '#FFFFFF',
       }}
     />
   );
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   slowBootTitle: {
     fontSize: 17,
     fontWeight: '800',
-    color: '#0F172A',
+    color: '#012233',
     letterSpacing: -0.2,
   },
   slowBootSubtitle: {

@@ -80,3 +80,9 @@ export const darkTheme: ThemeColors = {
   shadow: '#000000',
   isDark: true,
 };
+
+// The Medicoo Doctors identity (the app icon and splash). Use these for brand moments; screens take everything else from the theme above.
+export const brand = {
+  navy: '#012233',
+  mint: '#05E0AE',
+} as const;

@@ -66,16 +66,16 @@ export default function OfflineBanner() {
       ? '#064E3B'
       : '#065F46'
     : isDark
-    ? '#1E293B'
-    : '#0F172A';
+    ? '#0A2F42'
+    : '#012233';
 
   const pillBorder = isRecovery
     ? isDark
       ? '#059669'
       : '#10B981'
     : isDark
-    ? '#334155'
-    : '#1E293B';
+    ? '#2B4A5E'
+    : '#0A2F42';
 
   const dotColor = isRecovery ? '#34D399' : '#EF4444';
   const iconColor = isRecovery ? '#34D399' : '#F87171';
