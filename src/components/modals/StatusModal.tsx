@@ -117,10 +117,10 @@ export default function StatusModal({
 
   const glowColor = (isDark && DARK_MODE_ACCENT_OVERRIDES[status]) || GLOW_COLORS[status];
   const cardBg = isDark ? '#111B27' : '#FFFFFF';
-  const cardBorder = isDark ? '#1E2D3D' : '#E2E8F0';
+  const cardBorder = isDark ? '#10384D' : '#E2E8F0';
   const titleColor = isDark ? '#F8FAFC' : '#0F172A';
   const messageColor = isDark ? '#94A3B8' : '#64748B';
-  const secondaryBg = isDark ? '#1E2D3D' : '#F1F5F9';
+  const secondaryBg = isDark ? '#10384D' : '#F1F5F9';
   const secondaryTextColor = isDark ? '#CBD5E1' : '#334155';
 
   const glowStyle = Platform.select({

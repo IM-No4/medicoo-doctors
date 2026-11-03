@@ -258,7 +258,7 @@ export default function DoctorReferralScreen() {
               styles.codeBox,
               {
                 backgroundColor: isDark ? '#0D1520' : '#F8FAFC',
-                borderColor: isDark ? '#1E2D3D' : '#E2E8F0',
+                borderColor: isDark ? '#10384D' : '#E2E8F0',
               },
             ]}
           >
@@ -316,7 +316,7 @@ export default function DoctorReferralScreen() {
                   styles.redeemInput,
                   {
                     color: textColor,
-                    borderColor: isDark ? '#1E2D3D' : '#E2E8F0',
+                    borderColor: isDark ? '#10384D' : '#E2E8F0',
                     backgroundColor: isDark ? '#0D1520' : '#F8FAFC',
                   },
                 ]}

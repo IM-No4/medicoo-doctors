@@ -78,7 +78,7 @@ export default function NoInternetScreen({
             styles.tipBox,
             {
               backgroundColor: isDark ? '#111B27' : '#F8FAFC',
-              borderColor: isDark ? '#1E2D3D' : '#E2E8F0',
+              borderColor: isDark ? '#10384D' : '#E2E8F0',
             },
           ]}
         >

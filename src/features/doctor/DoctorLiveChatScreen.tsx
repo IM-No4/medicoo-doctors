@@ -88,7 +88,7 @@ export default function DoctorLiveChatScreen() {
   const textColor = isDark ? '#E2E8F0' : '#1E293B';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
   const inputBg = isDark ? '#0D1520' : '#FFFFFF';
-  const inputBorder = isDark ? '#1E2D3D' : '#E2E8F0';
+  const inputBorder = isDark ? '#10384D' : '#E2E8F0';
   const agentBubbleBg = isDark ? '#111B27' : '#FFFFFF';
   const userBubbleBg = '#0FBBA1';
 

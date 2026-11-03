@@ -198,7 +198,7 @@ export default function OtpVerificationScreen() {
   const textColor = isDark ? '#E2E8F0' : '#0F172A';
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
   const inputBg = isDark ? '#0D1520' : '#F1F5F9';
-  const inputBorder = isDark ? '#1E2D3D' : '#E2E8F0';
+  const inputBorder = isDark ? '#10384D' : '#E2E8F0';
 
   return (
     <View style={styles.container}>

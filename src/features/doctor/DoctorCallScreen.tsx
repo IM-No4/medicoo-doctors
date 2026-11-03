@@ -436,8 +436,8 @@ export default function DoctorCallScreen() {
                     style={[
                         styles.actionRowBackground,
                         {
-                            backgroundColor: isDark ? '#16222F' : '#FFFFFF',
-                            borderTopColor: isDark ? '#27384A' : '#E2E8F0',
+                            backgroundColor: isDark ? '#082E41' : '#FFFFFF',
+                            borderTopColor: isDark ? '#1C4A60' : '#E2E8F0',
                             paddingBottom: Math.max(insets.bottom, 16),
                         },
                     ]}
@@ -446,7 +446,7 @@ export default function DoctorCallScreen() {
                     <TouchableOpacity
                         style={[
                             styles.iconCircle,
-                            { backgroundColor: !isMicOn ? (isDark ? '#451A1A' : '#FEE2E2') : (isDark ? '#1E2D3D' : '#F1F5F9') },
+                            { backgroundColor: !isMicOn ? (isDark ? '#451A1A' : '#FEE2E2') : (isDark ? '#10384D' : '#F1F5F9') },
                         ]}
                         onPress={toggleMic}
                     >
@@ -458,7 +458,7 @@ export default function DoctorCallScreen() {
                         <TouchableOpacity
                             style={[
                                 styles.iconCircle,
-                                { backgroundColor: !isVideoOn ? (isDark ? '#451A1A' : '#FEE2E2') : (isDark ? '#1E2D3D' : '#F1F5F9') },
+                                { backgroundColor: !isVideoOn ? (isDark ? '#451A1A' : '#FEE2E2') : (isDark ? '#10384D' : '#F1F5F9') },
                             ]}
                             onPress={toggleVideo}
                         >
@@ -480,7 +480,7 @@ export default function DoctorCallScreen() {
                         <TouchableOpacity
                             style={[
                                 styles.iconCircle,
-                                { backgroundColor: isDark ? '#1E2D3D' : '#F1F5F9' },
+                                { backgroundColor: isDark ? '#10384D' : '#F1F5F9' },
                                 !isVideoOn && { opacity: 0.35 },
                             ]}
                             onPress={toggleCameraSwitch}
@@ -494,7 +494,7 @@ export default function DoctorCallScreen() {
                     <TouchableOpacity
                         style={[
                             styles.iconCircle,
-                            { backgroundColor: isSpeakerOn ? (isDark ? '#0F2F2C' : '#E6FAF6') : (isDark ? '#1E2D3D' : '#F1F5F9') },
+                            { backgroundColor: isSpeakerOn ? (isDark ? '#0F2F2C' : '#E6FAF6') : (isDark ? '#10384D' : '#F1F5F9') },
                         ]}
                         onPress={toggleSpeaker}
                     >

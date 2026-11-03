@@ -369,7 +369,7 @@ export default function DoctorReviewsScreen() {
               <View
                 style={[
                   styles.emptyIconCircle,
-                  { backgroundColor: isDark ? '#16222F' : '#F1F5F9' },
+                  { backgroundColor: isDark ? '#082E41' : '#F1F5F9' },
                 ]}
               >
                 <MessageSquare size={24} color={subTextColor} />

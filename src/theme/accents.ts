@@ -13,7 +13,7 @@
 export type AccentKind = 'green' | 'blue' | 'violet' | 'sky' | 'amber' | 'slate';
 
 const ACCENTS: Record<AccentKind, { light: { fg: string; bg: string }; dark: { fg: string; bg: string } }> = {
-  green: { light: { fg: '#0FBBA1', bg: '#E6FAF6' }, dark: { fg: '#2DD4BF', bg: '#0E2924' } },
+  green: { light: { fg: '#0FBBA1', bg: '#E6FAF6' }, dark: { fg: '#05E0AE', bg: '#07303A' } },
   blue: { light: { fg: '#3B82F6', bg: '#EAF2FF' }, dark: { fg: '#60A5FA', bg: '#12213A' } },
   violet: { light: { fg: '#8B5CF6', bg: '#F3EFFF' }, dark: { fg: '#A78BFA', bg: '#1E1838' } },
   sky: { light: { fg: '#0EA5E9', bg: '#E8F6FD' }, dark: { fg: '#38BDF8', bg: '#10243A' } },

@@ -181,7 +181,7 @@ export default function DoctorSupportScreen() {
   const subTextColor = isDark ? '#94A3B8' : '#64748B';
   const dividerColor = isDark ? '#1A2636' : '#F1F5F9';
   const inputBg = isDark ? '#0D1520' : '#F8FAFC';
-  const inputBorder = isDark ? '#1E2D3D' : '#E2E8F0';
+  const inputBorder = isDark ? '#10384D' : '#E2E8F0';
   const A = { green: accent('green', isDark), blue: accent('blue', isDark), violet: accent('violet', isDark), amber: accent('amber', isDark) };
 
   useEffect(() => {

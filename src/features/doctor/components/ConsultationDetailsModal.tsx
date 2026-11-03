@@ -415,7 +415,7 @@ export default function ConsultationDetailsModal({
     const textColor = isDark ? '#E2E8F0' : '#0F172A';
     const subTextColor = isDark ? '#94A3B8' : '#64748B';
     const inputBg = isDark ? '#0D1520' : '#F1F5F9';
-    const inputBorder = isDark ? '#1E2D3D' : '#E2E8F0';
+    const inputBorder = isDark ? '#10384D' : '#E2E8F0';
 
     const titleText = mode === 'chat_prescription'
         ? 'Digital Prescription'
@@ -937,7 +937,7 @@ function AddMedicineForm({
     const textColor = isDark ? '#E2E8F0' : '#0F172A';
     const subTextColor = isDark ? '#94A3B8' : '#64748B';
     const inputBg = isDark ? '#0D1520' : '#F1F5F9';
-    const inputBorder = isDark ? '#1E2D3D' : '#E2E8F0';
+    const inputBorder = isDark ? '#10384D' : '#E2E8F0';
 
     const handleSelectMedicine = (med: { sku: number; productName: string }) => {
         const config = getMedicineFormConfig(med.productName);
@@ -1014,7 +1014,7 @@ function AddMedicineForm({
                     {results.map(r => (
                         <TouchableOpacity
                             key={r.sku}
-                            style={[styles.resultItemRow, { borderBottomColor: isDark ? '#1E2D3D' : '#F1F5F9' }]}
+                            style={[styles.resultItemRow, { borderBottomColor: isDark ? '#10384D' : '#F1F5F9' }]}
                             onPress={() => handleSelectMedicine({ sku: r.sku, productName: r.productName })}
                             activeOpacity={0.7}
                         >
@@ -1231,7 +1231,7 @@ function AddLabTestForm({
     const textColor = isDark ? '#E2E8F0' : '#0F172A';
     const subTextColor = isDark ? '#94A3B8' : '#64748B';
     const inputBg = isDark ? '#0D1520' : '#F1F5F9';
-    const inputBorder = isDark ? '#1E2D3D' : '#E2E8F0';
+    const inputBorder = isDark ? '#10384D' : '#E2E8F0';
 
     useEffect(() => {
         if (selected || query.trim().length < 2) {
@@ -1301,7 +1301,7 @@ function AddLabTestForm({
                     {results.map(r => (
                         <TouchableOpacity
                             key={r.testName}
-                            style={[styles.resultItemRow, { borderBottomColor: isDark ? '#1E2D3D' : '#F1F5F9' }]}
+                            style={[styles.resultItemRow, { borderBottomColor: isDark ? '#10384D' : '#F1F5F9' }]}
                             onPress={() => setSelected(r.testName)}
                             activeOpacity={0.7}
                         >

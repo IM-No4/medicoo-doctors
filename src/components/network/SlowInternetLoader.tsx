@@ -173,7 +173,7 @@ export default function SlowInternetLoader({
                   style={[
                     styles.smallRetryBtn,
                     {
-                      backgroundColor: isDark ? '#1E2D3D' : '#FFFFFF',
+                      backgroundColor: isDark ? '#10384D' : '#FFFFFF',
                       borderColor: isDark ? '#334155' : '#E2E8F0',
                     },
                   ]}
