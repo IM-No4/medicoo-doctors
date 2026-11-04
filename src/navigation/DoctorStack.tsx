@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 
 import AppointmentRequestsScreen from '../features/doctor/AppointmentRequestsScreen';
 import DeleteAccountScreen from '../features/doctor/DeleteAccountScreen';
@@ -21,6 +22,9 @@ import DoctorSettingsScreen from '../features/doctor/DoctorSettingsScreen';
 import DoctorSupportScreen from '../features/doctor/DoctorSupportScreen';
 import ManageAvailabilityScreen from '../features/doctor/ManageAvailabilityScreen';
 import PatientConsultationDetailScreen from '../features/doctor/PatientConsultationDetailScreen';
+import { doctorNeedsOnboarding } from '../features/doctor/onboardingGate';
+import { getDoctorProfile } from '../services/api/user.api';
+import { useTheme } from '../theme/ThemeContext';
 import DoctorBottomTabBar from './DoctorBottomTabBar';
 
 const Tab = createBottomTabNavigator();
@@ -41,8 +45,28 @@ function DoctorTabs() {
 }
 
 export default function DoctorStack() {
+  const { theme } = useTheme();
+  // A doctor who has not been through onboarding yet (a brand-new number, or an application that is still a draft, pending or rejected) opens on
+  // the onboarding screen instead of the dashboard. If the profile cannot be read the doctor is let in as before.
+  const [entry, setEntry] = useState<'checking' | 'DoctorTabs' | 'DoctorOnboarding'>('checking');
+  useEffect(() => {
+    let alive = true;
+    getDoctorProfile()
+      .then((profile) => { if (alive) setEntry(doctorNeedsOnboarding(profile) ? 'DoctorOnboarding' : 'DoctorTabs'); })
+      .catch(() => { if (alive) setEntry('DoctorTabs'); });
+    return () => { alive = false; };
+  }, []);
+
+  if (entry === 'checking') {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.background }}>
+        <ActivityIndicator size="large" color={theme.primary} />
+      </View>
+    );
+  }
+
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
+    <Stack.Navigator initialRouteName={entry} screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
       <Stack.Screen name="DoctorTabs" component={DoctorTabs} />
       <Stack.Screen name="DoctorDashboard" component={DoctorDashboardScreen} />
       <Stack.Screen name="DoctorOnboarding" component={DoctorOnboardingScreen} />

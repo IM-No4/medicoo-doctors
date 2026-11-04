@@ -65,6 +65,7 @@ import { AppDispatch, RootState } from '../../redux/store';
 import { API_BASE_URL } from '../../services/api/client';
 import { applyAsDoctor, getDoctorProfile, updateDoctorDraft } from '../../services/api/user.api';
 import { useLogout } from '../auth/useLogout';
+import { doctorNeedsOnboarding } from './onboardingGate';
 
 const DOCTOR_TYPES = ['MBBS', 'MD', 'MS', 'BDS', 'MDS', 'BAMS', 'BHMS', 'Specialist', 'Other'];
 const SPECIALIZATIONS = [
@@ -393,7 +394,9 @@ export default function DoctorOnboardingScreen() {
                 );
 
                 const isEdit = Boolean(route?.params?.isEdit);
-                if ((status === 'approved' || approvedCheck) && !isEdit) {
+                // Only a doctor with an approved profile leaves for the dashboard. A draft, a pending or a rejected application stays here (the
+                // pending one sees the status screen with Refresh), which is also where a doctor who just signed in with a new number lands.
+                if (!doctorNeedsOnboarding(profile) && !isEdit) {
                     dispatch(loadProfileFromServer());
                     navigation.replace('DoctorTabs');
                     return;
