@@ -84,6 +84,8 @@ const IDENTITY_PROOF_TYPES = [
     'Drivers_License',
     'Passport'
 ];
+// The backend stores the ID type as one of these exact values (Drivers_License), so only what is shown changes.
+const optionLabel = (value: string) => (value === 'Drivers_License' ? 'Driving License' : value);
 const CERTIFICATE_TYPES = ['Degree', 'Diploma', 'Fellowship', 'Membership', 'Award', 'Other'];
 
 const SPOKEN_LANGUAGES = [
@@ -1512,7 +1514,7 @@ export default function DoctorOnboardingScreen() {
                                 ]}
                                 numberOfLines={1}
                             >
-                                {formData.identityProofType || 'Select ID Type'}
+                                {formData.identityProofType ? optionLabel(formData.identityProofType) : 'Select ID Type'}
                             </Text>
                         </View>
                         <ChevronDown size={18} color={fieldErrors.identityProofType ? palette.red500 : palette.slate400} />
@@ -1910,7 +1912,7 @@ export default function DoctorOnboardingScreen() {
                 <View style={styles.reviewRow}>
                     <Text style={styles.reviewFieldLabel}>Identity Document</Text>
                     <Text style={styles.reviewFieldValue}>
-                        {formData.identityProofType || 'ID'} - {formData.identityProofNumber || 'N/A'}
+                        {optionLabel(formData.identityProofType || 'ID')} - {formData.identityProofNumber || 'N/A'}
                     </Text>
                 </View>
 
@@ -2105,7 +2107,7 @@ export default function DoctorOnboardingScreen() {
                         <View style={styles.reviewRow}>
                             <Text style={styles.reviewFieldLabel}>Government ID</Text>
                             <Text style={styles.reviewFieldValue}>
-                                {formData.identityProofType || 'ID Proof'} {formData.identityProofNumber ? `(${formData.identityProofNumber})` : ''}
+                                {optionLabel(formData.identityProofType || 'ID Proof')} {formData.identityProofNumber ? `(${formData.identityProofNumber})` : ''}
                             </Text>
                         </View>
                     </View>
@@ -2369,7 +2371,7 @@ export default function DoctorOnboardingScreen() {
                                             activeOpacity={0.7}
                                         >
                                             <Text style={[styles.optionText, isSelected && styles.selectedOptionText]}>
-                                                {option}
+                                                {optionLabel(option)}
                                             </Text>
                                             {isSelected && (
                                                 <View style={styles.selectedCheckCircle}>
