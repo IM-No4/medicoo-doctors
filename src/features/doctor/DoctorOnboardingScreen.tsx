@@ -375,6 +375,9 @@ export default function DoctorOnboardingScreen() {
             const profile = await getDoctorProfile();
             if (profile) {
                 const source = profile.pendingProfile || profile._doc || profile;
+                // The identity / registration details are saved under the profile's top-level `verification` (the pending profile has none of its own),
+                // so read both: otherwise a submitted application showed an empty ID type, number and document.
+                const verificationData = { ...(profile.verification || {}), ...(source.verification || {}) };
                 const isDoc = Boolean(profile.isDoctor || source.isDoctor || profile._id);
                 const status = profile.approvalStatus || (isDoc && !profile.rejectionReason ? 'approved' : 'not-applied');
                 setApprovalStatus(status);
@@ -434,40 +437,40 @@ export default function DoctorOnboardingScreen() {
                     description: source.description || '',
                     registrationNumber: source.registrationNumber || '',
 
-                    nmcRegistrationNumber: source.nmcRegistrationNumber || source.verification?.nmcRegistrationNumber || source.registrationNumber || '',
-                    stateMedicalCouncil: source.stateMedicalCouncil || source.verification?.stateMedicalCouncil || '',
-                    stateCouncilRegistrationNumber: source.stateCouncilRegistrationNumber || source.verification?.stateCouncilRegistrationNumber || '',
-                    stateCouncilValidTill: (source.stateCouncilValidTill || source.verification?.stateCouncilValidTill)
-                        ? new Date(source.stateCouncilValidTill || source.verification?.stateCouncilValidTill).toLocaleDateString('en-GB')
+                    nmcRegistrationNumber: source.nmcRegistrationNumber || verificationData.nmcRegistrationNumber || source.registrationNumber || '',
+                    stateMedicalCouncil: source.stateMedicalCouncil || verificationData.stateMedicalCouncil || '',
+                    stateCouncilRegistrationNumber: source.stateCouncilRegistrationNumber || verificationData.stateCouncilRegistrationNumber || '',
+                    stateCouncilValidTill: (source.stateCouncilValidTill || verificationData.stateCouncilValidTill)
+                        ? new Date(source.stateCouncilValidTill || verificationData.stateCouncilValidTill).toLocaleDateString('en-GB')
                         : '',
 
-                    identityProofType: source.identityProofType || source.verification?.identityProofType || '',
-                    identityProofNumber: source.identityProofNumber || source.verification?.identityProofNumber || '',
-                    identityProofValidTill: (source.identityProofValidTill || source.verification?.identityProofValidTill)
-                        ? new Date(source.identityProofValidTill || source.verification?.identityProofValidTill).toLocaleDateString('en-GB')
+                    identityProofType: source.identityProofType || verificationData.identityProofType || '',
+                    identityProofNumber: source.identityProofNumber || verificationData.identityProofNumber || '',
+                    identityProofValidTill: (source.identityProofValidTill || verificationData.identityProofValidTill)
+                        ? new Date(source.identityProofValidTill || verificationData.identityProofValidTill).toLocaleDateString('en-GB')
                         : '',
-                    identityProofDocument: normalizeFile(source.identityProofDocument || source.verification?.identityProofDocument, 'ID Proof'),
+                    identityProofDocument: normalizeFile(source.identityProofDocument || verificationData.identityProofDocument, 'ID Proof'),
 
-                    cmeCertificate: normalizeFile(source.cmeCertificate || source.verification?.cmeCertificate, 'CME Certificate'),
-                    cmeIssuedAt: (source.cmeIssuedAt || source.verification?.cmeIssuedAt)
-                        ? new Date(source.cmeIssuedAt || source.verification?.cmeIssuedAt).toLocaleDateString('en-GB')
+                    cmeCertificate: normalizeFile(source.cmeCertificate || verificationData.cmeCertificate, 'CME Certificate'),
+                    cmeIssuedAt: (source.cmeIssuedAt || verificationData.cmeIssuedAt)
+                        ? new Date(source.cmeIssuedAt || verificationData.cmeIssuedAt).toLocaleDateString('en-GB')
                         : '',
-                    cmeValidTill: (source.cmeValidTill || source.verification?.cmeValidTill)
-                        ? new Date(source.cmeValidTill || source.verification?.cmeValidTill).toLocaleDateString('en-GB')
+                    cmeValidTill: (source.cmeValidTill || verificationData.cmeValidTill)
+                        ? new Date(source.cmeValidTill || verificationData.cmeValidTill).toLocaleDateString('en-GB')
                         : '',
 
                     hasMalpracticeHistory: source.hasMalpracticeHistory === undefined
-                        ? (source.verification?.hasMalpracticeHistory || false)
+                        ? (verificationData.hasMalpracticeHistory || false)
                         : !!source.hasMalpracticeHistory,
-                    malpracticeNotes: source.malpracticeNotes || source.verification?.malpracticeNotes || '',
+                    malpracticeNotes: source.malpracticeNotes || verificationData.malpracticeNotes || '',
 
                     certificates: Array.isArray(source.certificates)
                         ? source.certificates
                             .filter((cert: any) => {
                                 const uri = typeof cert === 'string' ? cert : cert.file?.uri || cert.uri;
                                 const mainDocs = [
-                                    source.identityProofDocument || source.verification?.identityProofDocument,
-                                    source.cmeCertificate || source.verification?.cmeCertificate,
+                                    source.identityProofDocument || verificationData.identityProofDocument,
+                                    source.cmeCertificate || verificationData.cmeCertificate,
                                     source.uniformPhoto
                                 ].map(doc => doc?.uri || doc);
                                 return !mainDocs.includes(uri);
