@@ -1,4 +1,4 @@
-import { ArrowRight, Check } from 'lucide-react-native';
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Modal,
@@ -188,14 +188,37 @@ export default function WelcomeTourModal({ visible, doctorName, onClose }: Props
                 />
               ))}
             </View>
-            <TouchableOpacity
-              style={[styles.next, { backgroundColor: theme.primary }]}
-              activeOpacity={0.85}
-              onPress={() => (last ? onClose() : goTo(index + 1))}
-            >
-              <Text style={styles.nextText}>{last ? 'Go to my dashboard' : 'Next'}</Text>
-              {!last && <ArrowRight size={17} color={palette.white} />}
-            </TouchableOpacity>
+            <View style={styles.controls}>
+              <TouchableOpacity
+                style={[styles.round, { borderColor: theme.border, opacity: index === 0 ? 0.35 : 1 }]}
+                activeOpacity={0.7}
+                disabled={index === 0}
+                onPress={() => goTo(index - 1)}
+                accessibilityLabel="Previous"
+              >
+                <ArrowLeft size={18} color={theme.textSecondary} />
+              </TouchableOpacity>
+              {last ? (
+                <TouchableOpacity
+                  style={[styles.done, { backgroundColor: theme.primary }]}
+                  activeOpacity={0.85}
+                  onPress={onClose}
+                  accessibilityLabel="Finish the tour"
+                >
+                  <Check size={17} color={palette.white} strokeWidth={3} />
+                  <Text style={styles.doneText}>Done</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={[styles.round, styles.roundFilled, { backgroundColor: theme.primary }]}
+                  activeOpacity={0.85}
+                  onPress={() => goTo(index + 1)}
+                  accessibilityLabel="Next"
+                >
+                  <ArrowRight size={18} color={palette.white} />
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
         </View>
       </View>
@@ -207,32 +230,29 @@ const styles = StyleSheet.create({
   overlay: { flex: 1, backgroundColor: palette.blackA55, alignItems: 'center', justifyContent: 'center' },
   card: { borderRadius: 14, overflow: 'hidden' },
   header: {
-    height: 52,
-    paddingHorizontal: 20,
+    height: 60,
+    paddingHorizontal: 28,
+    paddingTop: 6,
     flexDirection: 'row',
     alignItems: 'center',
   },
   headerSide: { width: 44 },
   eyebrow: { flex: 1, textAlign: 'center', fontSize: 18, fontWeight: '800', letterSpacing: -0.2 },
   step: { width: 44, textAlign: 'right', fontSize: 13, fontWeight: '600' },
-  page: { paddingHorizontal: 22, paddingTop: 20, paddingBottom: 12 },
+  page: { paddingHorizontal: 28, paddingTop: 16, paddingBottom: 16 },
   title: { fontSize: 19, fontWeight: '800', letterSpacing: -0.3, lineHeight: 25 },
   text: { fontSize: 13.5, lineHeight: 20, marginTop: 8 },
   tips: { marginTop: 18, gap: 8 },
   tipRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, padding: 12, borderRadius: 10 },
   tipCheck: { width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginTop: 0 },
   tipText: { flex: 1, fontSize: 13, lineHeight: 19 },
-  footer: { paddingHorizontal: 22, paddingTop: 10, paddingBottom: 20 },
-  dots: { flexDirection: 'row', justifyContent: 'center', gap: 6, marginBottom: 14 },
+  footer: { paddingHorizontal: 28, paddingTop: 12, paddingBottom: 26, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  dots: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  controls: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   dot: { width: 7, height: 7, borderRadius: 4 },
   dotActive: { width: 22 },
-  next: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    height: 52,
-    borderRadius: 12,
-  },
-  nextText: { color: palette.white, fontSize: 16, fontWeight: '700' },
+  round: { width: 42, height: 42, borderRadius: 21, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
+  roundFilled: { borderWidth: 0 },
+  done: { height: 42, paddingHorizontal: 18, borderRadius: 21, flexDirection: 'row', alignItems: 'center', gap: 6 },
+  doneText: { color: palette.white, fontSize: 14.5, fontWeight: '700' },
 });
