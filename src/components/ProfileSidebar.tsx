@@ -58,6 +58,8 @@ interface Props {
   isOnline: boolean;
   onToggleOnline?: (val: boolean) => void;
   onLogout: () => void;
+  // The doctor's real average rating; 0 / missing means no reviews yet.
+  averageRating?: number;
 }
 
 export default function ProfileSidebar({
@@ -69,6 +71,7 @@ export default function ProfileSidebar({
   isOnline,
   onToggleOnline,
   onLogout,
+  averageRating = 0,
 }: Props) {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
@@ -401,7 +404,9 @@ export default function ProfileSidebar({
             </View>
             <View style={styles.twinTextCol}>
               <Text style={[styles.twinTitle, { color: textColor }]}>Reviews</Text>
-              <Text style={styles.twinSubtitleAmber}>5.0 ★</Text>
+              <Text style={styles.twinSubtitleAmber}>
+                {averageRating > 0 ? `${averageRating.toFixed(1)} ★` : 'No reviews yet'}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>

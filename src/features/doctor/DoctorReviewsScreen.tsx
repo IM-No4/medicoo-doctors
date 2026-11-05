@@ -216,7 +216,7 @@ export default function DoctorReviewsScreen() {
           <View style={styles.ratingCardContent}>
             <View style={styles.ratingLeftCol}>
               <Text style={[styles.bigScoreText, { color: textColor }]}>
-                {averageRating > 0 ? averageRating.toFixed(1) : '5.0'}
+                {averageRating > 0 ? averageRating.toFixed(1) : '—'}
               </Text>
               <View style={styles.starsRow}>
                 {[1, 2, 3, 4, 5].map((s) => (
@@ -225,7 +225,7 @@ export default function DoctorReviewsScreen() {
                     size={16}
                     color={palette.amber500}
                     fill={
-                      s <= Math.round(averageRating || 5)
+                      s <= Math.round(averageRating)
                         ? palette.amber500
                         : 'transparent'
                     }

@@ -1215,6 +1215,7 @@ export default function DoctorDashboardScreen() {
         isOnline={isOnline}
         onToggleOnline={handleToggleOnline}
         onLogout={handleLogout}
+        averageRating={reviewsSummary?.averageRating || 0}
       />
     </View>
   );
