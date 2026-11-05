@@ -283,7 +283,7 @@ export default function DoctorReviewsScreen() {
                 5-Star Ratio
               </Text>
               <Text style={styles.twinSubtitleTeal}>
-                {fiveStarPercent > 0 ? `${fiveStarPercent}%` : '100%'}
+                {totalReviews > 0 ? `${fiveStarPercent}%` : '—'}
               </Text>
             </View>
           </View>
