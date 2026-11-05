@@ -1203,10 +1203,6 @@ export default function DoctorDashboardScreen() {
         visible={tourVisible}
         doctorName={doctorName}
         onClose={closeWelcomeTour}
-        onNavigate={(screen) => {
-          closeWelcomeTour();
-          navigateTo(screen);
-        }}
       />
 
       {/* Profile Sidebar */}

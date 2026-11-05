@@ -1,4 +1,3 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import {
   ArrowRight,
   Banknote,
@@ -9,7 +8,6 @@ import {
   Power,
   Sparkles,
   Video,
-  X,
 } from 'lucide-react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -23,6 +21,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { palette } from '../../theme/palette';
 import { useTheme } from '../../theme/ThemeContext';
@@ -33,15 +32,14 @@ interface TourCard {
   title: string;
   body: string;
   tips: string[];
-  cta?: { label: string; screen: string };
 }
 
 const buildCards = (firstName: string): TourCard[] => [
   {
     key: 'welcome',
     Icon: Sparkles,
-    title: firstName ? `Welcome to Medicoo, Dr. ${firstName}` : 'Welcome to Medicoo',
-    body: 'Your profile is verified and patients can now discover you. Here is a quick tour so you are ready for your first consultation.',
+    title: firstName ? `You're verified, Dr. ${firstName}` : "You're verified",
+    body: 'Your profile is approved and patients can now discover you. Here is a quick tour so you are ready for your first consultation.',
     tips: [
       'It takes about a minute',
       'Every card has a tip you can act on right away',
@@ -63,13 +61,12 @@ const buildCards = (firstName: string): TourCard[] => [
     key: 'hours',
     Icon: CalendarClock,
     title: 'Set your weekly hours',
-    body: 'Tell patients when you usually consult so they can plan around you.',
+    body: 'Tell patients when you usually consult so they can plan around you. You will find this in the Availability tab.',
     tips: [
       'Add the days and times that suit you',
       'Requests outside your hours are not blocked, since a patient may need care urgently',
       'You can charge an extra percentage (up to 50%) for those requests',
     ],
-    cta: { label: 'Open availability', screen: 'ManageAvailability' },
   },
   {
     key: 'requests',
@@ -81,7 +78,6 @@ const buildCards = (firstName: string): TourCard[] => [
       'A consultation is confirmed once you approve it and the patient pays',
       'Quick replies mean happier patients and better reviews',
     ],
-    cta: { label: 'Open appointments', screen: 'ManageAppointments' },
   },
   {
     key: 'consult',
@@ -98,13 +94,12 @@ const buildCards = (firstName: string): TourCard[] => [
     key: 'earnings',
     Icon: Banknote,
     title: 'Get paid',
-    body: 'There is no wallet, recharge or upfront deposit to receive patients.',
+    body: 'There is no wallet, recharge or upfront deposit to receive patients. Payouts are managed in the Earnings tab.',
     tips: [
-      'Add a bank account or UPI ID in the Earnings tab',
+      'Add a bank account or UPI ID',
       'Choose an automatic payout: every week or every month',
       'Track every consultation and payout in one place',
     ],
-    cta: { label: 'Open earnings', screen: 'DoctorEarnings' },
   },
   {
     key: 'done',
@@ -123,15 +118,19 @@ interface Props {
   visible: boolean;
   doctorName?: string;
   onClose: () => void;
-  onNavigate: (screen: string) => void;
 }
 
-export default function WelcomeTourModal({ visible, doctorName, onClose, onNavigate }: Props) {
+// Shown once, the first time a newly approved doctor reaches the dashboard. It is a required walkthrough: no skip, no close button,
+// and the Android back button does nothing; the last card's button is the way out.
+export default function WelcomeTourModal({ visible, doctorName, onClose }: Props) {
   const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
-  const cardWidth = Math.min(width - 40, 420);
+  const cardWidth = Math.min(width - 32, 440);
+  const cardHeight = Math.min(height - insets.top - insets.bottom - 24, Math.max(height * 0.82, 520));
   const scrollRef = useRef<ScrollView>(null);
   const [index, setIndex] = useState(0);
+  const [pageHeight, setPageHeight] = useState(0);
 
   const firstName = (doctorName || '').replace(/^dr\.?\s+/i, '').trim().split(/\s+/)[0] || '';
   const cards = buildCards(firstName);
@@ -151,49 +150,54 @@ export default function WelcomeTourModal({ visible, doctorName, onClose, onNavig
   };
 
   return (
-    <Modal visible={visible} transparent animationType="fade" statusBarTranslucent onRequestClose={onClose}>
+    <Modal visible={visible} transparent animationType="fade" statusBarTranslucent onRequestClose={() => undefined}>
       <View style={styles.overlay}>
-        <View style={[styles.card, { width: cardWidth, maxHeight: height * 0.86, backgroundColor: theme.card }]}>
-          <ScrollView
-            ref={scrollRef}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            onMomentumScrollEnd={onScrollEnd}
-            scrollEventThrottle={16}
-            style={{ flexGrow: 0 }}
-          >
-            {cards.map((c) => (
-              <View key={c.key} style={{ width: cardWidth }}>
-                <LinearGradient colors={[palette.navy, palette.navyText]} style={styles.hero}>
-                  <View style={styles.heroGlow} />
-                  <View style={styles.iconTile}>
-                    <c.Icon size={34} color={palette.mint} strokeWidth={2.2} />
-                  </View>
-                </LinearGradient>
-                <ScrollView style={styles.body} contentContainerStyle={{ paddingBottom: 6 }} showsVerticalScrollIndicator={false} nestedScrollEnabled>
-                  <Text style={[styles.title, { color: theme.text }]}>{c.title}</Text>
-                  <Text style={[styles.text, { color: theme.textSecondary }]}>{c.body}</Text>
-                  <View style={styles.tips}>
-                    {c.tips.map((tip) => (
-                      <View key={tip} style={styles.tipRow}>
-                        <View style={[styles.tipCheck, { backgroundColor: theme.primaryLight }]}>
-                          <Check size={12} color={theme.primary} strokeWidth={3.2} />
+        <View style={[styles.card, { width: cardWidth, height: cardHeight, backgroundColor: theme.card }]}>
+          <View style={styles.header}>
+            <Text style={styles.eyebrow}>WELCOME TO MEDICOO</Text>
+            <Text style={styles.step}>
+              {index + 1} / {cards.length}
+            </Text>
+          </View>
+
+          <View style={{ flex: 1 }} onLayout={(e) => setPageHeight(e.nativeEvent.layout.height)}>
+            {pageHeight > 0 && (
+              <ScrollView
+                ref={scrollRef}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onMomentumScrollEnd={onScrollEnd}
+                scrollEventThrottle={16}
+              >
+                {cards.map((c) => (
+                  <ScrollView
+                    key={c.key}
+                    style={{ width: cardWidth, height: pageHeight }}
+                    contentContainerStyle={styles.page}
+                    showsVerticalScrollIndicator={false}
+                    nestedScrollEnabled
+                  >
+                    <View style={[styles.iconTile, { backgroundColor: theme.primaryLight }]}>
+                      <c.Icon size={28} color={theme.primary} strokeWidth={2.2} />
+                    </View>
+                    <Text style={[styles.title, { color: theme.text }]}>{c.title}</Text>
+                    <Text style={[styles.text, { color: theme.textSecondary }]}>{c.body}</Text>
+                    <View style={styles.tips}>
+                      {c.tips.map((tip) => (
+                        <View key={tip} style={[styles.tipRow, { backgroundColor: theme.cardSecondary }]}>
+                          <View style={[styles.tipCheck, { backgroundColor: theme.primary }]}>
+                            <Check size={12} color={palette.white} strokeWidth={3.4} />
+                          </View>
+                          <Text style={[styles.tipText, { color: theme.text }]}>{tip}</Text>
                         </View>
-                        <Text style={[styles.tipText, { color: theme.text }]}>{tip}</Text>
-                      </View>
-                    ))}
-                  </View>
-                  {c.cta && (
-                    <TouchableOpacity style={styles.cta} activeOpacity={0.7} onPress={() => onNavigate(c.cta!.screen)}>
-                      <Text style={[styles.ctaText, { color: theme.primary }]}>{c.cta.label}</Text>
-                      <ArrowRight size={15} color={theme.primary} />
-                    </TouchableOpacity>
-                  )}
-                </ScrollView>
-              </View>
-            ))}
-          </ScrollView>
+                      ))}
+                    </View>
+                  </ScrollView>
+                ))}
+              </ScrollView>
+            )}
+          </View>
 
           <View style={styles.footer}>
             <View style={styles.dots}>
@@ -204,28 +208,15 @@ export default function WelcomeTourModal({ visible, doctorName, onClose, onNavig
                 />
               ))}
             </View>
-            <View style={styles.actions}>
-              {last ? (
-                <View style={{ flex: 1 }} />
-              ) : (
-                <TouchableOpacity onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                  <Text style={[styles.skip, { color: theme.textMuted }]}>Skip tour</Text>
-                </TouchableOpacity>
-              )}
-              <TouchableOpacity
-                style={[styles.next, { backgroundColor: theme.primary }]}
-                activeOpacity={0.85}
-                onPress={() => (last ? onClose() : goTo(index + 1))}
-              >
-                <Text style={styles.nextText}>{last ? 'Go to my dashboard' : 'Next'}</Text>
-                {!last && <ArrowRight size={16} color={palette.white} />}
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={[styles.next, { backgroundColor: theme.primary }]}
+              activeOpacity={0.85}
+              onPress={() => (last ? onClose() : goTo(index + 1))}
+            >
+              <Text style={styles.nextText}>{last ? 'Go to my dashboard' : 'Next'}</Text>
+              {!last && <ArrowRight size={17} color={palette.white} />}
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity style={styles.close} onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-            <X size={18} color={palette.white} />
-          </TouchableOpacity>
         </View>
       </View>
     </Modal>
@@ -234,62 +225,36 @@ export default function WelcomeTourModal({ visible, doctorName, onClose, onNavig
 
 const styles = StyleSheet.create({
   overlay: { flex: 1, backgroundColor: palette.blackA55, alignItems: 'center', justifyContent: 'center' },
-  card: { borderRadius: 28, overflow: 'hidden' },
-  hero: { height: 150, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
-  heroGlow: {
-    position: 'absolute',
-    width: 220,
-    height: 220,
-    borderRadius: 110,
-    backgroundColor: palette.whiteA18,
-    top: -80,
-    right: -60,
-  },
-  iconTile: {
-    width: 76,
-    height: 76,
-    borderRadius: 24,
-    backgroundColor: palette.whiteA18,
-    borderWidth: 1,
-    borderColor: palette.whiteA25,
+  card: { borderRadius: 14, overflow: 'hidden' },
+  header: {
+    height: 52,
+    paddingHorizontal: 20,
+    backgroundColor: palette.navy,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
-  body: { paddingHorizontal: 24, paddingTop: 20, maxHeight: 300 },
-  title: { fontSize: 21, fontWeight: '800', letterSpacing: -0.3, textAlign: 'center' },
-  text: { fontSize: 14, lineHeight: 21, textAlign: 'center', marginTop: 8 },
-  tips: { marginTop: 18, gap: 11 },
-  tipRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
-  tipCheck: { width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
-  tipText: { flex: 1, fontSize: 13.5, lineHeight: 19 },
-  cta: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 16, paddingVertical: 6 },
-  ctaText: { fontSize: 14, fontWeight: '700' },
-  footer: { paddingHorizontal: 24, paddingTop: 14, paddingBottom: 22 },
-  dots: { flexDirection: 'row', justifyContent: 'center', gap: 6, marginBottom: 16 },
+  eyebrow: { color: palette.mint, fontSize: 12, fontWeight: '800', letterSpacing: 1.6 },
+  step: { color: palette.whiteA70, fontSize: 12.5, fontWeight: '700' },
+  page: { paddingHorizontal: 22, paddingTop: 26, paddingBottom: 12 },
+  iconTile: { width: 60, height: 60, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
+  title: { fontSize: 24, fontWeight: '800', letterSpacing: -0.4, lineHeight: 30 },
+  text: { fontSize: 15, lineHeight: 23, marginTop: 10 },
+  tips: { marginTop: 22, gap: 10 },
+  tipRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, padding: 14, borderRadius: 10 },
+  tipCheck: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
+  tipText: { flex: 1, fontSize: 14.5, lineHeight: 21 },
+  footer: { paddingHorizontal: 22, paddingTop: 10, paddingBottom: 20 },
+  dots: { flexDirection: 'row', justifyContent: 'center', gap: 6, marginBottom: 14 },
   dot: { width: 7, height: 7, borderRadius: 4 },
-  dotActive: { width: 20 },
-  actions: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 16 },
-  skip: { fontSize: 14, fontWeight: '600' },
+  dotActive: { width: 22 },
   next: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    paddingHorizontal: 22,
-    height: 48,
-    borderRadius: 14,
-    minWidth: 120,
+    height: 52,
+    borderRadius: 12,
   },
-  nextText: { color: palette.white, fontSize: 15, fontWeight: '700' },
-  close: {
-    position: 'absolute',
-    top: 14,
-    right: 14,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: palette.whiteA18,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  nextText: { color: palette.white, fontSize: 16, fontWeight: '700' },
 });
