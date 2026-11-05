@@ -47,6 +47,7 @@ import {
     KeyboardAvoidingView,
     Modal,
     Platform,
+    RefreshControl,
     ScrollView,
     StatusBar,
     StyleSheet,
@@ -2088,6 +2089,8 @@ export default function DoctorOnboardingScreen() {
                     style={styles.scrollArea}
                     contentContainerStyle={[styles.contentContainer, { paddingBottom: Math.max(insets.bottom, 20) + 20 }]}
                     showsVerticalScrollIndicator={false}
+                    // pull down to check whether the application has been reviewed (an approved doctor is taken to the dashboard)
+                    refreshControl={<RefreshControl refreshing={refreshingStatus} onRefresh={handleRefreshStatus} tintColor={palette.primary} colors={[palette.primary]} />}
                 >
                     {/* Hero Verification Card */}
                     <View style={styles.pendingHeroCard}>
