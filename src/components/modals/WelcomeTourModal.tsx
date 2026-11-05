@@ -154,9 +154,10 @@ export default function WelcomeTourModal({ visible, doctorName, onClose }: Props
       <View style={styles.overlay}>
         <View style={[styles.card, { width: cardWidth, height: cardHeight, backgroundColor: theme.card }]}>
           <View style={styles.header}>
-            <Text style={styles.eyebrow}>WELCOME TO MEDICOO</Text>
-            <Text style={styles.step}>
-              {index + 1} / {cards.length}
+            <View style={styles.headerSide} />
+            <Text style={[styles.eyebrow, { color: theme.text }]}>Welcome to Medicoo</Text>
+            <Text style={[styles.step, { color: theme.textMuted }]}>
+              {index + 1}/{cards.length}
             </Text>
           </View>
 
@@ -229,13 +230,12 @@ const styles = StyleSheet.create({
   header: {
     height: 52,
     paddingHorizontal: 20,
-    backgroundColor: palette.navy,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
-  eyebrow: { color: palette.mint, fontSize: 12, fontWeight: '800', letterSpacing: 1.6 },
-  step: { color: palette.whiteA70, fontSize: 12.5, fontWeight: '700' },
+  headerSide: { width: 44 },
+  eyebrow: { flex: 1, textAlign: 'center', fontSize: 15, fontWeight: '700' },
+  step: { width: 44, textAlign: 'right', fontSize: 13, fontWeight: '600' },
   page: { paddingHorizontal: 22, paddingTop: 26, paddingBottom: 12 },
   iconTile: { width: 60, height: 60, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
   title: { fontSize: 24, fontWeight: '800', letterSpacing: -0.4, lineHeight: 30 },
