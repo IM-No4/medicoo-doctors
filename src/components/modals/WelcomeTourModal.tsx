@@ -1,14 +1,4 @@
-import {
-  ArrowRight,
-  Banknote,
-  CalendarClock,
-  Check,
-  Inbox,
-  LifeBuoy,
-  Power,
-  Sparkles,
-  Video,
-} from 'lucide-react-native';
+import { ArrowRight, Check } from 'lucide-react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Modal,
@@ -28,7 +18,6 @@ import { useTheme } from '../../theme/ThemeContext';
 
 interface TourCard {
   key: string;
-  Icon: typeof Sparkles;
   title: string;
   body: string;
   tips: string[];
@@ -37,7 +26,6 @@ interface TourCard {
 const buildCards = (firstName: string): TourCard[] => [
   {
     key: 'welcome',
-    Icon: Sparkles,
     title: firstName ? `You're verified, Dr. ${firstName}` : "You're verified",
     body: 'Your profile is approved and patients can now discover you. Here is a quick tour so you are ready for your first consultation.',
     tips: [
@@ -48,7 +36,6 @@ const buildCards = (firstName: string): TourCard[] => [
   },
   {
     key: 'online',
-    Icon: Power,
     title: 'Go online to get requests',
     body: 'The Online switch on your dashboard decides whether patients can book you.',
     tips: [
@@ -59,7 +46,6 @@ const buildCards = (firstName: string): TourCard[] => [
   },
   {
     key: 'hours',
-    Icon: CalendarClock,
     title: 'Set your weekly hours',
     body: 'Tell patients when you usually consult so they can plan around you. You will find this in the Availability tab.',
     tips: [
@@ -70,7 +56,6 @@ const buildCards = (firstName: string): TourCard[] => [
   },
   {
     key: 'requests',
-    Icon: Inbox,
     title: 'Respond to requests',
     body: 'New appointment requests arrive on your dashboard and in the Appointments tab.',
     tips: [
@@ -81,7 +66,6 @@ const buildCards = (firstName: string): TourCard[] => [
   },
   {
     key: 'consult',
-    Icon: Video,
     title: 'Consult by chat, voice or video',
     body: 'You offer the consultation types you switched on with your fees.',
     tips: [
@@ -92,7 +76,6 @@ const buildCards = (firstName: string): TourCard[] => [
   },
   {
     key: 'earnings',
-    Icon: Banknote,
     title: 'Get paid',
     body: 'There is no wallet, recharge or upfront deposit to receive patients. Payouts are managed in the Earnings tab.',
     tips: [
@@ -103,7 +86,6 @@ const buildCards = (firstName: string): TourCard[] => [
   },
   {
     key: 'done',
-    Icon: LifeBuoy,
     title: 'You are all set',
     body: 'Keep your profile and hours up to date, and reach out whenever you need a hand.',
     tips: [
@@ -179,9 +161,6 @@ export default function WelcomeTourModal({ visible, doctorName, onClose }: Props
                     showsVerticalScrollIndicator={false}
                     nestedScrollEnabled
                   >
-                    <View style={[styles.iconTile, { backgroundColor: theme.primaryLight }]}>
-                      <c.Icon size={28} color={theme.primary} strokeWidth={2.2} />
-                    </View>
                     <Text style={[styles.title, { color: theme.text }]}>{c.title}</Text>
                     <Text style={[styles.text, { color: theme.textSecondary }]}>{c.body}</Text>
                     <View style={styles.tips}>
@@ -234,16 +213,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerSide: { width: 44 },
-  eyebrow: { flex: 1, textAlign: 'center', fontSize: 15, fontWeight: '700' },
+  eyebrow: { flex: 1, textAlign: 'center', fontSize: 18, fontWeight: '800', letterSpacing: -0.2 },
   step: { width: 44, textAlign: 'right', fontSize: 13, fontWeight: '600' },
-  page: { paddingHorizontal: 22, paddingTop: 26, paddingBottom: 12 },
-  iconTile: { width: 60, height: 60, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginBottom: 18 },
-  title: { fontSize: 24, fontWeight: '800', letterSpacing: -0.4, lineHeight: 30 },
-  text: { fontSize: 15, lineHeight: 23, marginTop: 10 },
-  tips: { marginTop: 22, gap: 10 },
-  tipRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, padding: 14, borderRadius: 10 },
-  tipCheck: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
-  tipText: { flex: 1, fontSize: 14.5, lineHeight: 21 },
+  page: { paddingHorizontal: 22, paddingTop: 20, paddingBottom: 12 },
+  title: { fontSize: 19, fontWeight: '800', letterSpacing: -0.3, lineHeight: 25 },
+  text: { fontSize: 13.5, lineHeight: 20, marginTop: 8 },
+  tips: { marginTop: 18, gap: 8 },
+  tipRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, padding: 12, borderRadius: 10 },
+  tipCheck: { width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginTop: 0 },
+  tipText: { flex: 1, fontSize: 13, lineHeight: 19 },
   footer: { paddingHorizontal: 22, paddingTop: 10, paddingBottom: 20 },
   dots: { flexDirection: 'row', justifyContent: 'center', gap: 6, marginBottom: 14 },
   dot: { width: 7, height: 7, borderRadius: 4 },
