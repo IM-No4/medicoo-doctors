@@ -2124,14 +2124,6 @@ export default function DoctorOnboardingScreen() {
                         <Text style={styles.cardHeaderTitle}>Submitted Profile Summary</Text>
 
                         <View style={styles.reviewRow}>
-                            <Text style={styles.reviewFieldLabel}>Gender</Text>
-                            <Text style={styles.reviewFieldValue}>
-                                {GENDER_OPTIONS.find((g) => g.value === formData.gender)?.label || 'Not specified'}
-                            </Text>
-                        </View>
-                        <View style={styles.reviewDivider} />
-
-                        <View style={styles.reviewRow}>
                             <Text style={styles.reviewFieldLabel}>Qualification</Text>
                             <Text style={styles.reviewFieldValue}>
                                 {formData.doctorType || 'Not specified'}
