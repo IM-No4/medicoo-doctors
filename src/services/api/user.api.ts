@@ -51,6 +51,12 @@ export const getAccountDeletionStatus = async (): Promise<AccountDeletionStatus>
 };
 
 // Doctor Profile APIs
+// The doctor has been through (or skipped) the welcome tour shown after approval.
+export const markDoctorWelcomeSeen = async () => {
+    const res = await apiClient.put('/api/user/doctor-welcome-seen');
+    return res.data;
+};
+
 export const getDoctorProfile = async () => {
     const res = await apiClient.get('/api/user/get-doctor-profile');
     return res.data;

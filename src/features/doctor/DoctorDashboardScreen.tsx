@@ -50,12 +50,14 @@ import { useLanguage } from '../../i18n/LanguageContext';
 import { AppDispatch, RootState } from '../../redux/store';
 import { loadProfileFromServer, setProfileName } from '../../redux/slices/profileSlice';
 import DoctorNameModal from '../../components/modals/DoctorNameModal';
+import WelcomeTourModal from '../../components/modals/WelcomeTourModal';
+import { hasSeenWelcomeTour, markWelcomeTourSeenLocally } from '../../services/storage/welcomeTourStorage';
 import {
   getDoctorAppointmentRequests,
   getDoctorEarnings,
   getMyDoctorReviews,
 } from '../../services/api/doctor.api';
-import { getDoctorProfile, updateDoctorSettings } from '../../services/api/user.api';
+import { getDoctorProfile, markDoctorWelcomeSeen, updateDoctorSettings } from '../../services/api/user.api';
 import { useTheme } from '../../theme/ThemeContext';
 import { useLogout } from '../auth/useLogout';
 
@@ -389,6 +391,29 @@ export default function DoctorDashboardScreen() {
         ? `Your hours for today (${todayDayName}) are set to ${formatDisplayTime(data.start)} – ${formatDisplayTime(data.end)}.`
         : 'Today has been marked off. New calendar bookings are closed for today.',
     });
+  };
+
+  // Welcome tour: shown once, the first time a newly approved doctor reaches the dashboard (approved in the last two weeks, not seen on any
+  // phone yet). The name / email prompt for older accounts goes first so the two never stack.
+  const [tourVisible, setTourVisible] = useState(false);
+  const tourChecked = useRef(false);
+  useEffect(() => {
+    if (!doctorData || tourChecked.current) return;
+    const approved = doctorData.approvalStatus === 'approved' || !!doctorData.hasApprovedProfile;
+    if (!approved || doctorData.welcomeTourSeenAt) return;
+    const approvedAt = doctorData.lastApprovedAt ? new Date(doctorData.lastApprovedAt).getTime() : 0;
+    if (!approvedAt || Date.now() - approvedAt > 14 * 24 * 60 * 60 * 1000) return;
+    if ((!doctorData.name || !doctorData.email) && !nameModalDismissed) return;
+    tourChecked.current = true;
+    const id = String(doctorData._id || doctorData.doctorLoginId || '');
+    hasSeenWelcomeTour(id).then((seen) => { if (!seen) setTourVisible(true); });
+  }, [doctorData, nameModalDismissed]);
+
+  const closeWelcomeTour = () => {
+    setTourVisible(false);
+    const id = String(doctorData?._id || doctorData?.doctorLoginId || '');
+    markWelcomeTourSeenLocally(id);
+    markDoctorWelcomeSeen().catch(() => undefined);
   };
 
   const navigateTo = (screen: string, params?: any) => {
@@ -1171,6 +1196,16 @@ export default function DoctorDashboardScreen() {
           if (saved.name) dispatch(setProfileName(saved.name));
           dispatch(loadProfileFromServer());
           setNameModalDismissed(true);
+        }}
+      />
+
+      <WelcomeTourModal
+        visible={tourVisible}
+        doctorName={doctorName}
+        onClose={closeWelcomeTour}
+        onNavigate={(screen) => {
+          closeWelcomeTour();
+          navigateTo(screen);
         }}
       />
 

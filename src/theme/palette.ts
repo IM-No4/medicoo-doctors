@@ -94,6 +94,7 @@ export const palette = {
   hexFF9800: '#FF9800',
   hexFFF3E0: '#FFF3E0',
   indigo500: '#6366F1',
+  mint: '#05E0AE',
   navy: '#012233',
   navyCard: '#082E41',
   navyDeep: '#011A29',
