@@ -5,8 +5,8 @@ import { palette } from '../theme/palette';
 
 const LOGO_SIZE = 240;
 
-// The native splash is a still image and cannot animate, so once the app's JS is running this takes over with the same logo in the same
-// place (square asset, centred, 240 wide - matching app.json) and adds a spinner below it while the app finishes loading.
+// The one splash screen with a logo. The native splash (app.json) is just the plain navy background with a blank image, because a native
+// splash cannot animate; once the app's JS is running this shows the logo with a spinner below it while the app finishes loading.
 export default function BrandedSplash() {
   return (
     <View style={styles.container}>

@@ -32,8 +32,8 @@ import FloatingCallOverlay from '../components/call/FloatingCallOverlay';
 import { CallProvider } from '../context/CallContext';
 import { Wifi } from 'lucide-react-native';
 
-// The native splash (configured in app.json) stays up while fonts load and is hidden as soon as the app's JS mounts; from there
-// BrandedSplash (same logo, same place, plus a spinner) covers the rest of the boot sequence, since a native splash cannot animate.
+// The native splash (app.json) is only the plain navy background; it stays up while fonts load and is hidden as soon as the app's JS
+// mounts, and BrandedSplash (logo + spinner) covers the rest of the boot sequence.
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 function AppContent() {
