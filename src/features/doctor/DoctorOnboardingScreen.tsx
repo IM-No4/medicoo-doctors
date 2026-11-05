@@ -86,6 +86,11 @@ const IDENTITY_PROOF_TYPES = [
 ];
 // The backend stores the ID type as one of these exact values (Drivers_License), so only what is shown changes.
 const optionLabel = (value: string) => (value === 'Drivers_License' ? 'Driving License' : value);
+const GENDER_OPTIONS = [
+    { value: 'male', label: 'Male' },
+    { value: 'female', label: 'Female' },
+    { value: 'other', label: 'Other' },
+];
 const CERTIFICATE_TYPES = ['Degree', 'Diploma', 'Fellowship', 'Membership', 'Award', 'Other'];
 
 const SPOKEN_LANGUAGES = [
@@ -259,6 +264,7 @@ export default function DoctorOnboardingScreen() {
 
         // Step 2 - Professional Info
         doctorType: '',
+        gender: '',
         specialization: '',
         specializationCode: '',
         experience: '',
@@ -429,6 +435,7 @@ export default function DoctorOnboardingScreen() {
                     email: profile.email || '',
                     telemedicineConsent: profile.telemedicineConsent?.accepted || source.telemedicineConsent?.accepted || false,
                     doctorType: source.doctorType || '',
+                    gender: source.gender || profile.gender || '',
                     specialization: source.specialization || '',
                     specializationCode: source.specializationCode || '',
                     experience: source.experience?.toString() || '',
@@ -518,6 +525,7 @@ export default function DoctorOnboardingScreen() {
         if (formData.name.trim()) formDataToSend.append('name', formData.name.trim());
         if (formData.email.trim()) formDataToSend.append('email', formData.email.trim());
         if (formData.doctorType) formDataToSend.append('doctorType', formData.doctorType);
+        if (formData.gender) formDataToSend.append('gender', formData.gender);
         if (formData.specialization) formDataToSend.append('specialization', formData.specialization);
         if (formData.specializationCode) formDataToSend.append('specializationCode', formData.specializationCode);
         if (formData.experience) formDataToSend.append('experience', formData.experience);
@@ -648,6 +656,9 @@ export default function DoctorOnboardingScreen() {
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(formData.email.trim())) {
                 errors.email = 'Please enter a valid email address';
             }
+            if (!formData.gender) {
+                errors.gender = 'Please select your gender';
+            }
             if (!formData.doctorType) {
                 errors.doctorType = 'Please select your primary qualification type';
             }
@@ -657,7 +668,7 @@ export default function DoctorOnboardingScreen() {
 
             if (Object.keys(errors).length > 0) {
                 setFieldErrors(errors);
-                const firstKey = errors.name ? 'name' : errors.email ? 'email' : errors.doctorType ? 'doctorType' : 'specialization';
+                const firstKey = errors.name ? 'name' : errors.email ? 'email' : errors.gender ? 'gender' : errors.doctorType ? 'doctorType' : 'specialization';
                 setTimeout(() => scrollToField(firstKey), 50);
                 return;
             }
@@ -1092,6 +1103,35 @@ export default function DoctorOnboardingScreen() {
             {/* Qualifications Card */}
             <View style={styles.card}>
                 <Text style={styles.cardHeaderTitle}>Qualifications & Specialty</Text>
+
+                {/* Gender */}
+                <View
+                    ref={el => { fieldRefs.current.gender = el; }}
+                    onLayout={handleFieldLayout('gender')}
+                    style={styles.inputGroup}
+                >
+                    <Text style={styles.label}>
+                        Gender <Text style={styles.reqStar}>*</Text>
+                    </Text>
+                    <View style={styles.genderRow}>
+                        {GENDER_OPTIONS.map((option) => {
+                            const selected = formData.gender === option.value;
+                            return (
+                                <TouchableOpacity
+                                    key={option.value}
+                                    style={[styles.genderChip, selected && styles.genderChipActive, fieldErrors.gender && !selected && styles.inputError]}
+                                    onPress={() => updateField('gender', option.value)}
+                                    activeOpacity={0.7}
+                                >
+                                    <Text style={[styles.genderChipText, selected && styles.genderChipTextActive]}>{option.label}</Text>
+                                </TouchableOpacity>
+                            );
+                        })}
+                    </View>
+                    {fieldErrors.gender && (
+                        <Text style={styles.errorText}>{fieldErrors.gender}</Text>
+                    )}
+                </View>
 
                 {/* Qualification Type */}
                 <View
@@ -2082,6 +2122,14 @@ export default function DoctorOnboardingScreen() {
                     {/* Submitted Profile Details Card */}
                     <View style={styles.card}>
                         <Text style={styles.cardHeaderTitle}>Submitted Profile Summary</Text>
+
+                        <View style={styles.reviewRow}>
+                            <Text style={styles.reviewFieldLabel}>Gender</Text>
+                            <Text style={styles.reviewFieldValue}>
+                                {GENDER_OPTIONS.find((g) => g.value === formData.gender)?.label || 'Not specified'}
+                            </Text>
+                        </View>
+                        <View style={styles.reviewDivider} />
 
                         <View style={styles.reviewRow}>
                             <Text style={styles.reviewFieldLabel}>Qualification</Text>
@@ -3469,6 +3517,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    genderRow: { flexDirection: 'row', gap: 10 },
+    genderChip: {
+        flex: 1,
+        height: 48,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: palette.slate200,
+        backgroundColor: palette.white,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    genderChipActive: { borderColor: palette.primary, backgroundColor: palette.primaryTint },
+    genderChipText: { fontSize: 14, fontWeight: '600', color: palette.slate500 },
+    genderChipTextActive: { color: palette.navy },
     optionItem: {
         flexDirection: 'row',
         alignItems: 'center',
