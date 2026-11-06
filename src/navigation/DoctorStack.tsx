@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
-import BrandedSplash from '../components/BrandedSplash';
+import { ActivityIndicator, View } from 'react-native';
 
 import AppointmentRequestsScreen from '../features/doctor/AppointmentRequestsScreen';
 import DeleteAccountScreen from '../features/doctor/DeleteAccountScreen';
@@ -24,6 +24,7 @@ import ManageAvailabilityScreen from '../features/doctor/ManageAvailabilityScree
 import PatientConsultationDetailScreen from '../features/doctor/PatientConsultationDetailScreen';
 import { doctorNeedsOnboarding } from '../features/doctor/onboardingGate';
 import { getDoctorProfile } from '../services/api/user.api';
+import { useTheme } from '../theme/ThemeContext';
 import DoctorBottomTabBar from './DoctorBottomTabBar';
 
 const Tab = createBottomTabNavigator();
@@ -44,6 +45,7 @@ function DoctorTabs() {
 }
 
 export default function DoctorStack() {
+  const { theme } = useTheme();
   // A doctor who has not been through onboarding yet (a brand-new number, or an application that is still a draft, pending or rejected) opens on
   // the onboarding screen instead of the dashboard. If the profile cannot be read the doctor is let in as before.
   const [entry, setEntry] = useState<'checking' | 'DoctorTabs' | 'DoctorOnboarding'>('checking');
@@ -56,7 +58,11 @@ export default function DoctorStack() {
   }, []);
 
   if (entry === 'checking') {
-    return <BrandedSplash />;
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.background }}>
+        <ActivityIndicator size="large" color={theme.primary} />
+      </View>
+    );
   }
 
   return (

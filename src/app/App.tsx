@@ -16,7 +16,6 @@ import { AppDispatch, store } from '../redux/store';
 import { loadProfileCache, loadProfileFromServer } from '../redux/slices/profileSlice';
 import { checkLegalAcceptance } from '../redux/slices/legalSlice';
 
-import BrandedSplash from '../components/BrandedSplash';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { initCrashReporting } from '../bootstrap/crashReporting';
 import { initPushNotifications, setupNotificationTapHandling } from '../bootstrap/pushNotifications';
@@ -32,8 +31,9 @@ import FloatingCallOverlay from '../components/call/FloatingCallOverlay';
 import { CallProvider } from '../context/CallContext';
 import { Wifi } from 'lucide-react-native';
 
-// The native splash (app.json) is only the plain navy background; it stays up while fonts load and is hidden as soon as the app's JS
-// mounts, and BrandedSplash (logo + spinner) covers the rest of the boot sequence.
+// No JS splash screen in the flow - the native splash (configured in
+// app.json) stays up for the entire loading period (fonts + boot sequence)
+// and is hidden exactly once, the instant real content is ready to render.
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 function AppContent() {
@@ -73,18 +73,28 @@ function AppContent() {
     return () => sub.remove();
   }, [boot.status]);
 
-  // Hand over from the native splash to BrandedSplash as soon as this has rendered; boot status screens
-  // ('mandatoryUpdate'/'maintenance') and the slow-boot screen render below.
+  // Hide the native splash exactly once, the instant boot reaches any
+  // terminal status - 'mandatoryUpdate'/'maintenance' each have their own
+  // screen rendered by RootNavigator below, and neither would ever become
+  // visible if the native splash stayed up waiting specifically for 'ready',
+  // which neither reaches.
   useEffect(() => {
-    SplashScreen.hideAsync().catch(() => {});
-  }, []);
+    if (
+      boot.status === 'ready' ||
+      boot.status === 'mandatoryUpdate' ||
+      boot.status === 'maintenance' ||
+      boot.isSlow
+    ) {
+      SplashScreen.hideAsync().catch(() => {});
+    }
+  }, [boot.status, boot.isSlow]);
 
   // ⛔ Do NOT render navigation until boot is complete - every terminal
   // boot status RootNavigator has its own screen for must reach it; only
   // a boot that's genuinely still in progress stays gated here.
   const TERMINAL_STATUSES = ['ready', 'mandatoryUpdate', 'maintenance'];
   if (!TERMINAL_STATUSES.includes(boot.status)) {
-    return boot.isSlow ? <SlowBootScreen /> : <BrandedSplash />;
+    return boot.isSlow ? <SlowBootScreen /> : null;
   }
 
   return <RootNavigator />;
